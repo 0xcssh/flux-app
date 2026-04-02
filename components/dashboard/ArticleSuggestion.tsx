@@ -1,66 +1,191 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 
-const ARTICLE_IDS = [
-  'circadian-rhythm', 'testosterone-basics', 'sleep-and-hormones',
-  'exercise-timing', 'stress-cortisol', 'nutrition-testosterone',
-  'infradian-cycles', 'seasonal-variations', 'nofap-science', 'aging-testosterone',
+const CARD_WIDTH = 160;
+const CARD_HEIGHT = 200;
+
+interface ArticleCategory {
+  key: string;
+  bg: string;
+  accent: string;
+}
+
+const CATEGORIES: Record<string, ArticleCategory> = {
+  Hormones: { key: 'hormones', bg: '#1E3A5F', accent: '#3B82F6' },
+  Sleep: { key: 'sleep', bg: '#1E1B4B', accent: '#6366F1' },
+  Training: { key: 'training', bg: '#14532D', accent: '#22C55E' },
+  Nutrition: { key: 'nutrition', bg: '#713F12', accent: '#F59E0B' },
+  Mind: { key: 'mind', bg: '#312E81', accent: '#A78BFA' },
+  Science: { key: 'science', bg: '#134E4A', accent: '#14B8A6' },
+};
+
+interface ArticleEntry {
+  id: string;
+  category: string;
+  emoji: string;
+}
+
+const ARTICLES: ArticleEntry[] = [
+  { id: 'circadian-rhythm', category: 'Science', emoji: '🔬' },
+  { id: 'testosterone-basics', category: 'Hormones', emoji: '💪' },
+  { id: 'sleep-and-hormones', category: 'Sleep', emoji: '😴' },
+  { id: 'exercise-timing', category: 'Training', emoji: '🏋️' },
+  { id: 'stress-cortisol', category: 'Mind', emoji: '🧠' },
+  { id: 'nutrition-testosterone', category: 'Nutrition', emoji: '🥩' },
+  { id: 'infradian-cycles', category: 'Science', emoji: '📊' },
+  { id: 'seasonal-variations', category: 'Science', emoji: '🌡️' },
+  { id: 'nofap-science', category: 'Mind', emoji: '🔥' },
+  { id: 'aging-testosterone', category: 'Hormones', emoji: '⏳' },
 ];
 
 export default function ArticleSuggestion() {
   const router = useRouter();
-  const { t, i18n } = useTranslation('articles');
-  const lang = i18n.language === 'fr' ? 'fr' : 'en';
+  const { t: tDash } = useTranslation('dashboard');
+  const { t: tArticles, i18n } = useTranslation('articles');
 
-  const article = useMemo(() => {
-    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-    return ARTICLE_IDS[dayOfYear % ARTICLE_IDS.length];
+  // Pick 4 articles based on day of year, rotating daily
+  const dailyArticles = useMemo(() => {
+    const dayOfYear = Math.floor(
+      (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
+    );
+    const shuffled = [...ARTICLES];
+    // Simple seeded shuffle based on day
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = (dayOfYear * (i + 1) + 7) % (i + 1);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 4);
   }, []);
 
-  return (
-    <TouchableOpacity
-      style={styles.container}
-      activeOpacity={0.7}
-      onPress={() => router.push(`/(modals)/article/${article}` as any)}
-    >
-      <View style={styles.iconWrap}>
-        <FontAwesome name="book" size={18} color={darkPalette.primary} />
-      </View>
-      <View style={styles.textWrap}>
-        <Text style={styles.label}>DAILY READ</Text>
-        <Text style={styles.title} numberOfLines={1}>
-          {t(`${article}.title`, { defaultValue: article.replace(/-/g, ' ') })}
+  const renderCard = ({ item }: { item: ArticleEntry }) => {
+    const cat = CATEGORIES[item.category];
+    const title = tArticles(`${item.id}.title`, {
+      defaultValue: item.id.replace(/-/g, ' '),
+    });
+    // Estimate read time from article JSON (fallback 3 min)
+    const readTime = tArticles(`${item.id}.read_time`, { defaultValue: '3' });
+
+    return (
+      <TouchableOpacity
+        style={[styles.card, { backgroundColor: cat.bg }]}
+        activeOpacity={0.8}
+        onPress={() => router.push(`/(modals)/article/${item.id}` as any)}
+      >
+        <Text style={[styles.categoryLabel, { color: cat.accent }]}>
+          {item.category.toUpperCase()}
         </Text>
+        <Text style={styles.emoji}>{item.emoji}</Text>
+        <Text style={styles.cardTitle} numberOfLines={2}>
+          {title}
+        </Text>
+        <View style={[styles.readTimeBadge, { backgroundColor: `${cat.accent}20` }]}>
+          <Text style={[styles.readTimeText, { color: cat.accent }]}>
+            {readTime} {tDash('read_time_unit')}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Section Header */}
+      <View style={styles.headerRow}>
+        <View>
+          <Text style={styles.sectionTitle}>{tDash('learn')}</Text>
+          <Text style={styles.sectionSubtitle}>{tDash('daily_articles')}</Text>
+        </View>
+        <TouchableOpacity>
+          <Text style={styles.seeAll}>{tDash('see_all')}</Text>
+        </TouchableOpacity>
       </View>
-      <FontAwesome name="chevron-right" size={14} color={darkPalette.textTertiary} />
-    </TouchableOpacity>
+
+      {/* Horizontal Scrollable Cards */}
+      <FlatList
+        data={dailyArticles}
+        renderItem={renderCard}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={() => <View style={{ width: 12 }} />}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 4,
+  },
+  headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: darkPalette.surface,
-    borderRadius: 14,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: darkPalette.text,
+    letterSpacing: -0.3,
+  },
+  sectionSubtitle: {
+    fontSize: 13,
+    color: darkPalette.textTertiary,
+    marginTop: 2,
+  },
+  seeAll: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: darkPalette.primary,
+  },
+  listContent: {
+    paddingRight: 4,
+  },
+  card: {
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    borderRadius: 16,
     padding: 14,
-    borderWidth: 1,
-    borderColor: darkPalette.border,
-    gap: 12,
+    justifyContent: 'space-between',
   },
-  iconWrap: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    backgroundColor: 'rgba(59, 130, 246, 0.12)',
-    justifyContent: 'center',
-    alignItems: 'center',
+  categoryLabel: {
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1.2,
   },
-  textWrap: { flex: 1 },
-  label: { fontSize: 9, fontWeight: '700', color: darkPalette.primary, letterSpacing: 1, marginBottom: 2 },
-  title: { fontSize: 14, fontWeight: '600', color: darkPalette.text },
+  emoji: {
+    fontSize: 36,
+    marginVertical: 4,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    lineHeight: 19,
+    flex: 1,
+    marginTop: 4,
+  },
+  readTimeBadge: {
+    alignSelf: 'flex-start',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    marginTop: 6,
+  },
+  readTimeText: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
 });
