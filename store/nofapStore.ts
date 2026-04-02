@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { zustandStorage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import type { NoFapStreak, NoFapMilestone } from '@/types/nofap';
 import { MILESTONE_DAYS } from '@/types/nofap';
@@ -203,7 +203,7 @@ export const useNoFapStore = create<NoFapState>()(
     }),
     {
       name: 'flux-nofap',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
       partialize: (state) => ({
         currentStreak: state.currentStreak,
         history: state.history,

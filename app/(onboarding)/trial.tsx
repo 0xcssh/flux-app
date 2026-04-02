@@ -3,68 +3,38 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import TrialOfferCard from '@/components/onboarding/TrialOfferCard';
-import { useSubscription } from '@/hooks/useSubscription';
-import { useAuthStore } from '@/store/authStore';
+import { useSettingsStore } from '@/store/settingsStore';
 import { track, AnalyticsEvents } from '@/lib/analytics';
 
 export default function TrialScreen() {
   const router = useRouter();
   const { t } = useTranslation('onboarding');
-  const { offerings, purchase } = useSubscription();
-  const updateProfile = useAuthStore((s) => s.updateProfile);
+  const setOnboardingSeen = useSettingsStore((s) => s.setOnboardingSeen);
   const [isLoading, setIsLoading] = useState(false);
 
-  const completeOnboarding = async () => {
-    try {
-      await updateProfile({ onboarding_completed: true });
-    } catch {
-      // Continue anyway
-    }
+  const finishOnboarding = () => {
+    setOnboardingSeen(true);
     track(AnalyticsEvents.ONBOARDING_COMPLETED);
+    // Go straight to the app — no account needed yet
     router.replace('/(tabs)');
   };
 
-  const handleStartTrial = async () => {
-    setIsLoading(true);
-    try {
-      // Get the premium monthly package (with trial)
-      const premiumOffering = offerings?.current;
-      const trialPackage =
-        premiumOffering?.availablePackages?.find(
-          (pkg) => pkg.identifier === '$rc_monthly',
-        ) ?? premiumOffering?.availablePackages?.[0];
-
-      if (!trialPackage) {
-        // No packages available (dev environment), skip
-        track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding' });
-        await completeOnboarding();
-        return;
-      }
-
-      const success = await purchase(trialPackage);
-      if (success) {
-        track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding' });
-      }
-      await completeOnboarding();
-    } catch (error) {
-      console.error('[Trial] Error:', error);
-      Alert.alert('Error', 'Something went wrong. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleStartTrial = () => {
+    // We'll handle the actual trial purchase after signup
+    track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding' });
+    finishOnboarding();
   };
 
-  const handleSkip = async () => {
+  const handleSkip = () => {
     track(AnalyticsEvents.TRIAL_SKIPPED, { source: 'onboarding' });
-    await completeOnboarding();
+    finishOnboarding();
   };
 
   if (isLoading) {

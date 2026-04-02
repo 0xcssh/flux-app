@@ -1,22 +1,19 @@
 import { useEffect } from 'react';
 import { router } from 'expo-router';
-import { useAuth } from '@/hooks/useAuth';
+import { useSettingsStore } from '@/store/settingsStore';
 import { LoadingScreen } from '@/components/shared/LoadingScreen';
 
 export default function RootIndex() {
-  const { session, profile, isLoading } = useAuth();
+  const onboardingSeen = useSettingsStore((s) => s.onboardingSeen);
 
   useEffect(() => {
-    if (isLoading) return;
-
-    if (!session) {
-      router.replace('/(auth)/login');
-    } else if (profile && !profile.onboarding_completed) {
+    if (!onboardingSeen) {
       router.replace('/(onboarding)/welcome');
-    } else if (session) {
+    } else {
+      // Go straight to the app — no account needed
       router.replace('/(tabs)');
     }
-  }, [session, profile, isLoading]);
+  }, [onboardingSeen]);
 
   return <LoadingScreen />;
 }

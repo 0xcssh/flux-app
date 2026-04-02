@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CartesianChart, Line, Area } from 'victory-native';
-import { useFont } from '@shopify/react-native-skia';
+import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Rect, Text as SvgText } from 'react-native-svg';
 import { lightPalette } from '@/theme/colors';
 import { getCircadianCurve } from '@/lib/hormoneEngine';
 
@@ -11,7 +10,21 @@ interface CircadianChartProps {
   currentHour?: number;
 }
 
-const CHART_WIDTH = Dimensions.get('window').width - 48;
+const CHART_WIDTH = Dimensions.get('window').width - 80;
+const CHART_HEIGHT = 180;
+const PADDING = { top: 10, bottom: 25, left: 35, right: 10 };
+
+function buildSmoothPath(points: { x: number; y: number }[]): string {
+  if (points.length < 2) return '';
+  let d = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    const cpx = (prev.x + curr.x) / 2;
+    d += ` C ${cpx} ${prev.y}, ${cpx} ${curr.y}, ${curr.x} ${curr.y}`;
+  }
+  return d;
+}
 
 export default function CircadianChart({ birthYear, currentHour }: CircadianChartProps) {
   const { t } = useTranslation('cycle');
@@ -20,83 +33,121 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
 
   const curveData = useMemo(() => {
     const raw = getCircadianCurve(birthYear);
-    // Sample every 4th point for performance (24 points)
-    return raw.filter((_, i) => i % 4 === 0).map((p) => ({
-      hour: p.hour,
-      value: p.value,
-    }));
+    return raw.filter((_, i) => i % 4 === 0);
   }, [birthYear]);
 
-  // Phase zones for background coloring
-  const phaseZones = [
-    { start: 4, end: 8, label: t('phase_labels.rise'), color: '#DBEAFE' },
-    { start: 8, end: 12, label: t('phase_labels.peak'), color: '#D1FAE5' },
-    { start: 12, end: 20, label: t('phase_labels.decline'), color: '#FEF3C7' },
-    { start: 20, end: 24, label: t('phase_labels.recovery'), color: '#EDE9FE' },
-    { start: 0, end: 4, label: '', color: '#EDE9FE' },
+  const plotW = CHART_WIDTH - PADDING.left - PADDING.right;
+  const plotH = CHART_HEIGHT - PADDING.top - PADDING.bottom;
+
+  const points = useMemo(() => {
+    return curveData.map((p) => ({
+      x: PADDING.left + (p.hour / 24) * plotW,
+      y: PADDING.top + (1 - p.value) * plotH,
+    }));
+  }, [curveData, plotW, plotH]);
+
+  const linePath = useMemo(() => buildSmoothPath(points), [points]);
+  const areaPath = useMemo(() => {
+    if (!linePath) return '';
+    const bottom = PADDING.top + plotH;
+    return `${linePath} L ${points[points.length - 1].x} ${bottom} L ${points[0].x} ${bottom} Z`;
+  }, [linePath, points, plotH]);
+
+  // Current time marker
+  const currentX = PADDING.left + (hour / 24) * plotW;
+  const currentIdx = Math.min(Math.floor((hour / 24) * curveData.length), curveData.length - 1);
+  const currentY = PADDING.top + (1 - (curveData[currentIdx]?.value ?? 0.5)) * plotH;
+
+  // Phase background zones
+  const phases = [
+    { start: 0, end: 4, color: '#EDE9FE' },
+    { start: 4, end: 8, color: '#DBEAFE' },
+    { start: 8, end: 12, color: '#D1FAE5' },
+    { start: 12, end: 20, color: '#FEF3C7' },
+    { start: 20, end: 24, color: '#EDE9FE' },
   ];
+
+  const phaseLabels = [
+    { label: t('phase_labels.rise'), color: '#DBEAFE' },
+    { label: t('phase_labels.peak'), color: '#D1FAE5' },
+    { label: t('phase_labels.decline'), color: '#FEF3C7' },
+    { label: t('phase_labels.recovery'), color: '#EDE9FE' },
+  ];
+
+  const xLabels = [0, 6, 12, 18, 24];
+  const yLabels = ['Low', 'Med', 'High'];
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t('circadian.title')}</Text>
       <Text style={styles.description}>{t('circadian.description')}</Text>
 
-      {/* Phase zone labels */}
-      <View style={styles.phaseLabels}>
-        {phaseZones
-          .filter((z) => z.label)
-          .map((zone) => (
-            <View key={zone.label} style={[styles.phaseLabel, { backgroundColor: zone.color }]}>
-              <Text style={styles.phaseLabelText}>{zone.label}</Text>
-            </View>
-          ))}
+      <View style={styles.phaseLabelsRow}>
+        {phaseLabels.map((p) => (
+          <View key={p.label} style={[styles.phaseLabel, { backgroundColor: p.color }]}>
+            <Text style={styles.phaseLabelText}>{p.label}</Text>
+          </View>
+        ))}
       </View>
 
-      <View style={styles.chartContainer}>
-        <CartesianChart
-          data={curveData}
-          xKey="hour"
-          yKeys={['value']}
-          domainPadding={{ top: 20, bottom: 10, left: 10, right: 10 }}
-          axisOptions={{
-            tickCount: { x: 5, y: 4 },
-            formatXLabel: (v: number) => `${Math.round(v)}h`,
-            formatYLabel: (v: number) => {
-              if (v >= 0.7) return 'High';
-              if (v >= 0.4) return 'Med';
-              return 'Low';
-            },
-            labelColor: lightPalette.textSecondary,
-            lineColor: lightPalette.border,
-          }}
-        >
-          {({ points, chartBounds }) => (
-            <>
-              <Area
-                points={points.value}
-                y0={chartBounds.bottom}
-                color={lightPalette.primary}
-                opacity={0.15}
-                curveType="natural"
-                animate={{ type: 'timing', duration: 800 }}
-              />
-              <Line
-                points={points.value}
-                color={lightPalette.primary}
-                strokeWidth={2.5}
-                curveType="natural"
-                animate={{ type: 'timing', duration: 800 }}
-              />
-            </>
-          )}
-        </CartesianChart>
-      </View>
+      <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
+        <Defs>
+          <LinearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <Stop offset="0" stopColor={lightPalette.primary} stopOpacity="0.25" />
+            <Stop offset="1" stopColor={lightPalette.primary} stopOpacity="0.02" />
+          </LinearGradient>
+        </Defs>
 
-      {/* Current time indicator */}
+        {/* Phase background zones */}
+        {phases.map((p, i) => (
+          <Rect
+            key={i}
+            x={PADDING.left + (p.start / 24) * plotW}
+            y={PADDING.top}
+            width={((p.end - p.start) / 24) * plotW}
+            height={plotH}
+            fill={p.color}
+            opacity={0.4}
+          />
+        ))}
+
+        {/* Grid lines */}
+        {yLabels.map((_, i) => {
+          const y = PADDING.top + (i / (yLabels.length - 1)) * plotH;
+          return (
+            <SvgLine key={`grid-${i}`} x1={PADDING.left} y1={y} x2={PADDING.left + plotW} y2={y} stroke="#E2E8F0" strokeWidth={1} strokeDasharray="4,4" />
+          );
+        })}
+
+        {/* Area fill */}
+        <Path d={areaPath} fill="url(#areaGrad)" />
+
+        {/* Curve line */}
+        <Path d={linePath} stroke={lightPalette.primary} strokeWidth={2.5} fill="none" />
+
+        {/* Current time marker */}
+        <SvgLine x1={currentX} y1={PADDING.top} x2={currentX} y2={PADDING.top + plotH} stroke={lightPalette.primary} strokeWidth={1.5} strokeDasharray="4,3" />
+        <Circle cx={currentX} cy={currentY} r={5} fill={lightPalette.primary} />
+        <Circle cx={currentX} cy={currentY} r={8} fill={lightPalette.primary} opacity={0.2} />
+
+        {/* X axis labels */}
+        {xLabels.map((h) => (
+          <SvgText key={`x-${h}`} x={PADDING.left + (h / 24) * plotW} y={CHART_HEIGHT - 4} fontSize={10} fill={lightPalette.textSecondary} textAnchor="middle">{h}h</SvgText>
+        ))}
+
+        {/* Y axis labels */}
+        {yLabels.map((label, i) => {
+          const y = PADDING.top + ((yLabels.length - 1 - i) / (yLabels.length - 1)) * plotH;
+          return (
+            <SvgText key={`y-${i}`} x={PADDING.left - 6} y={y + 3} fontSize={9} fill={lightPalette.textSecondary} textAnchor="end">{label}</SvgText>
+          );
+        })}
+      </Svg>
+
       <View style={styles.currentTimeRow}>
         <View style={[styles.currentTimeDot, { backgroundColor: lightPalette.primary }]} />
         <Text style={styles.currentTimeText}>
-          {t('circadian.optimal_window')} - {Math.floor(hour)}:{String(Math.floor((hour % 1) * 60)).padStart(2, '0')}
+          Now - {Math.floor(hour)}:{String(Math.floor((hour % 1) * 60)).padStart(2, '0')}
         </Text>
       </View>
     </View>
@@ -126,7 +177,7 @@ const styles = StyleSheet.create({
     color: lightPalette.textSecondary,
     marginBottom: 12,
   },
-  phaseLabels: {
+  phaseLabelsRow: {
     flexDirection: 'row',
     gap: 6,
     marginBottom: 12,
@@ -142,15 +193,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: lightPalette.textSecondary,
   },
-  chartContainer: {
-    height: 220,
-    marginHorizontal: -8,
-  },
   currentTimeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginTop: 12,
+    marginTop: 8,
   },
   currentTimeDot: {
     width: 8,

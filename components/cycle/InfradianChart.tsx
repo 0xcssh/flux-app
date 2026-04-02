@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { CartesianChart, Line } from 'victory-native';
+import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Text as SvgText } from 'react-native-svg';
 import { lightPalette } from '@/theme/colors';
 import type { DailyLogEntry } from '@/types/log';
 
@@ -11,54 +11,56 @@ interface InfradianChartProps {
   isPremium?: boolean;
 }
 
-export default function InfradianChart({
-  logs,
-  detectedCycle,
-  isPremium = true,
-}: InfradianChartProps) {
+const CHART_WIDTH = Dimensions.get('window').width - 80;
+const CHART_HEIGHT = 180;
+const PAD = { top: 10, bottom: 25, left: 30, right: 10 };
+
+function smoothPath(pts: { x: number; y: number }[]): string {
+  if (pts.length < 2) return '';
+  let d = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 1; i < pts.length; i++) {
+    const cpx = (pts[i - 1].x + pts[i].x) / 2;
+    d += ` C ${cpx} ${pts[i - 1].y}, ${cpx} ${pts[i].y}, ${pts[i].x} ${pts[i].y}`;
+  }
+  return d;
+}
+
+export default function InfradianChart({ logs, detectedCycle, isPremium = true }: InfradianChartProps) {
   const { t } = useTranslation('cycle');
 
-  const chartData = useMemo(() => {
-    // Sort logs by date and take last 30
-    const sorted = [...logs]
-      .sort((a, b) => a.log_date.localeCompare(b.log_date))
-      .slice(-30);
+  const sorted = useMemo(
+    () => [...logs].sort((a, b) => a.log_date.localeCompare(b.log_date)).slice(-30),
+    [logs],
+  );
 
-    if (sorted.length === 0) {
-      // Generate mock empty data
-      const data = [];
-      for (let i = 0; i < 30; i++) {
-        data.push({ day: i + 1, score: 0, trend: 50 });
-      }
-      return data;
-    }
-
-    const avg =
-      sorted.reduce((sum, l) => sum + l.vitality_score, 0) / sorted.length;
-
-    return sorted.map((log, i) => {
-      let trend = avg;
-      if (detectedCycle) {
-        const phase = (i / detectedCycle.periodDays) * 2 * Math.PI;
-        const amplitude = 15 * (detectedCycle.confidence / 100);
-        trend = avg + amplitude * Math.sin(phase);
-      }
-      return {
-        day: i + 1,
-        score: log.vitality_score,
-        trend: Math.round(trend),
-      };
-    });
-  }, [logs, detectedCycle]);
+  const hasData = sorted.length > 1;
+  const plotW = CHART_WIDTH - PAD.left - PAD.right;
+  const plotH = CHART_HEIGHT - PAD.top - PAD.bottom;
 
   const avg = useMemo(() => {
-    const scores = chartData.filter((d) => d.score > 0).map((d) => d.score);
-    return scores.length > 0
-      ? Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
-      : 0;
-  }, [chartData]);
+    if (!hasData) return 50;
+    return Math.round(sorted.reduce((s, l) => s + l.vitality_score, 0) / sorted.length);
+  }, [sorted, hasData]);
 
-  const hasData = logs.length > 0;
+  const scorePoints = useMemo(() => {
+    return sorted.map((l, i) => ({
+      x: PAD.left + (i / Math.max(sorted.length - 1, 1)) * plotW,
+      y: PAD.top + (1 - l.vitality_score / 100) * plotH,
+    }));
+  }, [sorted, plotW, plotH]);
+
+  const trendPoints = useMemo(() => {
+    if (!detectedCycle) return [];
+    return sorted.map((_, i) => {
+      const phase = (i / detectedCycle.periodDays) * 2 * Math.PI;
+      const amplitude = 15 * (detectedCycle.confidence / 100);
+      const val = avg + amplitude * Math.sin(phase);
+      return {
+        x: PAD.left + (i / Math.max(sorted.length - 1, 1)) * plotW,
+        y: PAD.top + (1 - val / 100) * plotH,
+      };
+    });
+  }, [sorted, detectedCycle, avg, plotW, plotH]);
 
   return (
     <View style={styles.container}>
@@ -67,70 +69,74 @@ export default function InfradianChart({
 
       {detectedCycle && (
         <View style={styles.cycleInfo}>
-          <Text style={styles.cycleLength}>
-            {t('infradian.cycle_length')}: {detectedCycle.periodDays} {t('common:time.days', { defaultValue: 'days' })}
-          </Text>
-          <Text style={styles.cycleConfidence}>
-            {t('infradian.estimated')} ({detectedCycle.confidence}%)
-          </Text>
+          <Text style={styles.cycleLength}>{t('infradian.cycle_length')}: {detectedCycle.periodDays} days</Text>
+          <Text style={styles.cycleConfidence}>{t('infradian.estimated')} ({detectedCycle.confidence}%)</Text>
         </View>
       )}
 
       <View style={styles.chartWrapper}>
         {!isPremium && (
           <View style={styles.premiumOverlay}>
-            <View style={styles.premiumContent}>
-              <Text style={styles.lockIcon}>{'\uD83D\uDD12'}</Text>
-              <Text style={styles.premiumText}>{t('premium_required')}</Text>
-              <Pressable style={styles.upgradeButton}>
-                <Text style={styles.upgradeButtonText}>
-                  {t('common:buttons.upgrade', { defaultValue: 'Upgrade' })}
-                </Text>
-              </Pressable>
-            </View>
+            <Text style={{ fontSize: 36 }}>{'\uD83D\uDD12'}</Text>
+            <Text style={styles.premiumText}>{t('premium_required')}</Text>
+            <Pressable style={styles.upgradeButton}>
+              <Text style={styles.upgradeButtonText}>Upgrade</Text>
+            </Pressable>
           </View>
         )}
 
-        <View style={[styles.chartContainer, !isPremium && styles.chartBlurred]}>
+        <View style={[!isPremium && { opacity: 0.15 }]}>
           {hasData ? (
-            <CartesianChart
-              data={chartData}
-              xKey="day"
-              yKeys={['score', 'trend']}
-              domainPadding={{ top: 20, bottom: 10, left: 10, right: 10 }}
-              domain={{ y: [0, 100] }}
-              axisOptions={{
-                tickCount: { x: 6, y: 5 },
-                formatXLabel: (v: number) => `${Math.round(v)}`,
-                formatYLabel: (v: number) => `${Math.round(v)}`,
-                labelColor: lightPalette.textSecondary,
-                lineColor: lightPalette.border,
-              }}
-            >
-              {({ points }) => (
-                <>
-                  {detectedCycle && (
-                    <Line
-                      points={points.trend}
-                      color={lightPalette.secondary}
-                      strokeWidth={2}
-                      curveType="natural"
-                      opacity={0.5}
-                      animate={{ type: 'timing', duration: 800 }}
-                    />
-                  )}
-                  <Line
-                    points={points.score}
-                    color={lightPalette.primary}
-                    strokeWidth={2.5}
-                    curveType="natural"
-                    animate={{ type: 'timing', duration: 800 }}
-                  />
-                </>
+            <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
+              <Defs>
+                <LinearGradient id="infGrad" x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset="0" stopColor={lightPalette.primary} stopOpacity="0.2" />
+                  <Stop offset="1" stopColor={lightPalette.primary} stopOpacity="0" />
+                </LinearGradient>
+              </Defs>
+
+              {/* Avg line */}
+              <SvgLine
+                x1={PAD.left} y1={PAD.top + (1 - avg / 100) * plotH}
+                x2={PAD.left + plotW} y2={PAD.top + (1 - avg / 100) * plotH}
+                stroke="#94A3B8" strokeWidth={1} strokeDasharray="4,4"
+              />
+
+              {/* Score area */}
+              {scorePoints.length > 1 && (
+                <Path
+                  d={`${smoothPath(scorePoints)} L ${scorePoints[scorePoints.length - 1].x} ${PAD.top + plotH} L ${scorePoints[0].x} ${PAD.top + plotH} Z`}
+                  fill="url(#infGrad)"
+                />
               )}
-            </CartesianChart>
+
+              {/* Score line */}
+              <Path d={smoothPath(scorePoints)} stroke={lightPalette.primary} strokeWidth={2.5} fill="none" />
+
+              {/* Trend line */}
+              {trendPoints.length > 1 && (
+                <Path d={smoothPath(trendPoints)} stroke={lightPalette.secondary} strokeWidth={2} fill="none" opacity={0.6} strokeDasharray="6,3" />
+              )}
+
+              {/* Dots */}
+              {scorePoints.map((p, i) => (
+                <Circle key={i} cx={p.x} cy={p.y} r={3} fill={lightPalette.primary} />
+              ))}
+
+              {/* X labels */}
+              {sorted.filter((_, i) => i % Math.max(1, Math.floor(sorted.length / 5)) === 0).map((l, i, arr) => {
+                const idx = sorted.indexOf(l);
+                const x = PAD.left + (idx / Math.max(sorted.length - 1, 1)) * plotW;
+                return <SvgText key={i} x={x} y={CHART_HEIGHT - 4} fontSize={9} fill="#94A3B8" textAnchor="middle">{l.log_date.slice(5)}</SvgText>;
+              })}
+
+              {/* Y labels */}
+              {[0, 25, 50, 75, 100].map((v) => (
+                <SvgText key={v} x={PAD.left - 5} y={PAD.top + (1 - v / 100) * plotH + 3} fontSize={9} fill="#94A3B8" textAnchor="end">{v}</SvgText>
+              ))}
+            </Svg>
           ) : (
-            <View style={styles.noDataContainer}>
+            <View style={styles.noData}>
               <Text style={styles.noDataText}>{t('not_enough_data')}</Text>
             </View>
           )}
@@ -144,8 +150,8 @@ export default function InfradianChart({
             <Text style={styles.statLabel}>Avg Score</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statValue}>{logs.length}</Text>
-            <Text style={styles.statLabel}>Days Logged</Text>
+            <Text style={styles.statValue}>{sorted.length}</Text>
+            <Text style={styles.statLabel}>Days</Text>
           </View>
           {detectedCycle && (
             <View style={styles.stat}>
@@ -160,117 +166,21 @@ export default function InfradianChart({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: lightPalette.surface,
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: lightPalette.text,
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 13,
-    lineHeight: 18,
-    color: lightPalette.textSecondary,
-    marginBottom: 12,
-  },
-  cycleInfo: {
-    backgroundColor: lightPalette.surfaceVariant,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
-  },
-  cycleLength: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: lightPalette.text,
-  },
-  cycleConfidence: {
-    fontSize: 12,
-    color: lightPalette.textSecondary,
-    marginTop: 2,
-  },
-  chartWrapper: {
-    position: 'relative',
-  },
-  chartContainer: {
-    height: 220,
-    marginHorizontal: -8,
-  },
-  chartBlurred: {
-    opacity: 0.15,
-  },
-  premiumOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  premiumContent: {
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  lockIcon: {
-    fontSize: 36,
-    marginBottom: 12,
-  },
-  premiumText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: lightPalette.text,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  upgradeButton: {
-    backgroundColor: lightPalette.primary,
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  upgradeButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  noDataText: {
-    fontSize: 14,
-    color: lightPalette.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: lightPalette.border,
-  },
-  stat: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: lightPalette.text,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: lightPalette.textSecondary,
-    marginTop: 2,
-  },
+  container: { backgroundColor: lightPalette.surface, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
+  title: { fontSize: 18, fontWeight: '700', color: lightPalette.text, marginBottom: 4 },
+  description: { fontSize: 13, lineHeight: 18, color: lightPalette.textSecondary, marginBottom: 12 },
+  cycleInfo: { backgroundColor: '#F1F5F9', borderRadius: 8, padding: 10, marginBottom: 12 },
+  cycleLength: { fontSize: 14, fontWeight: '600', color: lightPalette.text },
+  cycleConfidence: { fontSize: 12, color: lightPalette.textSecondary, marginTop: 2 },
+  chartWrapper: { position: 'relative' },
+  premiumOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 10, justifyContent: 'center', alignItems: 'center' },
+  premiumText: { fontSize: 14, color: lightPalette.text, textAlign: 'center', marginBottom: 16, marginTop: 8 },
+  upgradeButton: { backgroundColor: lightPalette.primary, paddingHorizontal: 24, paddingVertical: 10, borderRadius: 8 },
+  upgradeButtonText: { color: '#FFF', fontWeight: '600', fontSize: 14 },
+  noData: { height: 180, justifyContent: 'center', alignItems: 'center' },
+  noDataText: { fontSize: 14, color: lightPalette.textSecondary },
+  statsRow: { flexDirection: 'row', justifyContent: 'space-around', marginTop: 16, paddingTop: 16, borderTopWidth: 1, borderTopColor: lightPalette.border },
+  stat: { alignItems: 'center' },
+  statValue: { fontSize: 20, fontWeight: '700', color: lightPalette.text },
+  statLabel: { fontSize: 12, color: lightPalette.textSecondary, marginTop: 2 },
 });

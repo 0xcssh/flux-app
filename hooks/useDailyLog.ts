@@ -10,7 +10,6 @@ export function useDailyLog(userId?: string) {
 
   const submitLog = useCallback(
     (data: LogFormData) => {
-      if (!userId) return;
       if (isLogged) {
         const today = new Date().toISOString().split('T')[0];
         store.updateLog(today, data, userId);

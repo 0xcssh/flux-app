@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { zustandStorage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import type { DailyLogEntry, LogFormData } from '@/types/log';
 
@@ -35,8 +35,8 @@ interface LogState {
   todayLogged: boolean;
   isLoading: boolean;
 
-  submitLog: (formData: LogFormData, userId: string) => void;
-  updateLog: (logDate: string, formData: LogFormData, userId: string) => void;
+  submitLog: (formData: LogFormData, userId?: string) => void;
+  updateLog: (logDate: string, formData: LogFormData, userId?: string) => void;
   syncPendingLogs: () => Promise<void>;
   loadHistory: (userId: string, days: number) => Promise<void>;
   getTodayLog: () => DailyLogEntry | null;
@@ -52,14 +52,14 @@ export const useLogStore = create<LogState>()(
       todayLogged: false,
       isLoading: false,
 
-      submitLog: (formData: LogFormData, userId: string) => {
+      submitLog: (formData: LogFormData, userId?: string) => {
         const today = getTodayDate();
         const now = new Date().toISOString();
         const vitalityScore = computeVitalityScore(formData);
 
         const entry: DailyLogEntry = {
           id: generateUUID(),
-          user_id: userId,
+          user_id: userId || 'local',
           log_date: today,
           energy: formData.energy,
           mood: formData.mood,
@@ -83,7 +83,7 @@ export const useLogStore = create<LogState>()(
         }));
       },
 
-      updateLog: (logDate: string, formData: LogFormData, userId: string) => {
+      updateLog: (logDate: string, formData: LogFormData, userId?: string) => {
         const state = get();
         const existing = state.logs[logDate];
         if (!existing) return;
@@ -223,7 +223,7 @@ export const useLogStore = create<LogState>()(
     }),
     {
       name: 'flux-logs',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
       partialize: (state) => ({
         logs: state.logs,
         pendingSync: state.pendingSync,

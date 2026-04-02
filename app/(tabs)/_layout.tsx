@@ -91,13 +91,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
-      {/* Hide the old two.tsx route */}
-      <Tabs.Screen
-        name="two"
-        options={{
-          href: null,
-        }}
-      />
     </Tabs>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -22,11 +22,12 @@ export default function InsightsScreen() {
   const { t } = useTranslation('insights');
   const [refreshing, setRefreshing] = useState(false);
 
-  const allLogs = useLogStore((s) => Object.values(s.logs));
+  const logs = useLogStore((s) => s.logs);
   const streaks = useNoFapStore((s) => s.history);
 
-  const sortedLogs = [...allLogs].sort((a, b) =>
-    a.log_date.localeCompare(b.log_date),
+  const sortedLogs = useMemo(
+    () => Object.values(logs).sort((a, b) => a.log_date.localeCompare(b.log_date)),
+    [logs],
   );
 
   const { insights, isLoading, hasEnoughData, daysUntilInsights } =
