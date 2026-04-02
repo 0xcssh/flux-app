@@ -1,16 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import type { EarlyPattern } from '@/types/insight';
 
-const METRIC_EMOJI: Record<string, string> = {
-  energy: '⚡',
-  mood: '😊',
-  libido: '🔥',
-  sleep_quality: '😴',
-  stress: '😰',
-  training: '💪',
+const METRIC_ICON: Record<string, string> = {
+  energy: 'flash',
+  mood: 'happy',
+  libido: 'flame',
+  sleep_quality: 'moon',
+  stress: 'pulse',
+  training: 'barbell',
 };
 
 const METRIC_COLOR: Record<string, string> = {
@@ -28,7 +29,7 @@ interface EarlyPatternCardProps {
 
 export default function EarlyPatternCard({ pattern }: EarlyPatternCardProps) {
   const { t } = useTranslation('insights');
-  const emoji = METRIC_EMOJI[pattern.metric] || '📊';
+  const iconName = METRIC_ICON[pattern.metric] || 'analytics';
   const color = METRIC_COLOR[pattern.metric] || darkPalette.primary;
 
   const trendIcon = pattern.trend === 'improving' ? '↑' : pattern.trend === 'declining' ? '↓' : '→';
@@ -44,7 +45,7 @@ export default function EarlyPatternCard({ pattern }: EarlyPatternCardProps) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.emoji}>{emoji}</Text>
+        <Ionicons name={iconName as any} size={18} color={color} style={styles.iconStyle} />
         <Text style={[styles.metricName, { color }]}>
           {metricLabel.charAt(0).toUpperCase() + metricLabel.slice(1)}
         </Text>
@@ -91,8 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  emoji: {
-    fontSize: 18,
+  iconStyle: {
     marginRight: 8,
   },
   metricName: {

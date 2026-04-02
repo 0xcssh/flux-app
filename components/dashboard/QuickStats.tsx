@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { darkPalette } from '@/theme/colors';
 import type { PhaseType } from '@/types/log';
@@ -11,11 +12,11 @@ interface QuickStatsProps {
   todayScore: number | null;
 }
 
-const PHASE_ICONS: Record<PhaseType, { icon: string; color: string }> = {
-  rise: { icon: '☀️', color: darkPalette.primary },
-  peak: { icon: '⚡', color: darkPalette.secondary },
-  decline: { icon: '🌅', color: darkPalette.accent },
-  recovery: { icon: '🌙', color: '#A78BFA' },
+const PHASE_ICONS: Record<PhaseType, { iconName: string; color: string }> = {
+  rise: { iconName: 'sunny', color: darkPalette.primary },
+  peak: { iconName: 'flash', color: darkPalette.secondary },
+  decline: { iconName: 'partly-sunny', color: darkPalette.accent },
+  recovery: { iconName: 'moon', color: '#A78BFA' },
 };
 
 export default function QuickStats({ phase, phaseLabel, yesterdayScore, todayScore }: QuickStatsProps) {
@@ -26,14 +27,14 @@ export default function QuickStats({ phase, phaseLabel, yesterdayScore, todaySco
     <View style={styles.row}>
       {/* Peak Window */}
       <View style={styles.card}>
-        <Text style={styles.cardIcon}>⏰</Text>
+        <Ionicons name="time" size={20} color={darkPalette.textSecondary} />
         <Text style={styles.cardValue}>6-10 AM</Text>
         <Text style={styles.cardLabel}>Peak Window</Text>
       </View>
 
       {/* Current Phase */}
       <View style={[styles.card, { borderColor: phaseInfo.color + '40' }]}>
-        <Text style={styles.cardIcon}>{phaseInfo.icon}</Text>
+        <Ionicons name={phaseInfo.iconName as any} size={20} color={phaseInfo.color} />
         <Text style={[styles.cardValue, { color: phaseInfo.color }]}>{phaseLabel}</Text>
         <Text style={styles.cardLabel}>Phase</Text>
       </View>

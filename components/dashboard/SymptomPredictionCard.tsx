@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useSymptomPredictions } from '@/hooks/useSymptomPredictions';
+import Icon from '@/components/ui/Icon';
 import type { PhaseType } from '@/types/log';
 
 const PHASE_COLORS: Record<PhaseType, string> = {
@@ -12,11 +14,11 @@ const PHASE_COLORS: Record<PhaseType, string> = {
   recovery: '#A78BFA',
 };
 
-const PHASE_EMOJIS: Record<PhaseType, string> = {
-  rise: '🌅',
-  peak: '☀️',
-  decline: '🌇',
-  recovery: '🌙',
+const PHASE_ICONS: Record<PhaseType, { name: string; set?: 'ionicons' | 'material' }> = {
+  rise: { name: 'sunny' },
+  peak: { name: 'flash' },
+  decline: { name: 'partly-sunny' },
+  recovery: { name: 'moon' },
 };
 
 const MAX_INTENSITY = 3;
@@ -30,7 +32,7 @@ export default function SymptomPredictionCard() {
     <View style={[styles.card, { borderColor: phaseColor + '4D', borderLeftColor: phaseColor }]}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <Text style={styles.phaseEmoji}>{PHASE_EMOJIS[prediction.phase]}</Text>
+        <Ionicons name={PHASE_ICONS[prediction.phase].name as any} size={16} color={phaseColor} />
         <Text style={[styles.headerText, { color: phaseColor }]}>
           {t('symptom_header').toUpperCase()}
         </Text>
@@ -40,7 +42,9 @@ export default function SymptomPredictionCard() {
       <View style={styles.symptomList}>
         {prediction.symptoms.map((symptom) => (
           <View key={symptom.id} style={styles.symptomRow}>
-            <Text style={styles.symptomIcon}>{symptom.icon}</Text>
+            <View style={styles.symptomIconWrap}>
+              <Icon set={symptom.iconSet} name={symptom.iconName} size={18} color={phaseColor} />
+            </View>
             <Text style={styles.symptomLabel}>{t(symptom.labelKey)}</Text>
             <View style={styles.intensityDots}>
               {Array.from({ length: MAX_INTENSITY }, (_, i) => (
@@ -84,8 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     gap: 8,
   },
-  phaseEmoji: {
-    fontSize: 16,
+  phaseIcon: {
   },
   headerText: {
     fontSize: 11,
@@ -99,9 +102,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  symptomIcon: {
-    fontSize: 20,
+  symptomIconWrap: {
     width: 30,
+    alignItems: 'center' as const,
   },
   symptomLabel: {
     fontSize: 14,

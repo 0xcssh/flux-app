@@ -64,12 +64,12 @@
     "hours": "hours",
     "minutes": "minutes"
   },
-  "notif_rise_title": "☀️ Rise Phase",
+  "notif_rise_title": "Rise Phase",
   "notif_rise_body": "Your testosterone is climbing. Peak energy in about 2 hours.",
-  "notif_peak_title": "⚡ Peak Performance",
+  "notif_peak_title": "Peak Performance",
   "notif_peak_body": "You're in your peak phase. Best time for training or important decisions.",
-  "notif_decline_title": "🌅 Natural Slowdown",
+  "notif_decline_title": "Natural Slowdown",
   "notif_decline_body": "Energy naturally dropping. Good time for creative work or lighter tasks.",
-  "notif_recovery_title": "🌙 Recovery Time",
+  "notif_recovery_title": "Recovery Time",
   "notif_recovery_body": "Quality sleep tonight = better testosterone tomorrow. Start winding down."
 }

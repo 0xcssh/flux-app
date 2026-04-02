@@ -358,12 +358,12 @@ function generateRecommendations(
  */
 export function getUniversalInsights(): UniversalInsight[] {
   return [
-    { id: 'circadian_cycle', icon: '☀️', category: 'circadian', titleKey: 'universal.circadian.title', bodyKey: 'universal.circadian.body' },
-    { id: 'testosterone_peak', icon: '📈', category: 'hormone', titleKey: 'universal.peak.title', bodyKey: 'universal.peak.body' },
-    { id: 'sleep_impact', icon: '😴', category: 'sleep', titleKey: 'universal.sleep.title', bodyKey: 'universal.sleep.body' },
-    { id: 'exercise_timing', icon: '🏋️', category: 'training', titleKey: 'universal.exercise.title', bodyKey: 'universal.exercise.body' },
-    { id: 'stress_cortisol', icon: '🧠', category: 'hormone', titleKey: 'universal.stress.title', bodyKey: 'universal.stress.body' },
-    { id: 'seasonal', icon: '🌡️', category: 'circadian', titleKey: 'universal.seasonal.title', bodyKey: 'universal.seasonal.body' },
+    { id: 'circadian_cycle', iconName: 'sunny', category: 'circadian', titleKey: 'universal.circadian.title', bodyKey: 'universal.circadian.body' },
+    { id: 'testosterone_peak', iconName: 'trending-up', category: 'hormone', titleKey: 'universal.peak.title', bodyKey: 'universal.peak.body' },
+    { id: 'sleep_impact', iconName: 'moon', category: 'sleep', titleKey: 'universal.sleep.title', bodyKey: 'universal.sleep.body' },
+    { id: 'exercise_timing', iconName: 'fitness', category: 'training', titleKey: 'universal.exercise.title', bodyKey: 'universal.exercise.body' },
+    { id: 'stress_cortisol', iconName: 'brain', iconSet: 'material', category: 'hormone', titleKey: 'universal.stress.title', bodyKey: 'universal.stress.body' },
+    { id: 'seasonal', iconName: 'thermometer', category: 'circadian', titleKey: 'universal.seasonal.title', bodyKey: 'universal.seasonal.body' },
   ];
 }
 

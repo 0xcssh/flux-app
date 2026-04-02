@@ -149,12 +149,12 @@ export function getPhaseAwareNotificationContent(
   switch (phase) {
     case 'rise':
       return {
-        title: '☀️ Rise Phase',
+        title: 'Rise Phase',
         body: 'Your testosterone is climbing. Peak energy in about 2 hours.',
       };
     case 'peak':
       return {
-        title: '⚡ Peak Performance',
+        title: 'Peak Performance',
         body: 'You\'re in your peak phase. Best time for training or important decisions.',
       };
     case 'decline':
@@ -162,24 +162,24 @@ export function getPhaseAwareNotificationContent(
         const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
         if (today === personalData.lowestEnergyDay) {
           return {
-            title: '📉 Energy Shift',
+            title: 'Energy Shift',
             body: `Your energy tends to be lower on ${today}s. Take it easy and plan lighter tasks.`,
           };
         }
       }
       return {
-        title: '🌅 Natural Slowdown',
+        title: 'Natural Slowdown',
         body: 'Energy naturally dropping. Good time for creative work or lighter tasks.',
       };
     case 'recovery':
       if (personalData?.avgSleepQuality && personalData.avgSleepQuality < 5) {
         return {
-          title: '🌙 Sleep Priority',
+          title: 'Sleep Priority',
           body: 'Your sleep quality has been low recently. Tonight, aim for 7+ hours — your hormones need it.',
         };
       }
       return {
-        title: '🌙 Recovery Time',
+        title: 'Recovery Time',
         body: 'Quality sleep tonight = better testosterone tomorrow. Start winding down.',
       };
   }

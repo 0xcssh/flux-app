@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Text as SvgText } from 'react-native-svg';
 import { darkPalette } from '@/theme/colors';
@@ -77,7 +78,7 @@ export default function InfradianChart({ logs, detectedCycle, isPremium = true }
       <View style={styles.chartWrapper}>
         {!isPremium && (
           <View style={styles.premiumOverlay}>
-            <Text style={{ fontSize: 36 }}>{'\uD83D\uDD12'}</Text>
+            <Ionicons name="lock-closed" size={36} color="#FFFFFF" />
             <Text style={styles.premiumText}>{t('premium_required')}</Text>
             <Pressable style={styles.upgradeButton}>
               <Text style={styles.upgradeButtonText}>Upgrade</Text>

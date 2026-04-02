@@ -22,7 +22,8 @@ import frOnboarding from './fr/onboarding.json';
 import frNofap from './fr/nofap.json';
 import frArticles from './fr/articles.json';
 
-const deviceLanguage = getLocales()?.[0]?.languageCode ?? 'en';
+// Force English for now — French will be re-enabled later
+const deviceLanguage = 'en';
 
 export const defaultNS = 'common';
 export const namespaces = [

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { darkPalette } from '@/theme/colors';
 
 interface StreakBarProps {
@@ -18,7 +19,7 @@ export default function StreakBar({ days }: StreakBarProps) {
 
   return (
     <View style={[styles.container, { backgroundColor: tier.bg, borderColor: tier.color + '30' }]}>
-      <Text style={styles.fire}>🔥</Text>
+      <Ionicons name="flame" size={20} color={tier.color} />
       <Text style={[styles.days, { color: tier.color }]}>{days}</Text>
       <Text style={styles.label}>day streak</Text>
       {days > 0 && <Text style={styles.message}>Keep going!</Text>}
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     gap: 8,
   },
-  fire: { fontSize: 20 },
+  fire: { },
   days: { fontSize: 22, fontWeight: '800' },
   label: { fontSize: 14, color: darkPalette.textSecondary, fontWeight: '500' },
   message: { marginLeft: 'auto', fontSize: 12, color: darkPalette.textTertiary, fontWeight: '600' },

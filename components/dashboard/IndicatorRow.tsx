@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { lightPalette } from '@/theme/colors';
 import type { DailyLogEntry, MetricKey } from '@/types/log';
@@ -10,18 +11,19 @@ interface IndicatorRowProps {
 
 interface MetricConfig {
   key: MetricKey;
-  icon: string;
+  iconName: string;
+  iconColor: string;
   labelKey: string;
   inverted?: boolean;
 }
 
 const METRICS: MetricConfig[] = [
-  { key: 'energy', icon: '\u26A1', labelKey: 'indicators.energy' },
-  { key: 'mood', icon: '\uD83D\uDE0A', labelKey: 'indicators.mood' },
-  { key: 'libido', icon: '\uD83D\uDD25', labelKey: 'indicators.libido' },
-  { key: 'sleep_quality', icon: '\uD83D\uDE34', labelKey: 'indicators.sleep' },
-  { key: 'stress', icon: '\uD83D\uDE30', labelKey: 'indicators.stress', inverted: true },
-  { key: 'training', icon: '\uD83D\uDCAA', labelKey: 'indicators.training' },
+  { key: 'energy', iconName: 'flash', iconColor: '#F59E0B', labelKey: 'indicators.energy' },
+  { key: 'mood', iconName: 'happy', iconColor: '#A78BFA', labelKey: 'indicators.mood' },
+  { key: 'libido', iconName: 'flame', iconColor: '#EF4444', labelKey: 'indicators.libido' },
+  { key: 'sleep_quality', iconName: 'moon', iconColor: '#6366F1', labelKey: 'indicators.sleep' },
+  { key: 'stress', iconName: 'pulse', iconColor: '#F97316', labelKey: 'indicators.stress', inverted: true },
+  { key: 'training', iconName: 'barbell', iconColor: '#22C55E', labelKey: 'indicators.training' },
 ];
 
 function getBarColor(value: number, inverted: boolean): string {
@@ -43,7 +45,9 @@ function MetricBar({ config, value }: { config: MetricConfig; value: number | nu
   return (
     <View style={styles.metricItem}>
       <View style={styles.metricHeader}>
-        <Text style={styles.metricIcon}>{config.icon}</Text>
+        <View style={styles.metricIconWrap}>
+          <Ionicons name={config.iconName as any} size={14} color={config.iconColor} />
+        </View>
         <Text style={styles.metricLabel} numberOfLines={1}>
           {t(config.labelKey)}
         </Text>
@@ -104,10 +108,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  metricIcon: {
-    fontSize: 14,
+  metricIconWrap: {
     width: 20,
-    textAlign: 'center',
+    alignItems: 'center' as const,
   },
   metricLabel: {
     flex: 1,

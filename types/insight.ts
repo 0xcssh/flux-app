@@ -34,7 +34,8 @@ export interface UniversalInsight {
   id: string;
   titleKey: string;
   bodyKey: string;
-  icon: string;
+  iconName: string;
+  iconSet?: 'ionicons' | 'material';
   category: 'circadian' | 'hormone' | 'sleep' | 'training';
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
+import Icon from '@/components/ui/Icon';
 import type { UniversalInsight } from '@/types/insight';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -22,7 +23,7 @@ export default function UniversalInsightCard({ insight }: UniversalInsightCardPr
   return (
     <View style={[styles.card, { borderLeftColor: accentColor }]}>
       <View style={styles.header}>
-        <Text style={styles.icon}>{insight.icon}</Text>
+        <Icon set={insight.iconSet} name={insight.iconName} size={18} color={accentColor} />
         <Text style={styles.title}>{t(insight.titleKey)}</Text>
       </View>
       <Text style={styles.body}>{t(insight.bodyKey)}</Text>
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   icon: {
-    fontSize: 18,
     marginRight: 8,
   },
   title: {

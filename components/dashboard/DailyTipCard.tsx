@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 
@@ -29,7 +30,7 @@ export default function DailyTipCard({ tipKey }: DailyTipCardProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.icon}>💡</Text>
+        <Ionicons name="bulb" size={20} color="#F59E0B" />
         <Text style={styles.title}>{t('daily_tip')}</Text>
       </View>
       <Text style={styles.tipText}>{displayText}</Text>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  icon: { fontSize: 20 },
+  icon: { },
   title: {
     fontSize: 11,
     fontWeight: '700',

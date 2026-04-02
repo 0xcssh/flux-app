@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Pressable,
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
@@ -151,7 +152,10 @@ export default function DashboardScreen() {
         {/* Logged badge */}
         {todayLogged && (
           <View style={styles.loggedBadge}>
-            <Text style={styles.loggedText}>✅ Logged today</Text>
+            <View style={styles.loggedContent}>
+              <Ionicons name="checkmark-circle" size={16} color={darkPalette.secondary} />
+              <Text style={styles.loggedText}>Logged today</Text>
+            </View>
           </View>
         )}
 
@@ -187,6 +191,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(34, 197, 94, 0.2)',
     marginBottom: 16,
   },
+  loggedContent: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   loggedText: { fontSize: 14, fontWeight: '600', color: darkPalette.secondary },
   fab: {
     position: 'absolute',

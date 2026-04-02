@@ -10,6 +10,8 @@ import {
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
+import Icon from '@/components/ui/Icon';
+import type { IconSet } from '@/components/ui/Icon';
 
 const CARD_WIDTH = 160;
 const CARD_HEIGHT = 200;
@@ -32,20 +34,21 @@ const CATEGORIES: Record<string, ArticleCategory> = {
 interface ArticleEntry {
   id: string;
   category: string;
-  emoji: string;
+  iconName: string;
+  iconSet?: IconSet;
 }
 
 const ARTICLES: ArticleEntry[] = [
-  { id: 'circadian-rhythm', category: 'Science', emoji: '🔬' },
-  { id: 'testosterone-basics', category: 'Hormones', emoji: '💪' },
-  { id: 'sleep-and-hormones', category: 'Sleep', emoji: '😴' },
-  { id: 'exercise-timing', category: 'Training', emoji: '🏋️' },
-  { id: 'stress-cortisol', category: 'Mind', emoji: '🧠' },
-  { id: 'nutrition-testosterone', category: 'Nutrition', emoji: '🥩' },
-  { id: 'infradian-cycles', category: 'Science', emoji: '📊' },
-  { id: 'seasonal-variations', category: 'Science', emoji: '🌡️' },
-  { id: 'nofap-science', category: 'Mind', emoji: '🔥' },
-  { id: 'aging-testosterone', category: 'Hormones', emoji: '⏳' },
+  { id: 'circadian-rhythm', category: 'Science', iconName: 'flask' },
+  { id: 'testosterone-basics', category: 'Hormones', iconName: 'barbell' },
+  { id: 'sleep-and-hormones', category: 'Sleep', iconName: 'moon' },
+  { id: 'exercise-timing', category: 'Training', iconName: 'fitness' },
+  { id: 'stress-cortisol', category: 'Mind', iconName: 'brain', iconSet: 'material' },
+  { id: 'nutrition-testosterone', category: 'Nutrition', iconName: 'nutrition', iconSet: 'material' },
+  { id: 'infradian-cycles', category: 'Science', iconName: 'analytics' },
+  { id: 'seasonal-variations', category: 'Science', iconName: 'thermometer' },
+  { id: 'nofap-science', category: 'Mind', iconName: 'flame' },
+  { id: 'aging-testosterone', category: 'Hormones', iconName: 'hourglass-outline' },
 ];
 
 export default function ArticleSuggestion() {
@@ -84,7 +87,9 @@ export default function ArticleSuggestion() {
         <Text style={[styles.categoryLabel, { color: cat.accent }]}>
           {item.category.toUpperCase()}
         </Text>
-        <Text style={styles.emoji}>{item.emoji}</Text>
+        <View style={styles.iconWrap}>
+          <Icon set={item.iconSet} name={item.iconName} size={36} color={cat.accent} />
+        </View>
         <Text style={styles.cardTitle} numberOfLines={2}>
           {title}
         </Text>
@@ -165,8 +170,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 1.2,
   },
-  emoji: {
-    fontSize: 36,
+  iconWrap: {
     marginVertical: 4,
   },
   cardTitle: {

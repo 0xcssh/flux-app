@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import type { PhaseType } from '@/types/log';
@@ -9,11 +10,11 @@ interface CircadianPhaseCardProps {
   progress: number;
 }
 
-const PHASE_CONFIG: Record<PhaseType, { icon: string; color: string }> = {
-  rise: { icon: '☀️', color: '#3B82F6' },
-  peak: { icon: '⚡', color: '#22C55E' },
-  decline: { icon: '🌅', color: '#F59E0B' },
-  recovery: { icon: '🌙', color: '#A78BFA' },
+const PHASE_CONFIG: Record<PhaseType, { iconName: string; color: string }> = {
+  rise: { iconName: 'sunny', color: '#3B82F6' },
+  peak: { iconName: 'flash', color: '#22C55E' },
+  decline: { iconName: 'partly-sunny', color: '#F59E0B' },
+  recovery: { iconName: 'moon', color: '#A78BFA' },
 };
 
 export default function CircadianPhaseCard({ phase, progress }: CircadianPhaseCardProps) {
@@ -23,7 +24,7 @@ export default function CircadianPhaseCard({ phase, progress }: CircadianPhaseCa
   return (
     <View style={[styles.container, { borderColor: config.color + '30' }]}>
       <View style={styles.header}>
-        <Text style={styles.icon}>{config.icon}</Text>
+        <Ionicons name={config.iconName as any} size={32} color={config.color} />
         <View style={styles.headerText}>
           <Text style={styles.sectionLabel}>{t('current_phase')}</Text>
           <Text style={[styles.phaseName, { color: config.color }]}>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 12,
   },
-  icon: { fontSize: 32 },
+  icon: { },
   headerText: { flex: 1 },
   sectionLabel: {
     fontSize: 11,

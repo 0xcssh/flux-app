@@ -64,12 +64,12 @@
     "hours": "heures",
     "minutes": "minutes"
   },
-  "notif_rise_title": "☀️ Phase de montée",
+  "notif_rise_title": "Phase de montée",
   "notif_rise_body": "Ta testostérone monte. Pic d'énergie dans environ 2 heures.",
-  "notif_peak_title": "⚡ Performance maximale",
+  "notif_peak_title": "Performance maximale",
   "notif_peak_body": "Tu es dans ta phase de pic. Meilleur moment pour l'entraînement ou les décisions importantes.",
-  "notif_decline_title": "🌅 Ralentissement naturel",
+  "notif_decline_title": "Ralentissement naturel",
   "notif_decline_body": "L'énergie baisse naturellement. Bon moment pour le travail créatif.",
-  "notif_recovery_title": "🌙 Temps de récupération",
+  "notif_recovery_title": "Temps de récupération",
   "notif_recovery_body": "Bien dormir ce soir = meilleure testostérone demain. Commence à te détendre."
 }
