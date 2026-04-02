@@ -46,11 +46,6 @@ CREATE TABLE public.nofap_streaks (
     user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
     start_date DATE NOT NULL,
     end_date DATE,
-    streak_days INTEGER GENERATED ALWAYS AS (
-        CASE WHEN end_date IS NULL THEN CURRENT_DATE - start_date
-             ELSE end_date - start_date
-        END
-    ) STORED,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
