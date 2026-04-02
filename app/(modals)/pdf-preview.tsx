@@ -91,7 +91,7 @@ export default function PdfPreviewScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.closeButton}>
-          <FontAwesome name="times" size={20} color="#64748B" />
+          <FontAwesome name="times" size={20} color="#8B8BA3" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>PDF Report Preview</Text>
         <View style={{ width: 36 }} />
@@ -100,7 +100,7 @@ export default function PdfPreviewScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {isGenerating ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#2563EB" />
+            <ActivityIndicator size="large" color="#3B82F6" />
             <Text style={styles.loadingText}>Generating your report...</Text>
           </View>
         ) : (
@@ -185,7 +185,7 @@ export default function PdfPreviewScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   header: {
     flexDirection: 'row',
@@ -194,20 +194,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: '#2A2A45',
   },
   closeButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   scrollContent: {
     padding: 20,
@@ -219,16 +219,16 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 16,
   },
   summaryCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 20,
     padding: 24,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 3,
     marginBottom: 16,
@@ -242,32 +242,32 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   logoDot: {
-    color: '#10B981',
+    color: '#22C55E',
   },
   reportLabel: {
     fontSize: 13,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     fontWeight: '500',
   },
   vitalitySection: {
     alignItems: 'center',
     marginBottom: 20,
     paddingVertical: 16,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#16162A',
     borderRadius: 16,
   },
   vitalityScore: {
     fontSize: 56,
     fontWeight: '800',
-    color: '#2563EB',
+    color: '#3B82F6',
     lineHeight: 64,
   },
   vitalityLabel: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 4,
   },
   statsRow: {
@@ -282,21 +282,21 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: 32,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: '#2A2A45',
   },
   statValue: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   statLabel: {
     fontSize: 11,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     marginTop: 2,
   },
   previewNote: {
     fontSize: 13,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     textAlign: 'center',
     lineHeight: 19,
     paddingHorizontal: 16,
@@ -308,19 +308,19 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 20,
     paddingBottom: 36,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: '#2A2A45',
   },
   shareButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 14,
     paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

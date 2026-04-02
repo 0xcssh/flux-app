@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { lightPalette } from '@/theme/colors';
+import { darkPalette } from '@/theme/colors';
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -25,8 +25,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: lightPalette.primary,
-        tabBarInactiveTintColor: lightPalette.textTertiary,
+        tabBarActiveTintColor: darkPalette.primary,
+        tabBarInactiveTintColor: darkPalette.textTertiary,
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
         headerStyle: styles.header,
@@ -47,7 +47,6 @@ export default function TabLayout() {
         options={{
           title: t('nav.cycle'),
           headerTitle: t('nav.cycle'),
-          headerStyle: styles.header,
           tabBarIcon: ({ color }) => <TabBarIcon name="refresh" color={color} />,
         }}
       />
@@ -57,15 +56,10 @@ export default function TabLayout() {
           title: t('nav.log'),
           headerTitle: t('nav.log'),
           tabBarIcon: ({ color, focused }) => (
-            <View
-              style={[
-                styles.logIconContainer,
-                focused && styles.logIconContainerActive,
-              ]}
-            >
+            <View style={[styles.logIconContainer, focused && styles.logIconActive]}>
               <FontAwesome
-                name="plus-circle"
-                size={28}
+                name="plus"
+                size={24}
                 color={focused ? '#FFFFFF' : color}
               />
             </View>
@@ -78,9 +72,7 @@ export default function TabLayout() {
         options={{
           title: t('nav.insights'),
           headerTitle: t('nav.insights'),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="lightbulb-o" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="lightbulb-o" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -97,44 +89,44 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: lightPalette.surface,
+    backgroundColor: darkPalette.background,
     borderTopWidth: 1,
-    borderTopColor: lightPalette.border,
-    height: 60,
-    paddingBottom: 6,
-    paddingTop: 6,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    borderTopColor: darkPalette.border,
+    height: 64,
+    paddingBottom: 8,
+    paddingTop: 8,
+    elevation: 0,
   },
   tabBarLabel: {
-    fontSize: 11,
-    fontWeight: '500',
+    fontSize: 10,
+    fontWeight: '600',
   },
   header: {
-    backgroundColor: lightPalette.background,
+    backgroundColor: darkPalette.background,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: lightPalette.text,
+    color: darkPalette.text,
   },
   logIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -12,
+    marginTop: -16,
+    backgroundColor: darkPalette.surface,
+    borderWidth: 2,
+    borderColor: darkPalette.border,
   },
-  logIconContainerActive: {
-    backgroundColor: lightPalette.primary,
-    shadowColor: lightPalette.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
+  logIconActive: {
+    backgroundColor: darkPalette.primary,
+    borderColor: darkPalette.primary,
+    shadowColor: darkPalette.primary,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 12,
+    elevation: 8,
   },
 });

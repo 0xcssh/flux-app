@@ -189,8 +189,8 @@ export default function SettingsForm({
         <Switch
           value={nofapEnabled}
           onValueChange={handleNofapToggle}
-          trackColor={{ false: '#E2E8F0', true: '#BBF7D0' }}
-          thumbColor={nofapEnabled ? '#10B981' : '#94A3B8'}
+          trackColor={{ false: '#2A2A45', true: '#064E3B' }}
+          thumbColor={nofapEnabled ? '#22C55E' : '#5A5A7A'}
         />
       </View>
 
@@ -205,8 +205,8 @@ export default function SettingsForm({
         <Switch
           value={darkMode}
           onValueChange={handleDarkModeToggle}
-          trackColor={{ false: '#E2E8F0', true: '#C7D2FE' }}
-          thumbColor={darkMode ? '#6366F1' : '#94A3B8'}
+          trackColor={{ false: '#2A2A45', true: '#312E81' }}
+          thumbColor={darkMode ? '#6366F1' : '#5A5A7A'}
         />
       </View>
     </View>
@@ -215,20 +215,20 @@ export default function SettingsForm({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 16,
   },
   settingRow: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: '#2A2A45',
   },
   lastRow: {
     borderBottomWidth: 0,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   settingRight: {
     flexDirection: 'row',
@@ -268,11 +268,11 @@ const styles = StyleSheet.create({
   },
   settingValue: {
     fontSize: 15,
-    color: '#2563EB',
+    color: '#3B82F6',
     fontWeight: '600',
   },
   timePickerContainer: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#16162A',
     borderRadius: 12,
     padding: 12,
     marginVertical: 8,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   timePickerLabel: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     fontWeight: '600',
     marginBottom: 6,
   },
@@ -295,17 +295,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#2A2A45',
   },
   timeChipActive: {
-    backgroundColor: '#2563EB',
-    borderColor: '#2563EB',
+    backgroundColor: '#3B82F6',
+    borderColor: '#3B82F6',
   },
   timeChipText: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '500',
   },
   timeChipTextActive: {
@@ -319,14 +319,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#16162A',
   },
   langButtonActive: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
   },
   langButtonText: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '600',
   },
   langButtonTextActive: {

@@ -6,9 +6,9 @@ import { useRouter } from 'expo-router';
 import { useSubscription } from '@/hooks/useSubscription';
 
 const TIER_BADGES = {
-  free: { color: '#94A3B8', bg: '#F1F5F9', icon: 'user' },
-  premium: { color: '#2563EB', bg: '#EFF6FF', icon: 'star' },
-  pro: { color: '#0D9488', bg: '#F0FDFA', icon: 'diamond' },
+  free: { color: '#8B8BA3', bg: '#252540', icon: 'user' },
+  premium: { color: '#3B82F6', bg: '#252540', icon: 'star' },
+  pro: { color: '#22C55E', bg: '#252540', icon: 'diamond' },
 } as const;
 
 const PREMIUM_FEATURES = [
@@ -92,13 +92,13 @@ export default function SubscriptionCard() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
@@ -122,13 +122,13 @@ const styles = StyleSheet.create({
   },
   currentPlan: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     fontWeight: '500',
   },
   trialBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FEF3C7',
+    backgroundColor: '#78350F',
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -137,13 +137,13 @@ const styles = StyleSheet.create({
   },
   trialText: {
     fontSize: 13,
-    color: '#92400E',
+    color: '#FBBF24',
     fontWeight: '600',
   },
   upgradeTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 12,
   },
   featureList: {
@@ -157,17 +157,17 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
   },
   upgradeButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 12,
     paddingVertical: 14,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -183,13 +183,13 @@ const styles = StyleSheet.create({
   },
   planDescription: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginBottom: 12,
     lineHeight: 20,
   },
   manageButton: {
     borderWidth: 1.5,
-    borderColor: '#2563EB',
+    borderColor: '#3B82F6',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
@@ -197,6 +197,6 @@ const styles = StyleSheet.create({
   manageButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#2563EB',
+    color: '#3B82F6',
   },
 });

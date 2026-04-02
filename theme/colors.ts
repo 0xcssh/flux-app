@@ -1,55 +1,44 @@
-export const lightPalette = {
-  primary: '#2563EB',
-  primaryLight: '#3B82F6',
-  primaryDark: '#1D4ED8',
-  secondary: '#10B981',
-  secondaryLight: '#34D399',
-  secondaryDark: '#059669',
-  accent: '#0D9488',
-  accentLight: '#14B8A6',
-  accentDark: '#0F766E',
-  background: '#F8FAFC',
-  surface: '#FFFFFF',
-  surfaceVariant: '#F1F5F9',
-  text: '#0F172A',
-  textSecondary: '#64748B',
-  textTertiary: '#94A3B8',
-  border: '#E2E8F0',
-  borderLight: '#F1F5F9',
-  error: '#EF4444',
-  errorLight: '#FEE2E2',
-  warning: '#F59E0B',
-  warningLight: '#FEF3C7',
-  success: '#10B981',
-  successLight: '#D1FAE5',
-  overlay: 'rgba(0, 0, 0, 0.5)',
-};
-
+// Dark masculine palette — primary theme
 export const darkPalette = {
-  primary: '#3B82F6',
+  primary: '#3B82F6',       // Electric blue
   primaryLight: '#60A5FA',
   primaryDark: '#2563EB',
-  secondary: '#34D399',
-  secondaryLight: '#6EE7B7',
-  secondaryDark: '#10B981',
-  accent: '#14B8A6',
-  accentLight: '#2DD4BF',
-  accentDark: '#0D9488',
-  background: '#0F172A',
-  surface: '#1E293B',
-  surfaceVariant: '#334155',
-  text: '#F8FAFC',
-  textSecondary: '#94A3B8',
-  textTertiary: '#64748B',
-  border: '#334155',
-  borderLight: '#1E293B',
-  error: '#F87171',
+  secondary: '#22C55E',     // Neon green (positive/success)
+  secondaryLight: '#4ADE80',
+  secondaryDark: '#16A34A',
+  accent: '#F59E0B',        // Amber (alerts, streaks)
+  accentLight: '#FBBF24',
+  accentDark: '#D97706',
+  background: '#0A0A0F',    // Deep black
+  surface: '#1A1A2E',       // Dark card
+  surfaceElevated: '#252540', // Elevated card
+  surfaceVariant: '#16162A',
+  text: '#FFFFFF',
+  textSecondary: '#8B8BA3',
+  textTertiary: '#5A5A7A',
+  border: '#2A2A45',
+  borderLight: '#1E1E38',
+  error: '#EF4444',
   errorLight: '#7F1D1D',
-  warning: '#FBBF24',
+  warning: '#F59E0B',
   warningLight: '#78350F',
-  success: '#34D399',
+  success: '#22C55E',
   successLight: '#064E3B',
-  overlay: 'rgba(0, 0, 0, 0.7)',
+  overlay: 'rgba(0, 0, 0, 0.8)',
+  // Glow effects
+  glowPrimary: 'rgba(59, 130, 246, 0.3)',
+  glowSuccess: 'rgba(34, 197, 94, 0.3)',
+  glowAccent: 'rgba(245, 158, 11, 0.3)',
+  // Metric colors
+  energy: '#F59E0B',
+  mood: '#A78BFA',
+  libido: '#EF4444',
+  sleep: '#6366F1',
+  stress: '#F97316',
+  training: '#22C55E',
 };
 
-export type ColorPalette = typeof lightPalette;
+// Light palette kept for potential future use
+export const lightPalette = darkPalette;
+
+export type ColorPalette = typeof darkPalette;

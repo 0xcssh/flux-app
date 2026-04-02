@@ -35,7 +35,7 @@ export default function LogSlider({
         value={value}
         onValueChange={onValueChange}
         minimumTrackTintColor={color}
-        maximumTrackTintColor="#E2E8F0"
+        maximumTrackTintColor="#2A2A45"
         thumbTintColor={color}
       />
       <View style={styles.labelsRow}>
@@ -49,12 +49,12 @@ export default function LogSlider({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 12,
     padding: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 1,
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   valueBadge: {
     width: 32,
@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
   },
   emojiLabel: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
   },
 });

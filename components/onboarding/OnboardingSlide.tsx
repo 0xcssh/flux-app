@@ -44,14 +44,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 16,
     letterSpacing: -0.5,
   },
   description: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 24,

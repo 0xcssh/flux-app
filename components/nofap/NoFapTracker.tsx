@@ -50,7 +50,7 @@ export default function NoFapTracker({ compact = false }: NoFapTrackerProps) {
               cx={size / 2}
               cy={size / 2}
               r={radius}
-              stroke="#E2E8F0"
+              stroke="#2A2A45"
               strokeWidth={strokeWidth}
               fill="none"
             />
@@ -93,7 +93,7 @@ export default function NoFapTracker({ compact = false }: NoFapTrackerProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#E2E8F0"
+            stroke="#2A2A45"
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -158,20 +158,20 @@ export default function NoFapTracker({ compact = false }: NoFapTrackerProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 24,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 20,
   },
   ringWrapper: {
@@ -191,13 +191,13 @@ const styles = StyleSheet.create({
   },
   dayLabel: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '500',
     marginTop: -2,
   },
   nextMilestone: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginBottom: 20,
   },
   statsRow: {
@@ -213,16 +213,16 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: 32,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: '#2A2A45',
   },
   statValue: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   statLabel: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 2,
   },
   resetButton: {
@@ -252,12 +252,12 @@ const styles = StyleSheet.create({
   compactContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 12,
     padding: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 1,
   },
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   },
   compactLabel: {
     fontSize: 9,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: -1,
   },
   compactInfo: {
@@ -287,11 +287,11 @@ const styles = StyleSheet.create({
   compactTitle: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
   compactSubtitle: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
   },
 });

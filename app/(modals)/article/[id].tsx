@@ -60,7 +60,7 @@ export default function ArticleScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#3B82F6" />
         </View>
       </SafeAreaView>
     );
@@ -73,7 +73,7 @@ export default function ArticleScreen() {
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
-        <FontAwesome name="times" size={20} color="#64748B" />
+        <FontAwesome name="times" size={20} color="#8B8BA3" />
       </TouchableOpacity>
 
       <ScrollView
@@ -114,7 +114,7 @@ export default function ArticleScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0A0A0F',
   },
   loadingContainer: {
     flex: 1,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   categoryBadge: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#2563EB',
+    color: '#3B82F6',
     textTransform: 'capitalize',
   },
   readTime: {
@@ -163,25 +163,25 @@ const styles = StyleSheet.create({
   },
   readTimeText: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 24,
     lineHeight: 32,
     letterSpacing: -0.5,
   },
   bodyText: {
     fontSize: 16,
-    color: '#334155',
+    color: '#8B8BA3',
     lineHeight: 26,
     marginBottom: 16,
   },
   disclaimer: {
     flexDirection: 'row',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#1A1A2E',
     borderRadius: 10,
     padding: 12,
     gap: 8,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   disclaimerText: {
     flex: 1,
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     lineHeight: 17,
   },
 });

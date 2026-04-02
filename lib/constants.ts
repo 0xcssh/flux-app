@@ -1,15 +1,17 @@
 export const Colors = {
-  primary: '#2563EB',
-  secondary: '#10B981',
-  accent: '#0D9488',
-  background: '#F8FAFC',
-  surface: '#FFFFFF',
-  text: '#0F172A',
-  textSecondary: '#64748B',
-  border: '#E2E8F0',
+  primary: '#3B82F6',
+  secondary: '#22C55E',
+  accent: '#F59E0B',
+  background: '#0A0A0F',
+  surface: '#1A1A2E',
+  surfaceElevated: '#252540',
+  surfaceVariant: '#16162A',
+  text: '#FFFFFF',
+  textSecondary: '#8B8BA3',
+  border: '#2A2A45',
   error: '#EF4444',
   warning: '#F59E0B',
-  success: '#10B981',
+  success: '#22C55E',
 } as const;
 
 export const FREE_HISTORY_DAYS = 7;

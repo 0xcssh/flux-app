@@ -80,18 +80,18 @@ export default function PatternAlert({ pattern }: PatternAlertProps) {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#BFDBFE',
+    borderColor: '#2A2A45',
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#DBEAFE',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -108,10 +108,10 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1E40AF',
+    color: '#60A5FA',
   },
   typeBadge: {
-    backgroundColor: '#DBEAFE',
+    backgroundColor: '#252540',
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 2,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 13,
-    color: '#1E3A5F',
+    color: '#8B8BA3',
     lineHeight: 19,
   },
 });

@@ -27,7 +27,7 @@ function Dot({ isActive }: { isActive: boolean }) {
 
   const backgroundColor = scaleAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#CBD5E1', '#2563EB'],
+    outputRange: ['#5A5A7A', '#3B82F6'],
   });
 
   return (

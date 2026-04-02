@@ -66,20 +66,20 @@ export default function LogConfirmation({ score, onClose }: LogConfirmationProps
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 100,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 20,
     padding: 32,
     alignItems: 'center',
     marginHorizontal: 40,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.4,
     shadowRadius: 24,
     elevation: 8,
   },
@@ -97,20 +97,20 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: 11,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '500',
     marginTop: 2,
   },
   message: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 8,
   },
   successText: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
   },
 });

@@ -104,14 +104,14 @@ export default function PaywallScreen() {
     if (value === 'check') {
       return (
         <View style={styles.checkCell}>
-          <FontAwesome name="check" size={14} color="#10B981" />
+          <FontAwesome name="check" size={14} color="#22C55E" />
         </View>
       );
     }
     if (value === '--') {
       return (
         <View style={styles.checkCell}>
-          <FontAwesome name="minus" size={12} color="#CBD5E1" />
+          <FontAwesome name="minus" size={12} color="#5A5A7A" />
         </View>
       );
     }
@@ -126,7 +126,7 @@ export default function PaywallScreen() {
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-        <FontAwesome name="times" size={20} color="#64748B" />
+        <FontAwesome name="times" size={20} color="#8B8BA3" />
       </TouchableOpacity>
 
       <ScrollView
@@ -311,7 +311,7 @@ export default function PaywallScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   closeButton: {
     position: 'absolute',
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -333,20 +333,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 8,
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     marginBottom: 24,
   },
   toggleContainer: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#16162A',
     borderRadius: 12,
     padding: 3,
     marginBottom: 24,
@@ -361,23 +361,23 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   toggleActive: {
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#0F172A',
+    backgroundColor: '#1A1A2E',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 1,
   },
   toggleText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
   toggleTextActive: {
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   saveBadge: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: '#064E3B',
     borderRadius: 6,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -385,31 +385,31 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#059669',
+    color: '#22C55E',
   },
   table: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#2A2A45',
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#16162A',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: '#2A2A45',
     paddingVertical: 10,
   },
   tableRow: {
     flexDirection: 'row',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: '#2A2A45',
   },
   tableRowAlt: {
-    backgroundColor: '#FAFBFC',
+    backgroundColor: '#16162A',
   },
   featureColumn: {
     flex: 2,
@@ -422,27 +422,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   premiumColumn: {
-    backgroundColor: 'rgba(37, 99, 235, 0.03)',
+    backgroundColor: 'rgba(59, 130, 246, 0.05)',
   },
   proColumn: {
-    backgroundColor: 'rgba(13, 148, 136, 0.03)',
+    backgroundColor: 'rgba(34, 197, 94, 0.05)',
   },
   headerText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#64748B',
+    color: '#8B8BA3',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   premiumText: {
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   proText: {
-    color: '#0D9488',
+    color: '#22C55E',
   },
   featureLabel: {
     fontSize: 13,
-    color: '#334155',
+    color: '#8B8BA3',
     fontWeight: '500',
   },
   checkCell: {
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   },
   featureCellText: {
     fontSize: 11,
-    color: '#334155',
+    color: '#8B8BA3',
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -461,13 +461,13 @@ const styles = StyleSheet.create({
   },
   premiumButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 24,
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -475,13 +475,13 @@ const styles = StyleSheet.create({
   },
   proButton: {
     flexDirection: 'row',
-    backgroundColor: '#0D9488',
+    backgroundColor: '#22C55E',
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 24,
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#0D9488',
+    shadowColor: '#22C55E',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
   },
   trialNoteText: {
     fontSize: 13,
-    color: '#2563EB',
+    color: '#3B82F6',
     fontWeight: '600',
   },
   restoreButton: {
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
   },
   restoreText: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '500',
     textDecorationLine: 'underline',
   },
@@ -529,10 +529,10 @@ const styles = StyleSheet.create({
   },
   legalLink: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
   legalSeparator: {
     fontSize: 12,
-    color: '#CBD5E1',
+    color: '#5A5A7A',
   },
 });

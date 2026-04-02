@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   achievedContainer: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: '#064E3B',
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: '#22C55E',
   },
   futureContainer: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#16162A',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#2A2A45',
     opacity: 0.65,
   },
   header: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#10B981',
   },
   futureIcon: {
-    backgroundColor: '#CBD5E1',
+    backgroundColor: '#5A5A7A',
   },
   iconText: {
     color: '#FFFFFF',
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#065F46',
+    color: '#4ADE80',
   },
   futureTitle: {
-    color: '#64748B',
+    color: '#8B8BA3',
   },
   daysLabel: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 1,
   },
   achievedDate: {
@@ -125,9 +125,9 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 13,
     lineHeight: 18,
-    color: '#047857',
+    color: '#22C55E',
   },
   futureMessage: {
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
 });

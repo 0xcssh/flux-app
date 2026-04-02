@@ -66,7 +66,7 @@ export default function NoFapDetailsScreen() {
             <Switch
               value={moduleEnabled}
               onValueChange={setModuleEnabled}
-              trackColor={{ false: '#E2E8F0', true: '#10B981' }}
+              trackColor={{ false: '#2A2A45', true: '#064E3B' }}
               thumbColor="#FFFFFF"
             />
           </View>
@@ -81,7 +81,7 @@ export default function NoFapDetailsScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   header: {
     flexDirection: 'row',
@@ -89,19 +89,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: '#2A2A45',
   },
   backButton: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   headerTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   headerSpacer: {
     width: 48,
@@ -119,16 +119,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 12,
   },
   settingsSection: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
@@ -144,12 +144,12 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 2,
   },
   settingDesc: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     lineHeight: 16,
   },
   bottomSpacer: {

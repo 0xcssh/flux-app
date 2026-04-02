@@ -134,7 +134,7 @@ export default function DailyLogForm({
           <TextInput
             style={styles.notesInput}
             placeholder={t('notes_placeholder')}
-            placeholderTextColor="#94A3B8"
+            placeholderTextColor="#5A5A7A"
             multiline
             numberOfLines={3}
             value={formData.notes}
@@ -192,41 +192,41 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   updateBanner: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     borderRadius: 10,
     padding: 12,
     marginBottom: 16,
     borderLeftWidth: 3,
-    borderLeftColor: '#2563EB',
+    borderLeftColor: '#3B82F6',
   },
   updateBannerText: {
     fontSize: 13,
-    color: '#2563EB',
+    color: '#3B82F6',
     fontWeight: '500',
   },
   notesContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 1,
   },
   notesInput: {
     fontSize: 14,
-    color: '#0F172A',
+    color: '#FFFFFF',
     minHeight: 72,
     lineHeight: 20,
   },
   submitButton: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,

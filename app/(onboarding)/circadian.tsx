@@ -83,7 +83,7 @@ export default function CircadianScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   content: {
     flex: 1,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   chartBackground: {
     width: '100%',
     height: 160,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     justifyContent: 'flex-end',
@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
   },
   timeLabel: {
     fontSize: 10,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     fontWeight: '500',
   },
   peakLabel: {
-    color: '#2563EB',
+    color: '#3B82F6',
     fontWeight: '700',
   },
   barChart: {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   peakMarker: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#DBEAFE',
+    backgroundColor: '#252540',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -146,32 +146,32 @@ const styles = StyleSheet.create({
   peakText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#1E40AF',
+    color: '#60A5FA',
   },
   title: {
     fontSize: 26,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 12,
     letterSpacing: -0.5,
   },
   description: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 20,
   },
   factCard: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 12,
     padding: 14,
     gap: 10,
     alignItems: 'flex-start',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#2A2A45',
   },
   factIcon: {
     marginTop: 2,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   factText: {
     flex: 1,
     fontSize: 13,
-    color: '#334155',
+    color: '#8B8BA3',
     lineHeight: 19,
   },
   footer: {
@@ -188,13 +188,13 @@ const styles = StyleSheet.create({
   },
   ctaButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 14,
     paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.35,
     shadowRadius: 12,

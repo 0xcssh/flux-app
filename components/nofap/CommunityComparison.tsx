@@ -83,12 +83,12 @@ export default function CommunityComparison({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
     position: 'relative',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 16,
   },
   barsContainer: {
@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
   barLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#64748B',
+    color: '#8B8BA3',
     width: 32,
   },
   barTrack: {
     flex: 1,
     height: 24,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#16162A',
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -129,15 +129,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   yourBar: {
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
   },
   communityBar: {
-    backgroundColor: '#94A3B8',
+    backgroundColor: '#5A5A7A',
   },
   barValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     width: 36,
     textAlign: 'right',
   },
@@ -147,14 +147,14 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 11,
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
   blurOverlay: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(10, 10, 15, 0.8)',
     borderRadius: 16,
     top: 40,
   },
@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
   premiumText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
   premiumSubtext: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     maxWidth: 200,
   },

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { lightPalette } from '@/theme/colors';
+import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 import { useCircadianPhase } from '@/hooks/useCircadianPhase';
 import { detectInfradianCycle } from '@/lib/hormoneEngine';
@@ -121,7 +121,7 @@ export default function CycleScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: lightPalette.background,
+    backgroundColor: darkPalette.background,
   },
   content: {
     paddingHorizontal: 20,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   tabRow: {
     flexDirection: 'row',
-    backgroundColor: lightPalette.surfaceVariant,
+    backgroundColor: darkPalette.surfaceVariant,
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   tabActive: {
-    backgroundColor: lightPalette.surface,
+    backgroundColor: darkPalette.surface,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 15,
     fontWeight: '500',
-    color: lightPalette.textSecondary,
+    color: darkPalette.textSecondary,
   },
   tabTextActive: {
-    color: lightPalette.primary,
+    color: darkPalette.primary,
     fontWeight: '700',
   },
   section: {

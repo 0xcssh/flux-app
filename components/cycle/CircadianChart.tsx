@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Rect, Text as SvgText } from 'react-native-svg';
-import { lightPalette } from '@/theme/colors';
+import { darkPalette } from '@/theme/colors';
 import { getCircadianCurve } from '@/lib/hormoneEngine';
 
 interface CircadianChartProps {
@@ -60,18 +60,18 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
 
   // Phase background zones
   const phases = [
-    { start: 0, end: 4, color: '#EDE9FE' },
-    { start: 4, end: 8, color: '#DBEAFE' },
-    { start: 8, end: 12, color: '#D1FAE5' },
-    { start: 12, end: 20, color: '#FEF3C7' },
-    { start: 20, end: 24, color: '#EDE9FE' },
+    { start: 0, end: 4, color: '#1E1B4B' },
+    { start: 4, end: 8, color: '#172554' },
+    { start: 8, end: 12, color: '#064E3B' },
+    { start: 12, end: 20, color: '#78350F' },
+    { start: 20, end: 24, color: '#1E1B4B' },
   ];
 
   const phaseLabels = [
-    { label: t('phase_labels.rise'), color: '#DBEAFE' },
-    { label: t('phase_labels.peak'), color: '#D1FAE5' },
-    { label: t('phase_labels.decline'), color: '#FEF3C7' },
-    { label: t('phase_labels.recovery'), color: '#EDE9FE' },
+    { label: t('phase_labels.rise'), color: '#172554' },
+    { label: t('phase_labels.peak'), color: '#064E3B' },
+    { label: t('phase_labels.decline'), color: '#78350F' },
+    { label: t('phase_labels.recovery'), color: '#1E1B4B' },
   ];
 
   const xLabels = [0, 6, 12, 18, 24];
@@ -93,8 +93,8 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
       <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
         <Defs>
           <LinearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor={lightPalette.primary} stopOpacity="0.25" />
-            <Stop offset="1" stopColor={lightPalette.primary} stopOpacity="0.02" />
+            <Stop offset="0" stopColor={darkPalette.primary} stopOpacity="0.25" />
+            <Stop offset="1" stopColor={darkPalette.primary} stopOpacity="0.02" />
           </LinearGradient>
         </Defs>
 
@@ -115,7 +115,7 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
         {yLabels.map((_, i) => {
           const y = PADDING.top + (i / (yLabels.length - 1)) * plotH;
           return (
-            <SvgLine key={`grid-${i}`} x1={PADDING.left} y1={y} x2={PADDING.left + plotW} y2={y} stroke="#E2E8F0" strokeWidth={1} strokeDasharray="4,4" />
+            <SvgLine key={`grid-${i}`} x1={PADDING.left} y1={y} x2={PADDING.left + plotW} y2={y} stroke="#2A2A45" strokeWidth={1} strokeDasharray="4,4" />
           );
         })}
 
@@ -123,29 +123,29 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
         <Path d={areaPath} fill="url(#areaGrad)" />
 
         {/* Curve line */}
-        <Path d={linePath} stroke={lightPalette.primary} strokeWidth={2.5} fill="none" />
+        <Path d={linePath} stroke={darkPalette.primary} strokeWidth={2.5} fill="none" />
 
         {/* Current time marker */}
-        <SvgLine x1={currentX} y1={PADDING.top} x2={currentX} y2={PADDING.top + plotH} stroke={lightPalette.primary} strokeWidth={1.5} strokeDasharray="4,3" />
-        <Circle cx={currentX} cy={currentY} r={5} fill={lightPalette.primary} />
-        <Circle cx={currentX} cy={currentY} r={8} fill={lightPalette.primary} opacity={0.2} />
+        <SvgLine x1={currentX} y1={PADDING.top} x2={currentX} y2={PADDING.top + plotH} stroke={darkPalette.primary} strokeWidth={1.5} strokeDasharray="4,3" />
+        <Circle cx={currentX} cy={currentY} r={5} fill={darkPalette.primary} />
+        <Circle cx={currentX} cy={currentY} r={8} fill={darkPalette.primary} opacity={0.2} />
 
         {/* X axis labels */}
         {xLabels.map((h) => (
-          <SvgText key={`x-${h}`} x={PADDING.left + (h / 24) * plotW} y={CHART_HEIGHT - 4} fontSize={10} fill={lightPalette.textSecondary} textAnchor="middle">{h}h</SvgText>
+          <SvgText key={`x-${h}`} x={PADDING.left + (h / 24) * plotW} y={CHART_HEIGHT - 4} fontSize={10} fill={darkPalette.textSecondary} textAnchor="middle">{h}h</SvgText>
         ))}
 
         {/* Y axis labels */}
         {yLabels.map((label, i) => {
           const y = PADDING.top + ((yLabels.length - 1 - i) / (yLabels.length - 1)) * plotH;
           return (
-            <SvgText key={`y-${i}`} x={PADDING.left - 6} y={y + 3} fontSize={9} fill={lightPalette.textSecondary} textAnchor="end">{label}</SvgText>
+            <SvgText key={`y-${i}`} x={PADDING.left - 6} y={y + 3} fontSize={9} fill={darkPalette.textSecondary} textAnchor="end">{label}</SvgText>
           );
         })}
       </Svg>
 
       <View style={styles.currentTimeRow}>
-        <View style={[styles.currentTimeDot, { backgroundColor: lightPalette.primary }]} />
+        <View style={[styles.currentTimeDot, { backgroundColor: darkPalette.primary }]} />
         <Text style={styles.currentTimeText}>
           Now - {Math.floor(hour)}:{String(Math.floor((hour % 1) * 60)).padStart(2, '0')}
         </Text>
@@ -156,7 +156,7 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: lightPalette.surface,
+    backgroundColor: darkPalette.surface,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: lightPalette.text,
+    color: darkPalette.text,
     marginBottom: 4,
   },
   description: {
     fontSize: 13,
     lineHeight: 18,
-    color: lightPalette.textSecondary,
+    color: darkPalette.textSecondary,
     marginBottom: 12,
   },
   phaseLabelsRow: {
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   phaseLabelText: {
     fontSize: 11,
     fontWeight: '600',
-    color: lightPalette.textSecondary,
+    color: darkPalette.textSecondary,
   },
   currentTimeRow: {
     flexDirection: 'row',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   currentTimeText: {
     fontSize: 13,
-    color: lightPalette.textSecondary,
+    color: darkPalette.textSecondary,
     fontWeight: '500',
   },
 });

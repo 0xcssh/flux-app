@@ -33,11 +33,11 @@ export default function LogScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   header: {
     paddingHorizontal: 16,
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 4,
     fontWeight: '500',
   },

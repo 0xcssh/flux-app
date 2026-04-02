@@ -82,7 +82,7 @@ export default function ProfileScreen() {
       {/* User Info */}
       <View style={styles.userSection}>
         <View style={styles.avatarContainer}>
-          <FontAwesome name="user" size={28} color="#2563EB" />
+          <FontAwesome name="user" size={28} color="#3B82F6" />
         </View>
         <View style={styles.userInfo}>
           <Text style={styles.userName}>
@@ -170,7 +170,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   contentContainer: {
     padding: 20,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -196,28 +196,28 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   userEmail: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 2,
   },
   statsCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
   statsTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 16,
   },
   statsGrid: {
@@ -230,17 +230,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   statLabel: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     fontWeight: '500',
     marginTop: 4,
   },
   logoutButton: {
     flexDirection: 'row',
-    backgroundColor: '#FEE2E2',
+    backgroundColor: '#7F1D1D',
     borderRadius: 12,
     paddingVertical: 14,
     justifyContent: 'center',
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     marginBottom: 8,
   },
   legalLinks: {
@@ -269,10 +269,10 @@ const styles = StyleSheet.create({
   },
   legalLink: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
   },
   legalSeparator: {
     fontSize: 12,
-    color: '#CBD5E1',
+    color: '#5A5A7A',
   },
 });

@@ -41,7 +41,7 @@ export default function TrialScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#3B82F6" />
           <Text style={styles.loadingText}>Setting up your experience...</Text>
         </View>
       </SafeAreaView>
@@ -64,7 +64,7 @@ export default function TrialScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   content: {
     flex: 1,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 16,
   },
   footer: {

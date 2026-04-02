@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { lightPalette } from '@/theme/colors';
+import { darkPalette } from '@/theme/colors';
 import type { PhaseType } from '@/types/log';
 
 interface PhaseIndicatorProps {
@@ -10,10 +10,10 @@ interface PhaseIndicatorProps {
 }
 
 const PHASES: { key: PhaseType; color: string; dimColor: string }[] = [
-  { key: 'rise', color: '#2563EB', dimColor: '#DBEAFE' },
-  { key: 'peak', color: '#10B981', dimColor: '#D1FAE5' },
-  { key: 'decline', color: '#F59E0B', dimColor: '#FEF3C7' },
-  { key: 'recovery', color: '#8B5CF6', dimColor: '#EDE9FE' },
+  { key: 'rise', color: '#3B82F6', dimColor: '#172554' },
+  { key: 'peak', color: '#22C55E', dimColor: '#064E3B' },
+  { key: 'decline', color: '#F59E0B', dimColor: '#78350F' },
+  { key: 'recovery', color: '#8B5CF6', dimColor: '#1E1B4B' },
 ];
 
 export default function PhaseIndicator({ currentPhase, progress }: PhaseIndicatorProps) {
@@ -75,7 +75,7 @@ export default function PhaseIndicator({ currentPhase, progress }: PhaseIndicato
               key={phase.key}
               style={[
                 styles.label,
-                { color: isCurrent ? phase.color : lightPalette.textTertiary },
+                { color: isCurrent ? phase.color : darkPalette.textTertiary },
                 isCurrent && styles.labelActive,
               ]}
               numberOfLines={1}
@@ -91,7 +91,7 @@ export default function PhaseIndicator({ currentPhase, progress }: PhaseIndicato
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: lightPalette.surface,
+    backgroundColor: darkPalette.surface,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',

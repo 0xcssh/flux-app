@@ -11,12 +11,12 @@ interface BadgeProps {
 }
 
 const variantColors: Record<BadgeVariant, { bg: string; text: string }> = {
-  primary: { bg: '#EFF6FF', text: Colors.primary },
-  secondary: { bg: '#ECFDF5', text: Colors.secondary },
-  accent: { bg: '#F0FDFA', text: Colors.accent },
-  success: { bg: '#ECFDF5', text: Colors.success },
-  warning: { bg: '#FFFBEB', text: Colors.warning },
-  error: { bg: '#FEF2F2', text: Colors.error },
+  primary: { bg: '#252540', text: Colors.primary },
+  secondary: { bg: '#064E3B', text: Colors.secondary },
+  accent: { bg: '#78350F', text: Colors.accent },
+  success: { bg: '#064E3B', text: Colors.success },
+  warning: { bg: '#78350F', text: Colors.warning },
+  error: { bg: '#7F1D1D', text: Colors.error },
 };
 
 export function Badge({ text, variant = 'primary', style }: BadgeProps) {

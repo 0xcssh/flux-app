@@ -84,7 +84,7 @@ export default function CorrelationChart({ logs, metricA, metricB }: Correlation
         {pointsB.map((p, i) => <Circle key={`b${i}`} cx={p.x} cy={p.y} r={2.5} fill={colorB} />)}
 
         {[0, 5, 10].map((v) => (
-          <SvgText key={v} x={PAD.left - 5} y={PAD.top + (1 - v / 10) * plotH + 3} fontSize={9} fill="#94A3B8" textAnchor="end">{v}</SvgText>
+          <SvgText key={v} x={PAD.left - 5} y={PAD.top + (1 - v / 10) * plotH + 3} fontSize={9} fill="#5A5A7A" textAnchor="end">{v}</SvgText>
         ))}
       </Svg>
     </View>
@@ -92,11 +92,11 @@ export default function CorrelationChart({ logs, metricA, metricB }: Correlation
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#FFF', borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#F1F5F9' },
+  container: { backgroundColor: '#1A1A2E', borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#2A2A45' },
   legend: { flexDirection: 'row', justifyContent: 'center', gap: 16, marginBottom: 12 },
   legendItem: { flexDirection: 'row', alignItems: 'center' },
   legendDot: { width: 10, height: 10, borderRadius: 5, marginRight: 6 },
-  legendText: { fontSize: 12, color: '#64748B', fontWeight: '500' },
-  emptyContainer: { height: 120, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8FAFC', borderRadius: 12, marginBottom: 12 },
-  emptyText: { fontSize: 14, color: '#94A3B8' },
+  legendText: { fontSize: 12, color: '#8B8BA3', fontWeight: '500' },
+  emptyContainer: { height: 120, justifyContent: 'center', alignItems: 'center', backgroundColor: '#16162A', borderRadius: 12, marginBottom: 12 },
+  emptyText: { fontSize: 14, color: '#5A5A7A' },
 });

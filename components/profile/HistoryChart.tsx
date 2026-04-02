@@ -77,8 +77,8 @@ export default function HistoryChart({ logs, range: initialRange }: HistoryChart
       <Svg width={CHART_WIDTH} height={CHART_HEIGHT}>
         <Defs>
           <LinearGradient id="histGrad" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor="#2563EB" stopOpacity="0.2" />
-            <Stop offset="1" stopColor="#2563EB" stopOpacity="0" />
+            <Stop offset="0" stopColor="#3B82F6" stopOpacity="0.2" />
+            <Stop offset="1" stopColor="#3B82F6" stopOpacity="0" />
           </LinearGradient>
         </Defs>
 
@@ -86,15 +86,15 @@ export default function HistoryChart({ logs, range: initialRange }: HistoryChart
           const y = PAD.top + (1 - v / 100) * plotH;
           return (
             <React.Fragment key={v}>
-              <SvgLine x1={PAD.left} y1={y} x2={PAD.left + plotW} y2={y} stroke="#E2E8F0" strokeWidth={0.5} />
-              <SvgText x={PAD.left - 5} y={y + 3} fontSize={9} fill="#94A3B8" textAnchor="end">{v}</SvgText>
+              <SvgLine x1={PAD.left} y1={y} x2={PAD.left + plotW} y2={y} stroke="#2A2A45" strokeWidth={0.5} />
+              <SvgText x={PAD.left - 5} y={y + 3} fontSize={9} fill="#5A5A7A" textAnchor="end">{v}</SvgText>
             </React.Fragment>
           );
         })}
 
         <Path d={areaPath} fill="url(#histGrad)" />
-        <Path d={linePath} stroke="#2563EB" strokeWidth={2.5} fill="none" />
-        {points.map((p, i) => <Circle key={i} cx={p.x} cy={p.y} r={3} fill="#2563EB" />)}
+        <Path d={linePath} stroke="#3B82F6" strokeWidth={2.5} fill="none" />
+        {points.map((p, i) => <Circle key={i} cx={p.x} cy={p.y} r={3} fill="#3B82F6" />)}
       </Svg>
     );
   };
@@ -122,13 +122,13 @@ export default function HistoryChart({ logs, range: initialRange }: HistoryChart
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#FFF', borderRadius: 16, padding: 16, marginBottom: 16, shadowColor: '#0F172A', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
-  title: { fontSize: 18, fontWeight: '700', color: '#0F172A', marginBottom: 12 },
-  rangeSelector: { flexDirection: 'row', backgroundColor: '#F1F5F9', borderRadius: 10, padding: 3, marginBottom: 16 },
+  container: { backgroundColor: '#1A1A2E', borderRadius: 16, padding: 16, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 2 },
+  title: { fontSize: 18, fontWeight: '700', color: '#FFFFFF', marginBottom: 12 },
+  rangeSelector: { flexDirection: 'row', backgroundColor: '#16162A', borderRadius: 10, padding: 3, marginBottom: 16 },
   rangeButton: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 8 },
-  rangeButtonActive: { backgroundColor: '#FFF', shadowColor: '#0F172A', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 2, elevation: 1 },
-  rangeText: { fontSize: 13, fontWeight: '600', color: '#94A3B8' },
-  rangeTextActive: { color: '#2563EB' },
-  emptyContainer: { height: 120, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8FAFC', borderRadius: 12 },
-  emptyText: { fontSize: 14, color: '#94A3B8' },
+  rangeButtonActive: { backgroundColor: '#252540', shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.3, shadowRadius: 2, elevation: 1 },
+  rangeText: { fontSize: 13, fontWeight: '600', color: '#5A5A7A' },
+  rangeTextActive: { color: '#3B82F6' },
+  emptyContainer: { height: 120, justifyContent: 'center', alignItems: 'center', backgroundColor: '#16162A', borderRadius: 12 },
+  emptyText: { fontSize: 14, color: '#5A5A7A' },
 });

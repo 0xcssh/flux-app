@@ -51,7 +51,7 @@ export default function InsightsScreen() {
   if (isLoading && !refreshing) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color="#3B82F6" />
         <Text style={styles.loadingText}>{t('sections.correlations')}...</Text>
       </View>
     );
@@ -65,8 +65,8 @@ export default function InsightsScreen() {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={['#2563EB']}
-          tintColor="#2563EB"
+          colors={['#3B82F6']}
+          tintColor="#3B82F6"
         />
       }
     >
@@ -75,7 +75,7 @@ export default function InsightsScreen() {
       {!hasEnoughData ? (
         <View style={styles.progressCard}>
           <View style={styles.progressIconContainer}>
-            <FontAwesome name="line-chart" size={32} color="#2563EB" />
+            <FontAwesome name="line-chart" size={32} color="#3B82F6" />
           </View>
           <Text style={styles.progressTitle}>
             {daysUntilInsights} more days until insights
@@ -169,7 +169,7 @@ export default function InsightsScreen() {
             insights.patterns.length === 0 &&
             insights.recommendations.length === 0 && (
               <View style={styles.emptyState}>
-                <FontAwesome name="search" size={40} color="#CBD5E1" />
+                <FontAwesome name="search" size={40} color="#5A5A7A" />
                 <Text style={styles.emptyText}>
                   No significant patterns found yet. Keep logging to discover your unique rhythms!
                 </Text>
@@ -184,7 +184,7 @@ export default function InsightsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   contentContainer: {
     padding: 20,
@@ -194,28 +194,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   loadingText: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     marginTop: 12,
   },
   screenTitle: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 20,
     letterSpacing: -0.5,
   },
   progressCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 3,
   },
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -231,12 +231,12 @@ const styles = StyleSheet.create({
   progressTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 8,
   },
   progressDescription: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 20,
@@ -247,25 +247,25 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#2A2A45',
     borderRadius: 4,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 4,
   },
   progressText: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     textAlign: 'center',
     fontWeight: '500',
   },
   encouragementCard: {
     flexDirection: 'row',
-    backgroundColor: '#FEF3C7',
+    backgroundColor: '#78350F',
     borderRadius: 12,
     padding: 12,
     gap: 10,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   encouragementText: {
     flex: 1,
     fontSize: 13,
-    color: '#92400E',
+    color: '#FBBF24',
     lineHeight: 18,
   },
   section: {
@@ -284,20 +284,20 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 12,
   },
   recommendationCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: '#2A2A45',
   },
   recPriorityBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FEF3C7',
+    backgroundColor: '#78350F',
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -306,17 +306,17 @@ const styles = StyleSheet.create({
   recPriorityText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#92400E',
+    color: '#FBBF24',
   },
   recTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
   recBody: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     lineHeight: 19,
   },
   emptyState: {
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     textAlign: 'center',
     marginTop: 16,
     lineHeight: 20,

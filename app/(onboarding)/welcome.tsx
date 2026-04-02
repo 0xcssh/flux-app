@@ -16,7 +16,7 @@ export default function WelcomeScreen() {
         {/* Hero illustration area */}
         <View style={styles.heroContainer}>
           <View style={styles.iconCircle}>
-            <FontAwesome name="heartbeat" size={48} color="#2563EB" />
+            <FontAwesome name="heartbeat" size={48} color="#3B82F6" />
           </View>
           <View style={styles.waveIndicators}>
             <View style={[styles.waveDot, { backgroundColor: '#2563EB', height: 24 }]} />
@@ -61,7 +61,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   content: {
     flex: 1,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -95,39 +95,39 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 8,
     letterSpacing: -0.5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#2563EB',
+    color: '#3B82F6',
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 16,
   },
   description: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#8B8BA3',
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 24,
   },
   scienceCard: {
     flexDirection: 'row',
-    backgroundColor: '#F0FDFA',
+    backgroundColor: '#1A1A2E',
     borderRadius: 12,
     padding: 14,
     gap: 10,
     alignItems: 'flex-start',
     borderWidth: 1,
-    borderColor: '#CCFBF1',
+    borderColor: '#2A2A45',
   },
   scienceText: {
     flex: 1,
     fontSize: 13,
-    color: '#134E4A',
+    color: '#8B8BA3',
     lineHeight: 19,
   },
   footer: {
@@ -136,13 +136,13 @@ const styles = StyleSheet.create({
   },
   ctaButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 14,
     paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.35,
     shadowRadius: 12,

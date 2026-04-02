@@ -114,17 +114,17 @@ export default function InsightCard({ correlation }: InsightCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: '#2A2A45',
   },
   metricsRow: {
     flexDirection: 'row',
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   metricBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#252540',
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 6,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   metricLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginLeft: 6,
   },
   arrowContainer: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     lineHeight: 20,
     marginBottom: 12,
   },
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   rLabel: {
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#5A5A7A',
   },
   rValue: {
     fontSize: 14,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   miniBar: {
     flex: 1,
     height: 4,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#2A2A45',
     borderRadius: 2,
     overflow: 'hidden',
   },

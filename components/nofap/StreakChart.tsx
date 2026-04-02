@@ -82,7 +82,7 @@ export default function StreakChart() {
                     x={0}
                     y={y + barHeight / 2 + 4}
                     fontSize={11}
-                    fill="#64748B"
+                    fill="#8B8BA3"
                     fontWeight="500"
                   >
                     {dateLabel}
@@ -100,7 +100,7 @@ export default function StreakChart() {
                     x={labelWidth + barWidth + 8}
                     y={y + barHeight / 2 + 4}
                     fontSize={12}
-                    fill="#0F172A"
+                    fill="#FFFFFF"
                     fontWeight="600"
                   >
                     {streak.days}d
@@ -132,19 +132,19 @@ export default function StreakChart() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 2,
   },
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#0F172A',
+    color: '#FFFFFF',
     marginBottom: 16,
   },
   chartWrapper: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 13,
-    color: '#94A3B8',
+    color: '#5A5A7A',
     textAlign: 'center',
     paddingVertical: 24,
   },
@@ -174,6 +174,6 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 11,
-    color: '#64748B',
+    color: '#8B8BA3',
   },
 });

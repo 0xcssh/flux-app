@@ -102,8 +102,8 @@ export default function SetupScreen() {
             <Switch
               value={nofapEnabled}
               onValueChange={setNofapEnabled}
-              trackColor={{ false: '#E2E8F0', true: '#BBF7D0' }}
-              thumbColor={nofapEnabled ? '#10B981' : '#94A3B8'}
+              trackColor={{ false: '#2A2A45', true: '#064E3B' }}
+              thumbColor={nofapEnabled ? '#22C55E' : '#5A5A7A'}
             />
           </View>
         </View>
@@ -155,7 +155,7 @@ export default function SetupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#0A0A0F',
   },
   content: {
     flex: 1,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
@@ -175,20 +175,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#0F172A',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 24,
     letterSpacing: -0.5,
   },
   settingCard: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1A1A2E',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#0F172A',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 1,
   },
@@ -216,11 +216,11 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0F172A',
+    color: '#FFFFFF',
   },
   settingDescription: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#8B8BA3',
     marginTop: 4,
     lineHeight: 17,
   },
@@ -233,21 +233,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#16162A',
     borderWidth: 1.5,
-    borderColor: '#F1F5F9',
+    borderColor: '#2A2A45',
   },
   timeChipActive: {
-    backgroundColor: '#EFF6FF',
-    borderColor: '#2563EB',
+    backgroundColor: '#252540',
+    borderColor: '#3B82F6',
   },
   timeChipText: {
     fontSize: 13,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '600',
   },
   timeChipTextActive: {
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   languageRow: {
     flexDirection: 'row',
@@ -257,22 +257,22 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#16162A',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: '#F1F5F9',
+    borderColor: '#2A2A45',
   },
   langButtonActive: {
-    backgroundColor: '#EFF6FF',
-    borderColor: '#2563EB',
+    backgroundColor: '#252540',
+    borderColor: '#3B82F6',
   },
   langText: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#8B8BA3',
     fontWeight: '600',
   },
   langTextActive: {
-    color: '#2563EB',
+    color: '#3B82F6',
   },
   footer: {
     paddingHorizontal: 32,
@@ -280,13 +280,13 @@ const styles = StyleSheet.create({
   },
   ctaButton: {
     flexDirection: 'row',
-    backgroundColor: '#2563EB',
+    backgroundColor: '#3B82F6',
     borderRadius: 14,
     paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-    shadowColor: '#2563EB',
+    shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.35,
     shadowRadius: 12,
