@@ -25,3 +25,34 @@ export interface InsightData {
   patterns: Pattern[];
   recommendations: Recommendation[];
 }
+
+// ── Tiered Insights ──────────────────────────────────────────────────
+
+export type InsightTier = 'universal' | 'early' | 'weekly' | 'deep';
+
+export interface UniversalInsight {
+  id: string;
+  titleKey: string;
+  bodyKey: string;
+  icon: string;
+  category: 'circadian' | 'hormone' | 'sleep' | 'training';
+}
+
+export interface EarlyPattern {
+  metric: string;
+  average: number;
+  best: { date: string; value: number };
+  worst: { date: string; value: number };
+  trend: 'improving' | 'declining' | 'stable';
+}
+
+export interface TieredInsightData {
+  tier: InsightTier;
+  universalInsights: UniversalInsight[];
+  earlyPatterns?: EarlyPattern[];
+  weeklyInsights?: InsightData;
+  deepInsights?: InsightData;
+  daysLogged: number;
+  daysUntilNextTier: number;
+  nextTier: InsightTier | null;
+}

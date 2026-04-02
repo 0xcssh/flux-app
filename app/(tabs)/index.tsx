@@ -22,6 +22,7 @@ import StreakBar from '@/components/dashboard/StreakBar';
 import QuickStats from '@/components/dashboard/QuickStats';
 import WeeklySummary from '@/components/dashboard/WeeklySummary';
 import ArticleSuggestion from '@/components/dashboard/ArticleSuggestion';
+import SymptomPredictionCard from '@/components/dashboard/SymptomPredictionCard';
 
 export default function DashboardScreen() {
   const { t } = useTranslation('dashboard');
@@ -125,6 +126,11 @@ export default function DashboardScreen() {
         {/* Current Phase */}
         <View style={styles.section}>
           <CircadianPhaseCard phase={phase} progress={progress} />
+        </View>
+
+        {/* Symptom Prediction */}
+        <View style={styles.section}>
+          <SymptomPredictionCard />
         </View>
 
         {/* Weekly Summary */}

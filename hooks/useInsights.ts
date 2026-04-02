@@ -1,34 +1,30 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { DailyLogEntry } from '@/types/log';
 import type { NoFapStreak } from '@/types/nofap';
-import type { InsightData } from '@/types/insight';
-import { generateInsights } from '@/lib/correlations';
+import type { InsightTier, TieredInsightData } from '@/types/insight';
+import {
+  getUniversalInsights,
+  computeEarlyPatterns,
+  generateWeeklyInsights,
+  generateInsights,
+} from '@/lib/correlations';
 
-const MIN_DAYS_FOR_INSIGHTS = 14;
-
-interface UseInsightsReturn {
-  insights: InsightData;
-  isLoading: boolean;
-  hasEnoughData: boolean;
-  daysUntilInsights: number;
-}
-
-const EMPTY_INSIGHTS: InsightData = {
-  correlations: [],
-  patterns: [],
-  recommendations: [],
-};
+const TIER_THRESHOLDS: Record<string, number> = { early: 3, weekly: 7, deep: 14 };
 
 export function useInsights(
   logs: DailyLogEntry[],
   streaks: NoFapStreak[],
-): UseInsightsReturn {
-  const [insights, setInsights] = useState<InsightData>(EMPTY_INSIGHTS);
-  const [isLoading, setIsLoading] = useState(false);
-  const lastLogCountRef = useRef<number>(0);
+): TieredInsightData {
+  const daysLogged = logs.length;
 
-  const hasEnoughData = logs.length >= MIN_DAYS_FOR_INSIGHTS;
-  const daysUntilInsights = Math.max(0, MIN_DAYS_FOR_INSIGHTS - logs.length);
+  const tier: InsightTier =
+    daysLogged >= 14
+      ? 'deep'
+      : daysLogged >= 7
+        ? 'weekly'
+        : daysLogged >= 3
+          ? 'early'
+          : 'universal';
 
   // Sorted logs for consistent computation
   const sortedLogs = useMemo(
@@ -36,36 +32,48 @@ export function useInsights(
     [logs],
   );
 
-  useEffect(() => {
-    // Only recompute when new logs are added
-    if (sortedLogs.length === lastLogCountRef.current) return;
-    if (!hasEnoughData) {
-      lastLogCountRef.current = sortedLogs.length;
-      return;
-    }
+  // Always available
+  const universalInsights = useMemo(() => getUniversalInsights(), []);
 
-    setIsLoading(true);
-    lastLogCountRef.current = sortedLogs.length;
+  // 3+ days
+  const earlyPatterns = useMemo(
+    () => (daysLogged >= 3 ? computeEarlyPatterns(sortedLogs) : undefined),
+    [sortedLogs, daysLogged],
+  );
 
-    // Compute insights asynchronously to avoid blocking the UI thread
-    const timeoutId = setTimeout(() => {
-      try {
-        const result = generateInsights(sortedLogs, streaks);
-        setInsights(result);
-      } catch (error) {
-        console.error('[useInsights] Error generating insights:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 0);
+  // 7+ days
+  const weeklyInsights = useMemo(
+    () => (daysLogged >= 7 ? generateWeeklyInsights(sortedLogs, streaks) : undefined),
+    [sortedLogs, streaks, daysLogged],
+  );
 
-    return () => clearTimeout(timeoutId);
-  }, [sortedLogs, streaks, hasEnoughData]);
+  // 14+ days
+  const deepInsights = useMemo(
+    () => (daysLogged >= 14 ? generateInsights(sortedLogs, streaks) : undefined),
+    [sortedLogs, streaks, daysLogged],
+  );
+
+  // Next tier info
+  const nextTier: InsightTier | null =
+    tier === 'deep'
+      ? null
+      : tier === 'weekly'
+        ? 'deep'
+        : tier === 'early'
+          ? 'weekly'
+          : 'early';
+
+  const nextThreshold = nextTier ? TIER_THRESHOLDS[nextTier] ?? 3 : 0;
+  const daysUntilNextTier = Math.max(0, nextThreshold - daysLogged);
 
   return {
-    insights,
-    isLoading,
-    hasEnoughData,
-    daysUntilInsights,
+    tier,
+    universalInsights,
+    earlyPatterns,
+    weeklyInsights,
+    deepInsights,
+    daysLogged,
+    daysUntilNextTier,
+    nextTier,
   };
 }

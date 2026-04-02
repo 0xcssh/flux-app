@@ -1,5 +1,5 @@
 import { DailyLogEntry, MetricKey } from '@/types/log';
-import { Correlation, InsightData, Pattern, Recommendation } from '@/types/insight';
+import { Correlation, InsightData, Pattern, Recommendation, UniversalInsight, EarlyPattern } from '@/types/insight';
 import { NoFapStreak } from '@/types/nofap';
 
 // All 6 tracked metrics
@@ -349,4 +349,152 @@ function generateRecommendations(
   // Sort by priority
   recs.sort((a, b) => a.priority - b.priority);
   return recs;
+}
+
+// ── Tiered Insight Helpers ────────────────────────────────────────────
+
+/**
+ * Returns 6 static science-based insights available from day 0.
+ */
+export function getUniversalInsights(): UniversalInsight[] {
+  return [
+    { id: 'circadian_cycle', icon: '☀️', category: 'circadian', titleKey: 'universal.circadian.title', bodyKey: 'universal.circadian.body' },
+    { id: 'testosterone_peak', icon: '📈', category: 'hormone', titleKey: 'universal.peak.title', bodyKey: 'universal.peak.body' },
+    { id: 'sleep_impact', icon: '😴', category: 'sleep', titleKey: 'universal.sleep.title', bodyKey: 'universal.sleep.body' },
+    { id: 'exercise_timing', icon: '🏋️', category: 'training', titleKey: 'universal.exercise.title', bodyKey: 'universal.exercise.body' },
+    { id: 'stress_cortisol', icon: '🧠', category: 'hormone', titleKey: 'universal.stress.title', bodyKey: 'universal.stress.body' },
+    { id: 'seasonal', icon: '🌡️', category: 'circadian', titleKey: 'universal.seasonal.title', bodyKey: 'universal.seasonal.body' },
+  ];
+}
+
+/**
+ * Compute early patterns from 3+ days of logs.
+ * For each metric: average, best/worst day, and trend direction.
+ */
+export function computeEarlyPatterns(logs: DailyLogEntry[]): EarlyPattern[] {
+  if (logs.length < 3) return [];
+
+  const metrics: MetricKey[] = ['energy', 'mood', 'libido', 'sleep_quality', 'stress', 'training'];
+  const patterns: EarlyPattern[] = [];
+
+  for (const metric of metrics) {
+    const values = logs.map((l) => l[metric]);
+    const sum = values.reduce((s, v) => s + v, 0);
+    const average = Math.round((sum / values.length) * 10) / 10;
+
+    // For stress, "best" = lowest, "worst" = highest
+    const isStress = metric === 'stress';
+    let bestIdx = 0;
+    let worstIdx = 0;
+
+    for (let i = 1; i < values.length; i++) {
+      if (isStress) {
+        if (values[i] < values[bestIdx]) bestIdx = i;
+        if (values[i] > values[worstIdx]) worstIdx = i;
+      } else {
+        if (values[i] > values[bestIdx]) bestIdx = i;
+        if (values[i] < values[worstIdx]) worstIdx = i;
+      }
+    }
+
+    // Trend: compare first half avg vs second half avg
+    const mid = Math.floor(values.length / 2);
+    const firstHalf = values.slice(0, mid);
+    const secondHalf = values.slice(mid);
+    const firstAvg = firstHalf.reduce((s, v) => s + v, 0) / firstHalf.length;
+    const secondAvg = secondHalf.reduce((s, v) => s + v, 0) / secondHalf.length;
+
+    let trend: 'improving' | 'declining' | 'stable';
+    if (firstAvg === 0) {
+      trend = 'stable';
+    } else {
+      const pctChange = (secondAvg - firstAvg) / firstAvg;
+      if (isStress) {
+        // Lower stress = improving
+        trend = pctChange < -0.1 ? 'improving' : pctChange > 0.1 ? 'declining' : 'stable';
+      } else {
+        trend = pctChange > 0.1 ? 'improving' : pctChange < -0.1 ? 'declining' : 'stable';
+      }
+    }
+
+    patterns.push({
+      metric,
+      average,
+      best: { date: logs[bestIdx].log_date, value: values[bestIdx] },
+      worst: { date: logs[worstIdx].log_date, value: values[worstIdx] },
+      trend,
+    });
+  }
+
+  return patterns;
+}
+
+/**
+ * Generate weekly-level insights from 7+ days of logs.
+ * Runs day-of-week patterns and sleep→energy correlation.
+ */
+export function generateWeeklyInsights(
+  logs: DailyLogEntry[],
+  streaks: NoFapStreak[],
+): InsightData {
+  if (logs.length < 7) {
+    return { correlations: [], patterns: [], recommendations: [] };
+  }
+
+  const correlations: Correlation[] = [];
+  const patterns: Pattern[] = [];
+
+  // Day-of-week patterns for all metrics
+  for (const metric of ALL_METRICS) {
+    const dow = detectDayOfWeekPattern(logs, metric);
+    if (dow) {
+      patterns.push({
+        type: 'day_of_week',
+        metric,
+        description_key: `insight.pattern.dow_${metric}`,
+        params: { day: dow.day, dayName: dow.dayName, avgDiff: dow.avgDiff },
+      });
+    }
+  }
+
+  // Sleep→energy correlation (the most impactful)
+  const sleepValues = logs.map((l) => l.sleep_quality);
+  const energyValues = logs.map((l) => l.energy);
+  const { r, significance } = pearsonCorrelation(sleepValues, energyValues);
+
+  if (Math.abs(r) > 0.3) {
+    correlations.push({
+      metric_a: 'sleep_quality',
+      metric_b: 'energy',
+      r_value: r,
+      significance,
+      description_key: 'insight.correlation.sleep_quality_energy',
+    });
+  }
+
+  // Generate 1-2 basic recommendations from weekly data
+  const recommendations: Recommendation[] = [];
+  const recent = logs.slice(-7);
+  const avgSleep = recent.reduce((s, l) => s + l.sleep_quality, 0) / recent.length;
+  const avgStress = recent.reduce((s, l) => s + l.stress, 0) / recent.length;
+
+  if (avgSleep < 5) {
+    recommendations.push({
+      title_key: 'rec.sleep.title',
+      body_key: 'rec.sleep.body',
+      category: 'sleep',
+      priority: 1,
+    });
+  }
+
+  if (avgStress > 7) {
+    recommendations.push({
+      title_key: 'rec.stress.title',
+      body_key: 'rec.stress.body',
+      category: 'stress',
+      priority: 1,
+    });
+  }
+
+  return { correlations, patterns, recommendations };
 }

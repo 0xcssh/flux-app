@@ -1,6 +1,8 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import { getCurrentPhase } from '@/lib/hormoneEngine';
+import type { PersonalNotificationData } from '@/lib/personalNotificationData';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -136,4 +138,85 @@ export function getContextualNotificationContent(hour: number): {
       body: "Don't forget to log today's metrics. It only takes 30 seconds.",
     };
   }
+}
+
+export function getPhaseAwareNotificationContent(
+  hour: number,
+  personalData?: PersonalNotificationData,
+): { title: string; body: string } {
+  const { phase } = getCurrentPhase(hour);
+
+  switch (phase) {
+    case 'rise':
+      return {
+        title: '☀️ Rise Phase',
+        body: 'Your testosterone is climbing. Peak energy in about 2 hours.',
+      };
+    case 'peak':
+      return {
+        title: '⚡ Peak Performance',
+        body: 'You\'re in your peak phase. Best time for training or important decisions.',
+      };
+    case 'decline':
+      if (personalData?.lowestEnergyDay) {
+        const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+        if (today === personalData.lowestEnergyDay) {
+          return {
+            title: '📉 Energy Shift',
+            body: `Your energy tends to be lower on ${today}s. Take it easy and plan lighter tasks.`,
+          };
+        }
+      }
+      return {
+        title: '🌅 Natural Slowdown',
+        body: 'Energy naturally dropping. Good time for creative work or lighter tasks.',
+      };
+    case 'recovery':
+      if (personalData?.avgSleepQuality && personalData.avgSleepQuality < 5) {
+        return {
+          title: '🌙 Sleep Priority',
+          body: 'Your sleep quality has been low recently. Tonight, aim for 7+ hours — your hormones need it.',
+        };
+      }
+      return {
+        title: '🌙 Recovery Time',
+        body: 'Quality sleep tonight = better testosterone tomorrow. Start winding down.',
+      };
+  }
+}
+
+export async function schedulePhaseNotifications(
+  personalData?: PersonalNotificationData,
+): Promise<string[]> {
+  await cancelAllScheduled();
+
+  const phases = [
+    { hour: 6, minute: 30 },   // Rise
+    { hour: 9, minute: 0 },    // Peak
+    { hour: 14, minute: 0 },   // Decline
+    { hour: 21, minute: 0 },   // Recovery
+  ];
+
+  const ids: string[] = [];
+  for (const p of phases) {
+    const content = getPhaseAwareNotificationContent(p.hour, personalData);
+    try {
+      const id = await Notifications.scheduleNotificationAsync({
+        content: {
+          title: content.title,
+          body: content.body,
+          sound: 'default',
+        },
+        trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DAILY,
+          hour: p.hour,
+          minute: p.minute,
+        },
+      });
+      ids.push(id);
+    } catch (e) {
+      console.warn('[Notifications] Failed to schedule phase notification:', e);
+    }
+  }
+  return ids;
 }

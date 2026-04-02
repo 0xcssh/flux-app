@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   registerForPushNotifications,
   scheduleDailyReminder,
   cancelAllScheduled,
   scheduleMilestoneNotification,
+  schedulePhaseNotifications,
 } from '@/lib/notifications';
 import { MILESTONE_DAYS } from '@/types/nofap';
+import { useLogStore } from '@/store/logStore';
+import { computePersonalNotificationData } from '@/lib/personalNotificationData';
 
 export function useNotifications() {
   const [pushToken, setPushToken] = useState<string | null>(null);
@@ -66,4 +69,38 @@ export function useNotifications() {
     scheduleMilestoneNotifications,
     cancelAll,
   };
+}
+
+export function usePhaseNotifications() {
+  const [isScheduled, setIsScheduled] = useState(false);
+  const logs = useLogStore((s) => s.logs);
+  const prevLogCountRef = useRef(0);
+
+  useEffect(() => {
+    const allLogs = Object.values(logs).sort((a, b) =>
+      a.log_date.localeCompare(b.log_date)
+    );
+    const logCount = allLogs.length;
+    const crossedThreshold =
+      prevLogCountRef.current < 7 && logCount >= 7;
+    const isFirstRun = prevLogCountRef.current === 0;
+    prevLogCountRef.current = logCount;
+
+    if (!isFirstRun && !crossedThreshold && isScheduled) return;
+
+    const personalData = computePersonalNotificationData(allLogs);
+
+    (async () => {
+      try {
+        const token = await registerForPushNotifications();
+        if (!token) return;
+        await schedulePhaseNotifications(personalData);
+        setIsScheduled(true);
+      } catch (e) {
+        console.warn('[PhaseNotifications] Failed to schedule:', e);
+      }
+    })();
+  }, [logs, isScheduled]);
+
+  return { isScheduled };
 }

@@ -4,6 +4,7 @@ import { zustandStorage } from '@/lib/storage';
 
 interface SettingsState {
   notificationTime: string;
+  notificationMode: 'single' | 'phase_aware';
   language: string;
   nofapEnabled: boolean;
   darkMode: boolean;
@@ -12,6 +13,7 @@ interface SettingsState {
 
 interface SettingsActions {
   setNotificationTime: (time: string) => void;
+  setNotificationMode: (mode: 'single' | 'phase_aware') => void;
   setLanguage: (language: string) => void;
   setNofapEnabled: (enabled: boolean) => void;
   setDarkMode: (enabled: boolean) => void;
@@ -22,12 +24,14 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
   persist(
     (set) => ({
       notificationTime: '08:00',
+      notificationMode: 'phase_aware',
       language: 'en',
       nofapEnabled: true,
       darkMode: false,
       onboardingSeen: false,
 
       setNotificationTime: (time) => set({ notificationTime: time }),
+      setNotificationMode: (mode) => set({ notificationMode: mode }),
       setLanguage: (language) => set({ language }),
       setNofapEnabled: (enabled) => set({ nofapEnabled: enabled }),
       setDarkMode: (enabled) => set({ darkMode: enabled }),
