@@ -18,26 +18,41 @@ import { useVitalityScore } from '@/hooks/useVitalityScore';
 import VitalityScore from '@/components/dashboard/VitalityScore';
 import IndicatorRow from '@/components/dashboard/IndicatorRow';
 import CircadianPhaseCard from '@/components/dashboard/CircadianPhaseCard';
-import DailyTipCard from '@/components/dashboard/DailyTipCard';
 import StreakBar from '@/components/dashboard/StreakBar';
 import QuickStats from '@/components/dashboard/QuickStats';
 import WeeklySummary from '@/components/dashboard/WeeklySummary';
 import ArticleSuggestion from '@/components/dashboard/ArticleSuggestion';
 import SymptomPredictionCard from '@/components/dashboard/SymptomPredictionCard';
+import DaySelector, {
+  SelectedDateProvider,
+  useSelectedDate,
+} from '@/components/dashboard/DaySelector';
+import LogCTA from '@/components/dashboard/LogCTA';
+import MissedDayCard from '@/components/dashboard/MissedDayCard';
+import ComparisonCard from '@/components/dashboard/ComparisonCard';
+import AdaptiveLearn from '@/components/dashboard/AdaptiveLearn';
 
-export default function DashboardScreen() {
+function getTodayDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
+function DashboardContent() {
   const { t } = useTranslation('dashboard');
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
 
-  const todayLog = useLogStore((s) => s.getTodayLog());
-  const todayLogged = useLogStore((s) => s.todayLogged);
+  const { selectedDate } = useSelectedDate();
   const logs = useLogStore((s) => s.logs);
-  const { phase, progress, labelKey, tipKey } = useCircadianPhase();
-  const vitality = useVitalityScore(todayLog);
+  const { phase, progress } = useCircadianPhase();
   const nofapEnabled = useSettingsStore((s) => s.nofapEnabled);
 
-  // Logging streak (how many consecutive days logged)
+  const isToday = selectedDate === getTodayDate();
+  const selectedLog = logs[selectedDate] ?? null;
+  const isLogged = !!selectedLog;
+
+  const vitality = useVitalityScore(selectedLog);
+
+  // Logging streak (consecutive days logged ending today)
   const loggingStreak = useMemo(() => {
     let streak = 0;
     const today = new Date();
@@ -66,7 +81,10 @@ export default function DashboardScreen() {
 
   const phaseLabel = useMemo(() => {
     const labels: Record<string, string> = {
-      rise: 'Rise', peak: 'Peak', decline: 'Decline', recovery: 'Recovery'
+      rise: 'Rise',
+      peak: 'Peak',
+      decline: 'Decline',
+      recovery: 'Recovery',
     };
     return labels[phase] ?? phase;
   }, [phase]);
@@ -79,7 +97,18 @@ export default function DashboardScreen() {
 
   const now = new Date();
   const hour = now.getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  const greeting =
+    hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+
+  // Header date: show selected date if not today
+  const headerDateStr = useMemo(() => {
+    const d = new Date(selectedDate + 'T12:00:00');
+    return d.toLocaleDateString(undefined, {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    });
+  }, [selectedDate]);
 
   return (
     <View style={styles.screen}>
@@ -88,83 +117,139 @@ export default function DashboardScreen() {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={darkPalette.primary} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={darkPalette.primary}
+          />
         }
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.greeting}>{greeting}</Text>
-          <Text style={styles.date}>
-            {now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+          <Text style={styles.greeting}>
+            {isToday ? greeting : headerDateStr}
           </Text>
+          {isToday && <Text style={styles.date}>{headerDateStr}</Text>}
         </View>
 
-        {/* Vitality Score */}
-        <View style={styles.scoreContainer}>
-          <VitalityScore score={todayLog ? vitality.score : null} size={210} />
-        </View>
+        {/* Day Selector */}
+        <DaySelector />
 
-        {/* Logging Streak */}
-        <View style={styles.section}>
-          <StreakBar days={loggingStreak} />
-        </View>
-
-        {/* Quick Stats */}
-        <View style={styles.section}>
-          <QuickStats
-            phase={phase}
-            phaseLabel={phaseLabel}
-            yesterdayScore={yesterdayScore}
-            todayScore={todayLog?.vitality_score ?? null}
-          />
-        </View>
-
-        {/* Today's Metrics */}
-        <View style={styles.section}>
-          <IndicatorRow log={todayLog} />
-        </View>
-
-        {/* Current Phase */}
-        <View style={styles.section}>
-          <CircadianPhaseCard phase={phase} progress={progress} />
-        </View>
-
-        {/* Symptom Prediction */}
-        <View style={styles.section}>
-          <SymptomPredictionCard />
-        </View>
-
-        {/* Weekly Summary */}
-        <View style={styles.section}>
-          <WeeklySummary logs={allLogs} />
-        </View>
-
-        {/* Daily Tip */}
-        <View style={styles.section}>
-          <DailyTipCard tipKey={tipKey} />
-        </View>
-
-        {/* Article Suggestion */}
-        <View style={styles.section}>
-          <ArticleSuggestion />
-        </View>
-
-        {/* Logged badge */}
-        {todayLogged && (
-          <View style={styles.loggedBadge}>
-            <View style={styles.loggedContent}>
-              <Ionicons name="checkmark-circle" size={16} color={darkPalette.secondary} />
-              <Text style={styles.loggedText}>Logged today</Text>
+        {isToday && !isLogged ? (
+          // TODAY - NOT LOGGED
+          <>
+            <View style={styles.scoreContainer}>
+              <VitalityScore score={null} size={210} />
             </View>
-          </View>
+
+            <View style={styles.section}>
+              <LogCTA />
+            </View>
+
+            <View style={styles.section}>
+              <SymptomPredictionCard />
+            </View>
+
+            <View style={styles.section}>
+              <CircadianPhaseCard phase={phase} progress={progress} />
+            </View>
+
+            <View style={styles.section}>
+              <AdaptiveLearn />
+            </View>
+          </>
+        ) : isToday && isLogged ? (
+          // TODAY - LOGGED
+          <>
+            <View style={styles.scoreContainer}>
+              <VitalityScore score={selectedLog!.vitality_score} size={210} />
+            </View>
+
+            <View style={styles.section}>
+              <StreakBar days={loggingStreak} />
+            </View>
+
+            <View style={styles.section}>
+              <QuickStats
+                phase={phase}
+                phaseLabel={phaseLabel}
+                yesterdayScore={yesterdayScore}
+                todayScore={selectedLog!.vitality_score}
+              />
+            </View>
+
+            <View style={styles.section}>
+              <IndicatorRow log={selectedLog} />
+            </View>
+
+            <View style={styles.section}>
+              <SymptomPredictionCard />
+            </View>
+
+            <View style={styles.section}>
+              <WeeklySummary logs={allLogs} />
+            </View>
+
+            <View style={styles.section}>
+              <CircadianPhaseCard phase={phase} progress={progress} />
+            </View>
+
+            <View style={styles.section}>
+              <AdaptiveLearn log={selectedLog} />
+            </View>
+
+            <View style={styles.section}>
+              <ArticleSuggestion />
+            </View>
+
+            {/* Logged badge */}
+            <View style={styles.loggedBadge}>
+              <View style={styles.loggedContent}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={16}
+                  color={darkPalette.secondary}
+                />
+                <Text style={styles.loggedText}>{t('logged_today')}</Text>
+              </View>
+            </View>
+          </>
+        ) : selectedLog ? (
+          // PAST DAY - LOGGED
+          <>
+            <View style={styles.scoreContainer}>
+              <VitalityScore score={selectedLog.vitality_score} size={210} />
+            </View>
+
+            <View style={styles.section}>
+              <IndicatorRow log={selectedLog} />
+            </View>
+
+            <View style={styles.section}>
+              <ComparisonCard
+                dateStr={selectedDate}
+                score={selectedLog.vitality_score}
+              />
+            </View>
+          </>
+        ) : (
+          // PAST DAY - NOT LOGGED
+          <>
+            <View style={styles.section}>
+              <MissedDayCard dateStr={selectedDate} />
+            </View>
+          </>
         )}
 
         <View style={{ height: 80 }} />
       </ScrollView>
 
-      {/* Floating Log Button */}
-      {!todayLogged && (
-        <Pressable style={styles.fab} onPress={() => router.push('/(tabs)/log' as any)}>
+      {/* Floating Log Button — only for today when not logged */}
+      {isToday && !isLogged && (
+        <Pressable
+          style={styles.fab}
+          onPress={() => router.push('/(tabs)/log' as any)}
+        >
           <Text style={styles.fabIcon}>+</Text>
           <Text style={styles.fabLabel}>{t('log_today_cta')}</Text>
         </Pressable>
@@ -173,13 +258,30 @@ export default function DashboardScreen() {
   );
 }
 
+export default function DashboardScreen() {
+  return (
+    <SelectedDateProvider>
+      <DashboardContent />
+    </SelectedDateProvider>
+  );
+}
+
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: darkPalette.background },
   scrollView: { flex: 1 },
   content: { paddingHorizontal: 20, paddingTop: 60, paddingBottom: 32 },
   header: { marginBottom: 24 },
-  greeting: { fontSize: 28, fontWeight: '800', color: darkPalette.text, letterSpacing: -0.5 },
-  date: { fontSize: 14, color: darkPalette.textSecondary, marginTop: 4 },
+  greeting: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: darkPalette.text,
+    letterSpacing: -0.5,
+  },
+  date: {
+    fontSize: 14,
+    color: darkPalette.textSecondary,
+    marginTop: 4,
+  },
   scoreContainer: { alignItems: 'center', marginBottom: 20 },
   section: { marginBottom: 16 },
   loggedBadge: {
@@ -192,7 +294,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   loggedContent: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  loggedText: { fontSize: 14, fontWeight: '600', color: darkPalette.secondary },
+  loggedText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: darkPalette.secondary,
+  },
   fab: {
     position: 'absolute',
     bottom: 24,
