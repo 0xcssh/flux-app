@@ -124,12 +124,7 @@ export default function ProfileScreen() {
       </View>
 
       {/* Settings */}
-      <SettingsForm
-        initialNotificationTime={profile?.notification_time ?? '08:00'}
-        initialNofapEnabled={profile?.nofap_enabled ?? false}
-        initialLanguage={profile?.language ?? 'en'}
-        initialDarkMode={profile?.dark_mode ?? false}
-      />
+      <SettingsForm />
 
       {/* Export Button */}
       <ExportButton />
@@ -240,18 +235,20 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     flexDirection: 'row',
-    backgroundColor: '#7F1D1D',
+    backgroundColor: 'rgba(239, 68, 68, 0.15)',
     borderRadius: 12,
     paddingVertical: 14,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
     marginBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.3)',
   },
   logoutText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#EF4444',
+    color: '#F87171',
   },
   footer: {
     alignItems: 'center',

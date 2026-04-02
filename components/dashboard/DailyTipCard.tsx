@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { lightPalette } from '@/theme/colors';
+import { darkPalette } from '@/theme/colors';
 
 interface DailyTipCardProps {
   tipKey: string;
 }
 
-// Fallback tips in case i18n key is missing
 const FALLBACK_TIPS: Record<string, string> = {
   'tip.rise_early_hydrate': 'Start your day with water. Hydration supports testosterone production.',
   'tip.rise_plan_day': 'Energy is building. Plan your most important tasks now.',
@@ -30,7 +29,7 @@ export default function DailyTipCard({ tipKey }: DailyTipCardProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.icon}>{'\uD83D\uDCA1'}</Text>
+        <Text style={styles.icon}>💡</Text>
         <Text style={styles.title}>{t('daily_tip')}</Text>
       </View>
       <Text style={styles.tipText}>{displayText}</Text>
@@ -40,11 +39,13 @@ export default function DailyTipCard({ tipKey }: DailyTipCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F0F9FF',
+    backgroundColor: darkPalette.surface,
     borderRadius: 16,
     padding: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: lightPalette.primary,
+    borderLeftWidth: 3,
+    borderLeftColor: darkPalette.accent,
+    borderWidth: 1,
+    borderColor: darkPalette.border,
   },
   header: {
     flexDirection: 'row',
@@ -52,19 +53,18 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 8,
   },
-  icon: {
-    fontSize: 20,
-  },
+  icon: { fontSize: 20 },
   title: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: lightPalette.primary,
+    fontSize: 11,
+    fontWeight: '700',
+    color: darkPalette.accent,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 1,
   },
   tipText: {
     fontSize: 14,
     lineHeight: 21,
-    color: lightPalette.text,
+    color: darkPalette.text,
+    opacity: 0.9,
   },
 });

@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   buttonLocked: {
-    backgroundColor: '#94A3B8',
-    shadowColor: '#94A3B8',
+    backgroundColor: '#252540',
+    shadowColor: '#000',
   },
   buttonText: {
     fontSize: 16,

@@ -23,7 +23,7 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
     (set) => ({
       notificationTime: '08:00',
       language: 'en',
-      nofapEnabled: false,
+      nofapEnabled: true,
       darkMode: false,
       onboardingSeen: false,
 

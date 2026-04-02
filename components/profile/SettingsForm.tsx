@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Switch, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAuthStore } from '@/store/authStore';
@@ -8,19 +8,9 @@ import i18n from '@/i18n';
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 const MINUTES = [0, 15, 30, 45];
 
-interface SettingsFormProps {
-  initialNotificationTime?: string;
-  initialNofapEnabled?: boolean;
-  initialLanguage?: string;
-  initialDarkMode?: boolean;
-}
-
-export default function SettingsForm({
-  initialNotificationTime = '08:00',
-  initialNofapEnabled = false,
-  initialLanguage = 'en',
-  initialDarkMode = false,
-}: SettingsFormProps) {
+export default function SettingsForm() {
+  const initialNotificationTime = '08:00';
+  const initialLanguage = 'en';
   const { t } = useTranslation('profile');
   const updateProfile = useAuthStore((s) => s.updateProfile);
 
@@ -32,9 +22,7 @@ export default function SettingsForm({
     const parts = initialNotificationTime.split(':');
     return parseInt(parts[1], 10) || 0;
   });
-  const [nofapEnabled, setNofapEnabled] = useState(initialNofapEnabled);
   const [language, setLanguage] = useState(initialLanguage);
-  const [darkMode, setDarkMode] = useState(initialDarkMode);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const formatTime = (h: number, m: number) => {
@@ -50,27 +38,11 @@ export default function SettingsForm({
     [updateProfile],
   );
 
-  const handleNofapToggle = useCallback(
-    (value: boolean) => {
-      setNofapEnabled(value);
-      updateProfile({ nofap_enabled: value });
-    },
-    [updateProfile],
-  );
-
   const handleLanguageChange = useCallback(
     (lang: string) => {
       setLanguage(lang);
       i18n.changeLanguage(lang);
       updateProfile({ language: lang });
-    },
-    [updateProfile],
-  );
-
-  const handleDarkModeToggle = useCallback(
-    (value: boolean) => {
-      setDarkMode(value);
-      updateProfile({ dark_mode: value });
     },
     [updateProfile],
   );
@@ -178,37 +150,7 @@ export default function SettingsForm({
         </View>
       </View>
 
-      {/* NoFap Module Toggle */}
-      <View style={styles.settingRow}>
-        <View style={styles.settingLeft}>
-          <View style={styles.iconContainer}>
-            <FontAwesome name="shield" size={16} color="#0D9488" />
-          </View>
-          <Text style={styles.settingLabel}>{t('settings.nofap_module')}</Text>
-        </View>
-        <Switch
-          value={nofapEnabled}
-          onValueChange={handleNofapToggle}
-          trackColor={{ false: '#2A2A45', true: '#064E3B' }}
-          thumbColor={nofapEnabled ? '#22C55E' : '#5A5A7A'}
-        />
-      </View>
-
-      {/* Dark Mode Toggle */}
-      <View style={[styles.settingRow, styles.lastRow]}>
-        <View style={styles.settingLeft}>
-          <View style={styles.iconContainer}>
-            <FontAwesome name="moon-o" size={16} color="#6366F1" />
-          </View>
-          <Text style={styles.settingLabel}>{t('settings.dark_mode')}</Text>
-        </View>
-        <Switch
-          value={darkMode}
-          onValueChange={handleDarkModeToggle}
-          trackColor={{ false: '#2A2A45', true: '#312E81' }}
-          thumbColor={darkMode ? '#6366F1' : '#5A5A7A'}
-        />
-      </View>
+      {/* Language is the last row */}
     </View>
   );
 }
