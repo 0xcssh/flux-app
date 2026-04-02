@@ -1,0 +1,45 @@
+{
+  "title": "Suivi NoFap",
+  "current_streak": "Série actuelle",
+  "longest_streak": "Plus longue série",
+  "total_days": "Jours totaux",
+  "streak_label": "{{count}} jours",
+  "milestones": {
+    "7d": {
+      "name": "Une semaine",
+      "message": "Première semaine terminée ! La sensibilité des récepteurs de testostérone commence à augmenter."
+    },
+    "14d": {
+      "name": "Deux semaines",
+      "message": "Deux semaines de force ! Beaucoup rapportent une meilleure concentration et énergie à ce stade."
+    },
+    "30d": {
+      "name": "Un mois",
+      "message": "Un mois complet ! L'équilibre hormonal se stabilise. Vous pourriez remarquer une confiance améliorée."
+    },
+    "60d": {
+      "name": "Deux mois",
+      "message": "60 jours de discipline ! Des bénéfices hormonaux et neurologiques profonds s'installent."
+    },
+    "90d": {
+      "name": "Quatre-vingt-dix jours",
+      "message": "Les légendaires 90 jours ! Étape de réinitialisation complète atteinte. Engagement exceptionnel."
+    }
+  },
+  "reset_button": "Réinitialiser la série",
+  "reset_confirm": "Êtes-vous sûr ? Cela remettra votre série actuelle à 0.",
+  "reset_done": "Série réinitialisée. Chaque parcours commence au jour un.",
+  "correlations": {
+    "title": "Impact du NoFap",
+    "energy_boost": "Énergie pendant la série",
+    "mood_boost": "Humeur pendant la série",
+    "libido_change": "Tendance de la libido",
+    "sleep_impact": "Impact sur le sommeil"
+  },
+  "community": {
+    "title": "Comparaison communautaire",
+    "average_streak": "Série moyenne de la communauté",
+    "your_percentile": "Votre percentile",
+    "top_percent": "Top {{percent}}%"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "rise_tips": [
+    {
+      "en": "Your testosterone is climbing toward its daily peak. Hydrate well and prepare for your most productive hours.",
+      "fr": "Votre testosterone grimpe vers son pic quotidien. Hydratez-vous bien et preparez-vous pour vos heures les plus productives."
+    },
+    {
+      "en": "Great time to plan your day. Your brain is entering its sharpest cognitive window.",
+      "fr": "Excellent moment pour planifier votre journee. Votre cerveau entre dans sa fenetre cognitive la plus aiguisee."
+    },
+    {
+      "en": "Morning light exposure helps synchronize your circadian rhythm. Try to get 10 minutes of sunlight.",
+      "fr": "L'exposition a la lumiere du matin aide a synchroniser votre rythme circadien. Essayez d'obtenir 10 minutes de soleil."
+    },
+    {
+      "en": "Your cortisol awakening response is active. A protein-rich breakfast supports sustained energy.",
+      "fr": "Votre reponse de cortisol au reveil est active. Un petit-dejeuner riche en proteines soutient une energie durable."
+    },
+    {
+      "en": "This is your body's natural warm-up phase. Gentle movement or stretching can amplify the energy rise.",
+      "fr": "C'est la phase naturelle d'echauffement de votre corps. Un mouvement doux ou des etirements peuvent amplifier la montee d'energie."
+    }
+  ],
+  "peak_tips": [
+    {
+      "en": "You're in your peak performance window. Testosterone and cortisol are optimally balanced right now.",
+      "fr": "Vous etes dans votre fenetre de performance maximale. Testosterone et cortisol sont optimalement equilibres en ce moment."
+    },
+    {
+      "en": "Ideal time for an intense workout. Your strength and reaction time are at their daily best.",
+      "fr": "Moment ideal pour un entrainement intense. Votre force et votre temps de reaction sont a leur meilleur quotidien."
+    },
+    {
+      "en": "Schedule your most challenging tasks now. Decision-making and focus are at their peak.",
+      "fr": "Planifiez vos taches les plus difficiles maintenant. La prise de decision et la concentration sont a leur maximum."
+    },
+    {
+      "en": "Your competitive drive is highest during this window. Great for negotiations or presentations.",
+      "fr": "Votre esprit de competition est le plus eleve pendant cette fenetre. Ideal pour les negociations ou les presentations."
+    },
+    {
+      "en": "This is when your body is most anabolic. Resistance training now may yield the best hormonal response.",
+      "fr": "C'est le moment ou votre corps est le plus anabolique. L'entrainement en resistance maintenant peut donner la meilleure reponse hormonale."
+    }
+  ],
+  "decline_tips": [
+    {
+      "en": "Energy naturally winding down. This is normal circadian physiology, not a personal failing.",
+      "fr": "L'energie diminue naturellement. C'est la physiologie circadienne normale, pas un echec personnel."
+    },
+    {
+      "en": "Good time for creative work. Research shows divergent thinking can improve as alertness decreases.",
+      "fr": "Bon moment pour le travail creatif. La recherche montre que la pensee divergente peut s'ameliorer a mesure que la vigilance diminue."
+    },
+    {
+      "en": "Consider switching to lighter tasks. Your body is naturally transitioning toward recovery mode.",
+      "fr": "Envisagez de passer a des taches plus legeres. Votre corps transite naturellement vers le mode de recuperation."
+    },
+    {
+      "en": "A short walk outdoors can provide a natural energy boost without disrupting tonight's sleep.",
+      "fr": "Une courte promenade en plein air peut fournir un regain d'energie naturel sans perturber le sommeil de ce soir."
+    },
+    {
+      "en": "Avoid caffeine from now on. It takes 6-8 hours to clear and will compromise tonight's testosterone recovery.",
+      "fr": "Evitez la cafeine a partir de maintenant. Il faut 6-8 heures pour l'eliminer et cela compromettra la recuperation de testosterone de ce soir."
+    }
+  ],
+  "recovery_tips": [
+    {
+      "en": "Rest is productive. Your body is preparing for the nocturnal testosterone surge that happens during deep sleep.",
+      "fr": "Le repos est productif. Votre corps se prepare pour la montee nocturne de testosterone qui se produit pendant le sommeil profond."
+    },
+    {
+      "en": "Quality sleep tonight means better testosterone tomorrow. Aim for 7-9 hours in a cool, dark room.",
+      "fr": "Un sommeil de qualite ce soir signifie une meilleure testosterone demain. Visez 7-9 heures dans une piece fraiche et sombre."
+    },
+    {
+      "en": "Screen light suppresses melatonin. Consider dimming devices or using blue light filters.",
+      "fr": "La lumiere des ecrans supprime la melatonine. Envisagez de baisser la luminosite ou d'utiliser des filtres de lumiere bleue."
+    },
+    {
+      "en": "Your parasympathetic nervous system should be dominant now. Deep breathing or meditation supports this transition.",
+      "fr": "Votre systeme nerveux parasympathique devrait etre dominant maintenant. La respiration profonde ou la meditation soutient cette transition."
+    },
+    {
+      "en": "The first 3 hours of sleep are critical for LH release and testosterone production. Protect your sleep onset.",
+      "fr": "Les 3 premieres heures de sommeil sont critiques pour la liberation de LH et la production de testosterone. Protegez votre endormissement."
+    }
+  ]
+}

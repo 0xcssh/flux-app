@@ -1,0 +1,33 @@
+{
+  "title": "Analyses",
+  "sections": {
+    "correlations": "Corrélations",
+    "patterns": "Tendances",
+    "recommendations": "Recommandations",
+    "trends": "Évolutions"
+  },
+  "correlations": {
+    "sleep_energy": "Votre qualité de sommeil est fortement corrélée avec votre niveau d'énergie du lendemain.",
+    "stress_mood": "Les jours de stress élevé tendent à diminuer votre humeur de {{value}} points en moyenne.",
+    "training_libido": "Les jours d'entraînement modéré montrent les meilleurs scores de libido.",
+    "nofap_energy": "Votre énergie tend à être {{percent}}% plus élevée pendant les périodes de NoFap.",
+    "sleep_mood": "Un meilleur sommeil est associé à une amélioration de l'humeur le lendemain.",
+    "training_sleep": "Les jours d'entraînement sont corrélés avec une meilleure qualité de sommeil."
+  },
+  "patterns": {
+    "weekly_high": "Votre {{metric}} tend à atteindre son pic le {{day}}.",
+    "weekly_low": "Votre {{metric}} tend à être au plus bas le {{day}}.",
+    "cycle_position": "Vous êtes dans la phase de {{phase}} de votre cycle.",
+    "upcoming_peak": "D'après vos données, attendez-vous à un pic dans environ {{days}} jours.",
+    "streak_impact": "Votre série actuelle a un impact positif sur votre score de vitalité."
+  },
+  "recommendations": {
+    "sleep_more": "Essayez de dormir davantage ce soir. Votre score de sommeil a été en dessous de la moyenne.",
+    "reduce_stress": "Envisagez une activité anti-stress aujourd'hui. Votre stress a été élevé.",
+    "train_today": "Aujourd'hui est un bon jour pour un entraînement intense selon votre cycle.",
+    "rest_day": "Votre corps pourrait bénéficier d'un jour de repos selon les tendances récentes.",
+    "keep_streak": "Votre série NoFap améliore vos statistiques. Continuez !"
+  },
+  "premium_gate": "Débloquez des analyses détaillées et des recommandations personnalisées avec Premium.",
+  "minimum_data_required": "Enregistrez quotidiennement pendant au moins 14 jours pour débloquer des analyses personnalisées."
+}

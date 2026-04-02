@@ -1,0 +1,30 @@
+{
+  "title": "Daily Log",
+  "subtitle": "How are you feeling today?",
+  "labels": {
+    "energy": "Energy Level",
+    "mood": "Mood",
+    "libido": "Libido",
+    "sleep_quality": "Sleep Quality",
+    "stress": "Stress Level",
+    "training": "Training Intensity"
+  },
+  "hints": {
+    "energy": "1 = Exhausted, 10 = Unstoppable",
+    "mood": "1 = Very low, 10 = Excellent",
+    "libido": "1 = Very low, 10 = Very high",
+    "sleep_quality": "1 = Terrible, 10 = Perfect",
+    "stress": "1 = No stress, 10 = Extremely stressed",
+    "training": "1 = Rest day, 10 = Max effort"
+  },
+  "notes_placeholder": "Add any notes about your day (optional)...",
+  "nofap_checkbox": "NoFap day (no PMO)",
+  "submit": "Save Today's Log",
+  "success": "Log saved! Keep the streak going.",
+  "already_logged": "You've already logged today. Want to update?",
+  "update": "Update Log",
+  "reminder": {
+    "title": "Time to log!",
+    "body": "Take 30 seconds to track how you're feeling today."
+  }
+}

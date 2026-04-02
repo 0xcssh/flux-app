@@ -1,0 +1,45 @@
+{
+  "title": "NoFap Tracker",
+  "current_streak": "Current Streak",
+  "longest_streak": "Longest Streak",
+  "total_days": "Total Days",
+  "streak_label": "{{count}} days",
+  "milestones": {
+    "7d": {
+      "name": "One Week",
+      "message": "First week complete! Testosterone receptor sensitivity begins to increase."
+    },
+    "14d": {
+      "name": "Two Weeks",
+      "message": "Two weeks strong! Many report improved focus and energy by now."
+    },
+    "30d": {
+      "name": "One Month",
+      "message": "A full month! Hormonal balance is stabilizing. You may notice improved confidence."
+    },
+    "60d": {
+      "name": "Two Months",
+      "message": "60 days of discipline! Deep hormonal and neurological benefits are taking hold."
+    },
+    "90d": {
+      "name": "Ninety Days",
+      "message": "The legendary 90 days! Full reboot milestone reached. Outstanding commitment."
+    }
+  },
+  "reset_button": "Reset Streak",
+  "reset_confirm": "Are you sure? This will reset your current streak to 0.",
+  "reset_done": "Streak reset. Every journey starts with day one.",
+  "correlations": {
+    "title": "NoFap Impact",
+    "energy_boost": "Energy on streak days",
+    "mood_boost": "Mood on streak days",
+    "libido_change": "Libido trend",
+    "sleep_impact": "Sleep quality impact"
+  },
+  "community": {
+    "title": "Community Comparison",
+    "average_streak": "Community Average Streak",
+    "your_percentile": "Your Percentile",
+    "top_percent": "Top {{percent}}%"
+  }
+}

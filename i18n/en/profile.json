@@ -1,0 +1,41 @@
+{
+  "title": "Profile",
+  "sections": {
+    "history": "History",
+    "settings": "Settings",
+    "subscription": "Subscription",
+    "about": "About"
+  },
+  "settings": {
+    "notifications": "Daily Reminder",
+    "notification_time": "Reminder Time",
+    "language": "Language",
+    "nofap_module": "NoFap Module",
+    "dark_mode": "Dark Mode",
+    "data_export": "Export My Data"
+  },
+  "plans": {
+    "free": "Free",
+    "premium": "Premium",
+    "pro": "Pro"
+  },
+  "plan_descriptions": {
+    "free": "7-day history, basic dashboard",
+    "premium": "Full history, insights, cycle analysis",
+    "pro": "Everything in Premium + PDF reports, priority support"
+  },
+  "current_plan": "Current Plan",
+  "upgrade_cta": "Upgrade Plan",
+  "trial_active": "Trial active — {{days}} days remaining",
+  "export_button": "Export as CSV",
+  "export_pdf": "Export as PDF",
+  "logout": "Log Out",
+  "logout_confirm": "Are you sure you want to log out?",
+  "delete_account": "Delete Account",
+  "delete_confirm": "This action is permanent and cannot be undone. All your data will be deleted.",
+  "version": "Version {{version}}",
+  "languages": {
+    "en": "English",
+    "fr": "French"
+  }
+}

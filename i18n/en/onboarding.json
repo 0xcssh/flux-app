@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "title": "Welcome to Flux",
+    "subtitle": "Your hormonal rhythm tracker",
+    "description": "Flux helps you understand and track the natural hormonal cycles that affect your energy, mood, and performance every day."
+  },
+  "circadian": {
+    "title": "Your 24-Hour Cycle",
+    "description": "Testosterone follows a daily rhythm — peaking in the morning and dipping in the evening. Understanding this pattern helps you optimize your schedule for peak performance."
+  },
+  "infradian": {
+    "title": "Your Monthly Rhythm",
+    "description": "Beyond the daily cycle, men experience longer hormonal fluctuations spanning roughly 20-30 days. Tracking these patterns reveals why some weeks feel better than others."
+  },
+  "setup": {
+    "title": "Personalize Your Experience",
+    "notification_prompt": "Enable daily reminders to build a consistent logging habit?",
+    "nofap_prompt": "Would you like to enable the NoFap tracking module?",
+    "nofap_description": "Track retention streaks and see how they correlate with your vitality metrics."
+  },
+  "trial": {
+    "title": "Try Premium Free for 7 Days",
+    "features": [
+      "Full cycle analysis and predictions",
+      "Advanced insights and correlations",
+      "Unlimited history access",
+      "PDF report exports",
+      "Priority support"
+    ],
+    "cta": "Start Free Trial",
+    "skip": "Continue with Free Plan"
+  }
+}

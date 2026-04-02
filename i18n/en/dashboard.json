@@ -1,0 +1,45 @@
+{
+  "vitality_score": "Vitality Score",
+  "score_label": "Your overall vitality today",
+  "indicators": {
+    "energy": "Energy",
+    "mood": "Mood",
+    "libido": "Libido",
+    "sleep": "Sleep Quality",
+    "stress": "Stress",
+    "training": "Training"
+  },
+  "phases": {
+    "rise": {
+      "name": "Rise",
+      "description": "Energy and drive are building. Great time to start new projects and push harder in training."
+    },
+    "peak": {
+      "name": "Peak",
+      "description": "You're at your highest. Maximize performance, social engagements, and challenging workouts."
+    },
+    "decline": {
+      "name": "Decline",
+      "description": "Energy is winding down. Focus on maintenance, strategy, and lighter activity."
+    },
+    "recovery": {
+      "name": "Recovery",
+      "description": "Your body is resetting. Prioritize rest, recovery work, and reflection."
+    }
+  },
+  "daily_tip": "Daily Tip",
+  "log_today_cta": "Log today's metrics",
+  "logged_today": "Today's log complete",
+  "current_phase": "Current Phase",
+  "streak": "Logging Streak",
+  "streak_days": "{{count}} day streak",
+  "tip.rise_early_hydrate": "Start your day with water. Hydration supports testosterone production and morning cortisol regulation.",
+  "tip.rise_plan_day": "Energy is building. Plan your most important tasks and challenges for the next few hours.",
+  "tip.peak_morning_workout": "Peak testosterone window. Ideal time for strength training and high-intensity exercise.",
+  "tip.peak_focus_work": "You are at peak cognitive and physical performance. Tackle your hardest challenges now.",
+  "tip.decline_light_activity": "Energy is naturally declining. Switch to lighter tasks, creative work, or moderate exercise.",
+  "tip.decline_wind_down": "Start winding down. Avoid intense stimulation and bright screens before evening.",
+  "tip.recovery_sleep": "Prioritize sleep now. Growth hormone surges during deep sleep, supporting recovery and vitality.",
+  "tip.recovery_relax": "Rest and recovery are essential. Your body is resetting hormonal cycles for tomorrow.",
+  "nofap_streak": "NoFap Streak"
+}

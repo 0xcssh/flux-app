@@ -1,0 +1,34 @@
+{
+  "tabs": {
+    "circadian": "24h",
+    "infradian": "30 Jours"
+  },
+  "circadian": {
+    "title": "Rythme Circadien",
+    "description": "Votre cycle hormonal de 24 heures. La testostérone atteint son pic le matin et diminue progressivement au cours de la journée.",
+    "morning_peak": "Pic matinal",
+    "afternoon_dip": "Creux de l'après-midi",
+    "evening_low": "Bas du soir",
+    "optimal_window": "Fenêtre optimale"
+  },
+  "infradian": {
+    "title": "Rythme Infradien",
+    "description": "Votre cycle hormonal plus long s'étendant sur environ 20 à 30 jours. Comme les femmes ont des cycles mensuels, les hommes connaissent des fluctuations de testostérone et d'autres hormones.",
+    "cycle_length": "Durée du cycle",
+    "current_day": "Jour {{day}} sur {{total}}",
+    "estimated": "Estimé à partir de vos données"
+  },
+  "phase_labels": {
+    "rise": "Phase de montée",
+    "peak": "Phase de pic",
+    "decline": "Phase de déclin",
+    "recovery": "Phase de récupération"
+  },
+  "comparison": {
+    "vs_yesterday": "vs. Hier",
+    "vs_last_week": "vs. Semaine dernière",
+    "vs_cycle_avg": "vs. Moyenne du cycle"
+  },
+  "premium_required": "Passez à Premium pour voir l'analyse complète de votre cycle et les tendances historiques.",
+  "not_enough_data": "Continuez à enregistrer quotidiennement pour voir vos schémas cycliques. Nous avons besoin d'au moins 14 jours de données."
+}

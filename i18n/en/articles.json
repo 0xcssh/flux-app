@@ -1,0 +1,45 @@
+{
+  "title": "Learn",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Understanding Testosterone: The Basics",
+      "description": "Learn what testosterone does, how it's produced, and why it matters for your daily energy and performance."
+    },
+    "circadian_rhythm": {
+      "title": "Your 24-Hour Hormonal Clock",
+      "description": "Discover how testosterone and cortisol fluctuate throughout the day and how to work with your body's natural rhythm."
+    },
+    "infradian_cycles": {
+      "title": "Men Have Monthly Cycles Too",
+      "description": "The science behind male infradian rhythms and why you feel different week to week."
+    },
+    "sleep_hormones": {
+      "title": "Sleep: The #1 Hormone Optimizer",
+      "description": "How sleep quality directly impacts testosterone production and what you can do to improve it."
+    },
+    "exercise_testosterone": {
+      "title": "Exercise and Hormonal Health",
+      "description": "Which types of exercise boost testosterone, how much is optimal, and when overtraining hurts."
+    },
+    "stress_cortisol": {
+      "title": "Stress, Cortisol, and Your Vitality",
+      "description": "Understanding the testosterone-cortisol relationship and practical stress management techniques."
+    },
+    "nutrition_hormones": {
+      "title": "Nutrition for Hormonal Balance",
+      "description": "Key nutrients, foods, and dietary patterns that support healthy testosterone levels."
+    },
+    "nofap_science": {
+      "title": "The Science of Retention",
+      "description": "What research says about ejaculation frequency, testosterone levels, and androgen receptor sensitivity."
+    },
+    "mood_energy_connection": {
+      "title": "The Mood-Energy Connection",
+      "description": "How hormones drive your emotional state and what your mood patterns reveal about your hormonal health."
+    },
+    "building_habits": {
+      "title": "Building a Tracking Habit",
+      "description": "Tips for consistent daily logging and how data over time unlocks powerful insights about your body."
+    }
+  }
+}

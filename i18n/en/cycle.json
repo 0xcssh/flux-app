@@ -1,0 +1,34 @@
+{
+  "tabs": {
+    "circadian": "24h",
+    "infradian": "30 Days"
+  },
+  "circadian": {
+    "title": "Circadian Rhythm",
+    "description": "Your 24-hour hormonal cycle. Testosterone peaks in the morning and gradually declines throughout the day.",
+    "morning_peak": "Morning Peak",
+    "afternoon_dip": "Afternoon Dip",
+    "evening_low": "Evening Low",
+    "optimal_window": "Optimal Window"
+  },
+  "infradian": {
+    "title": "Infradian Rhythm",
+    "description": "Your longer hormonal cycle spanning roughly 20-30 days. Similar to how women have monthly cycles, men experience fluctuations in testosterone and other hormones.",
+    "cycle_length": "Cycle Length",
+    "current_day": "Day {{day}} of {{total}}",
+    "estimated": "Estimated from your data"
+  },
+  "phase_labels": {
+    "rise": "Rise Phase",
+    "peak": "Peak Phase",
+    "decline": "Decline Phase",
+    "recovery": "Recovery Phase"
+  },
+  "comparison": {
+    "vs_yesterday": "vs. Yesterday",
+    "vs_last_week": "vs. Last Week",
+    "vs_cycle_avg": "vs. Cycle Average"
+  },
+  "premium_required": "Upgrade to Premium to see your full cycle analysis and historical trends.",
+  "not_enough_data": "Keep logging daily to see your cycle patterns. We need at least 14 days of data."
+}

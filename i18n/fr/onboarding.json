@@ -1,0 +1,33 @@
+{
+  "welcome": {
+    "title": "Bienvenue sur Flux",
+    "subtitle": "Votre suivi de rythme hormonal",
+    "description": "Flux vous aide à comprendre et suivre les cycles hormonaux naturels qui affectent votre énergie, votre humeur et vos performances au quotidien."
+  },
+  "circadian": {
+    "title": "Votre Cycle de 24 Heures",
+    "description": "La testostérone suit un rythme quotidien — avec un pic le matin et une baisse le soir. Comprendre ce schéma vous aide à optimiser votre emploi du temps pour des performances maximales."
+  },
+  "infradian": {
+    "title": "Votre Rythme Mensuel",
+    "description": "Au-delà du cycle quotidien, les hommes connaissent des fluctuations hormonales plus longues s'étendant sur environ 20 à 30 jours. Suivre ces schémas révèle pourquoi certaines semaines semblent meilleures que d'autres."
+  },
+  "setup": {
+    "title": "Personnalisez Votre Expérience",
+    "notification_prompt": "Activer les rappels quotidiens pour construire une habitude de suivi régulière ?",
+    "nofap_prompt": "Souhaitez-vous activer le module de suivi NoFap ?",
+    "nofap_description": "Suivez vos séries de rétention et voyez comment elles sont corrélées avec vos métriques de vitalité."
+  },
+  "trial": {
+    "title": "Essayez Premium gratuitement pendant 7 jours",
+    "features": [
+      "Analyse complète du cycle et prédictions",
+      "Analyses avancées et corrélations",
+      "Accès illimité à l'historique",
+      "Exportation de rapports PDF",
+      "Support prioritaire"
+    ],
+    "cta": "Commencer l'essai gratuit",
+    "skip": "Continuer avec le plan gratuit"
+  }
+}

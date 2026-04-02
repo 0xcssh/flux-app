@@ -1,0 +1,45 @@
+{
+  "vitality_score": "Score de Vitalité",
+  "score_label": "Votre vitalité globale aujourd'hui",
+  "indicators": {
+    "energy": "Énergie",
+    "mood": "Humeur",
+    "libido": "Libido",
+    "sleep": "Qualité du sommeil",
+    "stress": "Stress",
+    "training": "Entraînement"
+  },
+  "phases": {
+    "rise": {
+      "name": "Montée",
+      "description": "L'énergie et la motivation augmentent. Bon moment pour démarrer de nouveaux projets et intensifier l'entraînement."
+    },
+    "peak": {
+      "name": "Pic",
+      "description": "Vous êtes à votre maximum. Maximisez les performances, les activités sociales et les entraînements exigeants."
+    },
+    "decline": {
+      "name": "Déclin",
+      "description": "L'énergie diminue progressivement. Concentrez-vous sur l'entretien, la stratégie et les activités légères."
+    },
+    "recovery": {
+      "name": "Récupération",
+      "description": "Votre corps se réinitialise. Priorisez le repos, la récupération et la réflexion."
+    }
+  },
+  "daily_tip": "Conseil du jour",
+  "log_today_cta": "Enregistrer les métriques du jour",
+  "logged_today": "Journal du jour complété",
+  "current_phase": "Phase actuelle",
+  "streak": "Série d'enregistrements",
+  "streak_days": "Série de {{count}} jours",
+  "tip.rise_early_hydrate": "Commencez la journée en vous hydratant. L'eau soutient la production de testostérone et la régulation du cortisol matinal.",
+  "tip.rise_plan_day": "L'énergie monte. Planifiez vos tâches les plus importantes pour les prochaines heures.",
+  "tip.peak_morning_workout": "Fenêtre de testostérone maximale. Moment idéal pour la musculation et l'exercice intense.",
+  "tip.peak_focus_work": "Performance cognitive et physique au sommet. Attaquez vos plus grands défis maintenant.",
+  "tip.decline_light_activity": "L'énergie décline naturellement. Passez aux tâches plus légères ou à l'exercice modéré.",
+  "tip.decline_wind_down": "Commencez à vous détendre. Évitez les stimulations intenses et les écrans avant le soir.",
+  "tip.recovery_sleep": "Priorisez le sommeil. L'hormone de croissance augmente pendant le sommeil profond.",
+  "tip.recovery_relax": "Le repos est essentiel. Votre corps réinitialise ses cycles hormonaux pour demain.",
+  "nofap_streak": "Série NoFap"
+}

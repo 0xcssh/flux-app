@@ -1,0 +1,67 @@
+{
+  "app_name": "Flux",
+  "tagline": "Suivez votre rythme. Maîtrisez votre énergie.",
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "cycle": "Mon Cycle",
+    "log": "Journal",
+    "insights": "Analyses",
+    "profile": "Profil"
+  },
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "skip": "Passer",
+    "get_started": "Commencer",
+    "upgrade": "Améliorer",
+    "retry": "Réessayer",
+    "done": "Terminé",
+    "back": "Retour",
+    "next": "Suivant",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "close": "Fermer"
+  },
+  "status": {
+    "loading": "Chargement...",
+    "saving": "Enregistrement...",
+    "success": "Succès !",
+    "error": "Une erreur est survenue",
+    "no_data": "Aucune donnée",
+    "offline": "Vous êtes hors ligne"
+  },
+  "errors": {
+    "generic": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "network": "Erreur réseau. Vérifiez votre connexion.",
+    "auth_required": "Veuillez vous connecter pour continuer.",
+    "invalid_email": "Veuillez entrer une adresse email valide.",
+    "password_short": "Le mot de passe doit contenir au moins 6 caractères.",
+    "passwords_mismatch": "Les mots de passe ne correspondent pas.",
+    "field_required": "Ce champ est requis."
+  },
+  "auth": {
+    "login": "Se connecter",
+    "signup": "S'inscrire",
+    "logout": "Se déconnecter",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "reset_password": "Réinitialiser le mot de passe",
+    "no_account": "Pas encore de compte ?",
+    "have_account": "Déjà un compte ?",
+    "reset_sent": "Email de réinitialisation envoyé. Vérifiez votre boîte de réception.",
+    "welcome_back": "Bon retour",
+    "create_account": "Créez votre compte"
+  },
+  "time": {
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "this_week": "Cette semaine",
+    "this_month": "Ce mois",
+    "days": "jours",
+    "hours": "heures",
+    "minutes": "minutes"
+  }
+}

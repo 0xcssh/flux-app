@@ -1,0 +1,33 @@
+{
+  "title": "Insights",
+  "sections": {
+    "correlations": "Correlations",
+    "patterns": "Patterns",
+    "recommendations": "Recommendations",
+    "trends": "Trends"
+  },
+  "correlations": {
+    "sleep_energy": "Your sleep quality strongly correlates with next-day energy levels.",
+    "stress_mood": "Higher stress days tend to lower your mood by an average of {{value}} points.",
+    "training_libido": "Moderate training days show the best libido scores.",
+    "nofap_energy": "Your energy tends to be {{percent}}% higher during NoFap streaks.",
+    "sleep_mood": "Better sleep quality is associated with improved mood the following day.",
+    "training_sleep": "Training days correlate with better sleep quality."
+  },
+  "patterns": {
+    "weekly_high": "Your {{metric}} tends to peak on {{day}}s.",
+    "weekly_low": "Your {{metric}} tends to be lowest on {{day}}s.",
+    "cycle_position": "You're in the {{phase}} phase of your cycle.",
+    "upcoming_peak": "Based on your data, expect a peak in about {{days}} days.",
+    "streak_impact": "Your current streak is positively impacting your vitality score."
+  },
+  "recommendations": {
+    "sleep_more": "Try to get more sleep tonight. Your sleep score has been below average.",
+    "reduce_stress": "Consider a stress-reducing activity today. Your stress has been elevated.",
+    "train_today": "Today is a good day for an intense workout based on your cycle.",
+    "rest_day": "Your body might benefit from a rest day based on recent trends.",
+    "keep_streak": "Your NoFap streak is boosting your stats. Keep it going!"
+  },
+  "premium_gate": "Unlock detailed insights and AI-powered recommendations with Premium.",
+  "minimum_data_required": "Log daily for at least 14 days to unlock personalized insights."
+}

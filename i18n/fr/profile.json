@@ -1,0 +1,41 @@
+{
+  "title": "Profil",
+  "sections": {
+    "history": "Historique",
+    "settings": "Paramètres",
+    "subscription": "Abonnement",
+    "about": "À propos"
+  },
+  "settings": {
+    "notifications": "Rappel quotidien",
+    "notification_time": "Heure du rappel",
+    "language": "Langue",
+    "nofap_module": "Module NoFap",
+    "dark_mode": "Mode sombre",
+    "data_export": "Exporter mes données"
+  },
+  "plans": {
+    "free": "Gratuit",
+    "premium": "Premium",
+    "pro": "Pro"
+  },
+  "plan_descriptions": {
+    "free": "Historique de 7 jours, tableau de bord basique",
+    "premium": "Historique complet, analyses, analyse du cycle",
+    "pro": "Tout Premium + rapports PDF, support prioritaire"
+  },
+  "current_plan": "Plan actuel",
+  "upgrade_cta": "Améliorer le plan",
+  "trial_active": "Essai actif — {{days}} jours restants",
+  "export_button": "Exporter en CSV",
+  "export_pdf": "Exporter en PDF",
+  "logout": "Se déconnecter",
+  "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "delete_account": "Supprimer le compte",
+  "delete_confirm": "Cette action est permanente et irréversible. Toutes vos données seront supprimées.",
+  "version": "Version {{version}}",
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français"
+  }
+}

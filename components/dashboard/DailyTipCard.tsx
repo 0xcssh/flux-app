@@ -1,0 +1,70 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { lightPalette } from '@/theme/colors';
+
+interface DailyTipCardProps {
+  tipKey: string;
+}
+
+// Fallback tips in case i18n key is missing
+const FALLBACK_TIPS: Record<string, string> = {
+  'tip.rise_early_hydrate': 'Start your day with water. Hydration supports testosterone production.',
+  'tip.rise_plan_day': 'Energy is building. Plan your most important tasks now.',
+  'tip.peak_morning_workout': 'Peak testosterone window. Ideal time for strength training.',
+  'tip.peak_focus_work': 'You are at peak performance. Tackle your hardest challenges.',
+  'tip.decline_light_activity': 'Energy is declining. Switch to lighter tasks and activities.',
+  'tip.decline_wind_down': 'Start winding down. Avoid intense stimulation before evening.',
+  'tip.recovery_sleep': 'Prioritize sleep. Growth hormone surges during deep sleep.',
+  'tip.recovery_relax': 'Rest and recovery are essential. Your body is resetting.',
+};
+
+export default function DailyTipCard({ tipKey }: DailyTipCardProps) {
+  const { t } = useTranslation('dashboard');
+
+  const tipText = t(tipKey, { defaultValue: '' });
+  const displayText = tipText && tipText !== tipKey
+    ? tipText
+    : FALLBACK_TIPS[tipKey] || 'Track your daily metrics to receive personalized tips.';
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.icon}>{'\uD83D\uDCA1'}</Text>
+        <Text style={styles.title}>{t('daily_tip')}</Text>
+      </View>
+      <Text style={styles.tipText}>{displayText}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#F0F9FF',
+    borderRadius: 16,
+    padding: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: lightPalette.primary,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  icon: {
+    fontSize: 20,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: lightPalette.primary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  tipText: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: lightPalette.text,
+  },
+});

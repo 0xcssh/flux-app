@@ -1,0 +1,30 @@
+{
+  "title": "Journal Quotidien",
+  "subtitle": "Comment vous sentez-vous aujourd'hui ?",
+  "labels": {
+    "energy": "Niveau d'énergie",
+    "mood": "Humeur",
+    "libido": "Libido",
+    "sleep_quality": "Qualité du sommeil",
+    "stress": "Niveau de stress",
+    "training": "Intensité d'entraînement"
+  },
+  "hints": {
+    "energy": "1 = Épuisé, 10 = Inarrêtable",
+    "mood": "1 = Très bas, 10 = Excellent",
+    "libido": "1 = Très faible, 10 = Très élevée",
+    "sleep_quality": "1 = Terrible, 10 = Parfait",
+    "stress": "1 = Aucun stress, 10 = Extrêmement stressé",
+    "training": "1 = Jour de repos, 10 = Effort maximal"
+  },
+  "notes_placeholder": "Ajoutez des notes sur votre journée (optionnel)...",
+  "nofap_checkbox": "Jour NoFap (pas de PMO)",
+  "submit": "Enregistrer le journal du jour",
+  "success": "Journal enregistré ! Continuez sur votre lancée.",
+  "already_logged": "Vous avez déjà enregistré aujourd'hui. Voulez-vous mettre à jour ?",
+  "update": "Mettre à jour le journal",
+  "reminder": {
+    "title": "C'est l'heure du journal !",
+    "body": "Prenez 30 secondes pour noter comment vous vous sentez aujourd'hui."
+  }
+}

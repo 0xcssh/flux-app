@@ -1,0 +1,45 @@
+{
+  "title": "Apprendre",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Comprendre la testostérone : les bases",
+      "description": "Découvrez ce que fait la testostérone, comment elle est produite et pourquoi elle est importante pour votre énergie et vos performances quotidiennes."
+    },
+    "circadian_rhythm": {
+      "title": "Votre horloge hormonale de 24 heures",
+      "description": "Découvrez comment la testostérone et le cortisol fluctuent au cours de la journée et comment travailler avec le rythme naturel de votre corps."
+    },
+    "infradian_cycles": {
+      "title": "Les hommes aussi ont des cycles mensuels",
+      "description": "La science derrière les rythmes infradiens masculins et pourquoi vous vous sentez différemment d'une semaine à l'autre."
+    },
+    "sleep_hormones": {
+      "title": "Le sommeil : optimiseur hormonal n°1",
+      "description": "Comment la qualité du sommeil impacte directement la production de testostérone et ce que vous pouvez faire pour l'améliorer."
+    },
+    "exercise_testosterone": {
+      "title": "Exercice et santé hormonale",
+      "description": "Quels types d'exercice augmentent la testostérone, quelle quantité est optimale et quand le surentraînement nuit."
+    },
+    "stress_cortisol": {
+      "title": "Stress, cortisol et votre vitalité",
+      "description": "Comprendre la relation testostérone-cortisol et les techniques pratiques de gestion du stress."
+    },
+    "nutrition_hormones": {
+      "title": "Nutrition pour l'équilibre hormonal",
+      "description": "Nutriments clés, aliments et habitudes alimentaires qui soutiennent des niveaux sains de testostérone."
+    },
+    "nofap_science": {
+      "title": "La science de la rétention",
+      "description": "Ce que la recherche dit sur la fréquence d'éjaculation, les niveaux de testostérone et la sensibilité des récepteurs androgènes."
+    },
+    "mood_energy_connection": {
+      "title": "Le lien humeur-énergie",
+      "description": "Comment les hormones influencent votre état émotionnel et ce que vos schémas d'humeur révèlent sur votre santé hormonale."
+    },
+    "building_habits": {
+      "title": "Construire une habitude de suivi",
+      "description": "Conseils pour un enregistrement quotidien régulier et comment les données dans le temps révèlent des informations puissantes sur votre corps."
+    }
+  }
+}
