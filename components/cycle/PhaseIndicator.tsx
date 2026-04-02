@@ -10,10 +10,10 @@ interface PhaseIndicatorProps {
 }
 
 const PHASES: { key: PhaseType; color: string; dimColor: string }[] = [
-  { key: 'rise', color: '#3B82F6', dimColor: '#172554' },
-  { key: 'peak', color: '#22C55E', dimColor: '#064E3B' },
-  { key: 'decline', color: '#F59E0B', dimColor: '#78350F' },
-  { key: 'recovery', color: '#8B5CF6', dimColor: '#1E1B4B' },
+  { key: 'rise', color: '#3B82F6', dimColor: '#2563EB50' },
+  { key: 'peak', color: '#22C55E', dimColor: '#16A34A50' },
+  { key: 'decline', color: '#F59E0B', dimColor: '#D9770650' },
+  { key: 'recovery', color: '#A78BFA', dimColor: '#7C3AED50' },
 ];
 
 export default function PhaseIndicator({ currentPhase, progress }: PhaseIndicatorProps) {

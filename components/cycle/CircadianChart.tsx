@@ -58,20 +58,20 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
   const currentIdx = Math.min(Math.floor((hour / 24) * curveData.length), curveData.length - 1);
   const currentY = PADDING.top + (1 - (curveData[currentIdx]?.value ?? 0.5)) * plotH;
 
-  // Phase background zones
+  // Phase background zones — brighter for visibility
   const phases = [
-    { start: 0, end: 4, color: '#1E1B4B' },
-    { start: 4, end: 8, color: '#172554' },
-    { start: 8, end: 12, color: '#064E3B' },
-    { start: 12, end: 20, color: '#78350F' },
-    { start: 20, end: 24, color: '#1E1B4B' },
+    { start: 0, end: 4, color: '#312E81' },     // recovery - purple
+    { start: 4, end: 8, color: '#1E3A5F' },      // rise - blue
+    { start: 8, end: 12, color: '#14532D' },      // peak - green
+    { start: 12, end: 20, color: '#713F12' },     // decline - amber
+    { start: 20, end: 24, color: '#312E81' },     // recovery - purple
   ];
 
   const phaseLabels = [
-    { label: t('phase_labels.rise'), color: '#172554' },
-    { label: t('phase_labels.peak'), color: '#064E3B' },
-    { label: t('phase_labels.decline'), color: '#78350F' },
-    { label: t('phase_labels.recovery'), color: '#1E1B4B' },
+    { label: t('phase_labels.rise'), color: '#3B82F6', bg: '#1E3A5F' },
+    { label: t('phase_labels.peak'), color: '#22C55E', bg: '#14532D' },
+    { label: t('phase_labels.decline'), color: '#F59E0B', bg: '#713F12' },
+    { label: t('phase_labels.recovery'), color: '#A78BFA', bg: '#312E81' },
   ];
 
   const xLabels = [0, 6, 12, 18, 24];
@@ -84,8 +84,8 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
 
       <View style={styles.phaseLabelsRow}>
         {phaseLabels.map((p) => (
-          <View key={p.label} style={[styles.phaseLabel, { backgroundColor: p.color }]}>
-            <Text style={styles.phaseLabelText}>{p.label}</Text>
+          <View key={p.label} style={[styles.phaseLabel, { backgroundColor: p.bg, borderColor: p.color + '40' }]}>
+            <Text style={[styles.phaseLabelText, { color: p.color }]}>{p.label}</Text>
           </View>
         ))}
       </View>
@@ -184,14 +184,14 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   phaseLabel: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
   },
   phaseLabelText: {
     fontSize: 11,
-    fontWeight: '600',
-    color: darkPalette.textSecondary,
+    fontWeight: '700',
   },
   currentTimeRow: {
     flexDirection: 'row',
