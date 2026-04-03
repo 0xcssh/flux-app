@@ -17,8 +17,6 @@ type FeatureKey =
   | 'pdf_export'
   | 'unlimited_history'
   | 'action_plan'
-  | 'trt_tracking'
-  | 'ai_coaching'
   | 'challenges';
 
 const PREMIUM_FEATURES: FeatureKey[] = [
@@ -30,15 +28,12 @@ const PREMIUM_FEATURES: FeatureKey[] = [
   'challenges',
 ];
 
-const PRO_FEATURES: FeatureKey[] = ['trt_tracking', 'ai_coaching'];
-
 // Module-level flag to prevent multiple RevenueCat inits
 let _rcInitialized = false;
 
 interface UseSubscriptionReturn {
   tier: PlanTier;
   isPremium: boolean;
-  isPro: boolean;
   isTrialActive: boolean;
   trialExpiresAt: Date | null;
   canAccess: (feature: FeatureKey) => boolean;
@@ -103,20 +98,16 @@ export function useSubscription(): UseSubscriptionReturn {
     };
   }, []);
 
-  const isPremium = tier === 'premium' || tier === 'pro';
-  const isPro = tier === 'pro';
+  const isPremium = tier === 'premium';
 
   const canAccess = useCallback(
     (feature: FeatureKey): boolean => {
-      if (PRO_FEATURES.includes(feature)) {
-        return isPro;
-      }
       if (PREMIUM_FEATURES.includes(feature)) {
         return isPremium;
       }
       return true;
     },
-    [isPremium, isPro],
+    [isPremium],
   );
 
   const purchase = useCallback(async (pkg: PurchasesPackage): Promise<boolean> => {
@@ -154,7 +145,6 @@ export function useSubscription(): UseSubscriptionReturn {
   return {
     tier,
     isPremium,
-    isPro,
     isTrialActive,
     trialExpiresAt,
     canAccess,

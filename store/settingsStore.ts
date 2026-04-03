@@ -11,6 +11,7 @@ interface SettingsState {
   darkMode: boolean;
   onboardingSeen: boolean;
   hormonalProfile: HormonalProfile | null;
+  smartRemindersEnabled: boolean;
 }
 
 interface SettingsActions {
@@ -21,6 +22,7 @@ interface SettingsActions {
   setDarkMode: (enabled: boolean) => void;
   setOnboardingSeen: (seen: boolean) => void;
   setHormonalProfile: (profile: HormonalProfile) => void;
+  setSmartRemindersEnabled: (enabled: boolean) => void;
 }
 
 export const useSettingsStore = create<SettingsState & SettingsActions>()(
@@ -33,6 +35,7 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       darkMode: false,
       onboardingSeen: false,
       hormonalProfile: null,
+      smartRemindersEnabled: true,
 
       setNotificationTime: (time) => set({ notificationTime: time }),
       setNotificationMode: (mode) => set({ notificationMode: mode }),
@@ -41,6 +44,7 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       setDarkMode: (enabled) => set({ darkMode: enabled }),
       setOnboardingSeen: (seen) => set({ onboardingSeen: seen }),
       setHormonalProfile: (profile) => set({ hormonalProfile: profile }),
+      setSmartRemindersEnabled: (enabled) => set({ smartRemindersEnabled: enabled }),
     }),
     {
       name: 'flux-settings',

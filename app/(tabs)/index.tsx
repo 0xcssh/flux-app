@@ -32,6 +32,8 @@ import ComparisonCard from '@/components/dashboard/ComparisonCard';
 import AdaptiveLearn from '@/components/dashboard/AdaptiveLearn';
 import ActionPlanCard from '@/components/dashboard/ActionPlanCard';
 import CommunityScore from '@/components/dashboard/CommunityScore';
+import ShareButton from '@/components/dashboard/ShareButton';
+import WeeklyReportCard from '@/components/dashboard/WeeklyReportCard';
 import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 function DashboardContent() {
@@ -95,6 +97,8 @@ function DashboardContent() {
 
   const now = new Date();
   const hour = now.getHours();
+  const dayOfWeek = now.getDay(); // 0=Sun, 1=Mon, 2=Tue
+  const showWeeklyReport = dayOfWeek === 1 || dayOfWeek === 2; // Monday or Tuesday
   const greeting =
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
@@ -163,8 +167,20 @@ function DashboardContent() {
         ) : isToday && isLogged ? (
           // TODAY - LOGGED (lean layout)
           <>
+            {showWeeklyReport && (
+              <View style={styles.section}>
+                <WeeklyReportCard />
+              </View>
+            )}
+
             <View style={styles.scoreContainer}>
               <VitalityScore score={selectedLog!.vitality_score} size={210} />
+              <ShareButton
+                score={selectedLog!.vitality_score}
+                date={selectedDate}
+                streakDays={loggingStreak}
+                phase={phaseLabel}
+              />
             </View>
 
             {/* Logged badge + Streak together */}

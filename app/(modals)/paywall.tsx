@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,35 +11,39 @@ import {
   Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import { useSubscription } from '@/hooks/useSubscription';
 import { track, AnalyticsEvents } from '@/lib/analytics';
+import DownsellModal from '@/components/paywall/DownsellModal';
 
 type BillingCycle = 'monthly' | 'annual';
 
-interface FeatureRow {
-  label: string;
-  free: string;
-  premium: string;
-  pro: string;
-}
-
-const FEATURES: FeatureRow[] = [
-  { label: 'History', free: '7 days', premium: 'Unlimited', pro: 'Unlimited' },
-  { label: 'Cycle Detection', free: '--', premium: 'check', pro: 'check' },
-  { label: 'AI Insights', free: '--', premium: 'check', pro: 'check' },
-  { label: 'PDF Reports', free: '--', premium: 'check', pro: 'Medical' },
-  { label: 'Daily Action Plan', free: '--', premium: 'check', pro: 'check' },
-  { label: 'NoFap Advanced', free: '--', premium: 'check', pro: 'check' },
-  { label: 'Guided Challenges', free: '--', premium: 'check', pro: 'check' },
-  { label: 'TRT Tracking', free: '--', premium: '--', pro: 'check' },
-  { label: 'AI Coaching', free: '--', premium: '--', pro: 'check' },
+const FEATURES = [
+  {
+    icon: 'calendar' as const,
+    color: '#3B82F6',
+    bgColor: 'rgba(59, 130, 246, 0.12)',
+    borderColor: 'rgba(59, 130, 246, 0.3)',
+    title: 'Plan Your Day',
+    description: 'Personalized daily action plan based on your unique rhythm',
+  },
+  {
+    icon: 'analytics' as const,
+    color: '#22C55E',
+    bgColor: 'rgba(34, 197, 94, 0.12)',
+    borderColor: 'rgba(34, 197, 94, 0.3)',
+    title: 'Track Your Progress',
+    description: 'Weekly reports, deep insights, and pattern detection',
+  },
+  {
+    icon: 'trophy' as const,
+    color: '#F59E0B',
+    bgColor: 'rgba(245, 158, 11, 0.12)',
+    borderColor: 'rgba(245, 158, 11, 0.3)',
+    title: 'Build Better Habits',
+    description: 'Guided challenges and smart reminders that adapt to you',
+  },
 ];
-
-const PRICES = {
-  premium: { monthly: '9.99', annual: '59.99' },
-  pro: { monthly: '19.99', annual: '119.99' },
-};
 
 export default function PaywallScreen() {
   const router = useRouter();
@@ -47,12 +51,14 @@ export default function PaywallScreen() {
     useSubscription();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
   const [purchasing, setPurchasing] = useState(false);
+  const [downsellVisible, setDownsellVisible] = useState(false);
+  const downsellShownRef = useRef(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     track(AnalyticsEvents.PAYWALL_VIEWED);
   }, []);
 
-  const handlePurchase = async (planTier: 'premium' | 'pro') => {
+  const handlePurchase = async () => {
     setPurchasing(true);
     try {
       const offering = offerings?.current;
@@ -75,7 +81,7 @@ export default function PaywallScreen() {
       const success = await purchase(pkg);
       if (success) {
         track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
-          plan: planTier,
+          plan: 'premium',
           cycle: billingCycle,
         });
         router.back();
@@ -98,47 +104,71 @@ export default function PaywallScreen() {
   };
 
   const handleClose = () => {
+    if (!downsellShownRef.current) {
+      downsellShownRef.current = true;
+      setDownsellVisible(true);
+      return;
+    }
     track(AnalyticsEvents.PAYWALL_DISMISSED);
     router.back();
   };
 
-  const renderFeatureCell = (value: string) => {
-    if (value === 'check') {
-      return (
-        <View style={styles.checkCell}>
-          <FontAwesome name="check" size={14} color="#22C55E" />
-        </View>
-      );
-    }
-    if (value === '--') {
-      return (
-        <View style={styles.checkCell}>
-          <FontAwesome name="minus" size={12} color="#5A5A7A" />
-        </View>
-      );
-    }
-    return (
-      <View style={styles.checkCell}>
-        <Text style={styles.featureCellText}>{value}</Text>
-      </View>
-    );
+  const handleDownsellClaim = () => {
+    setDownsellVisible(false);
+    // User wants the discount — trigger purchase flow
+    handlePurchase();
   };
+
+  const handleDownsellDismiss = () => {
+    setDownsellVisible(false);
+    track(AnalyticsEvents.PAYWALL_DISMISSED);
+    router.back();
+  };
+
+  const showTrial = !isTrialActive && tier === 'free';
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-        <FontAwesome name="times" size={20} color="#8B8BA3" />
+        <Ionicons name="close" size={20} color="#8B8BA3" />
       </TouchableOpacity>
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Choose Your Plan</Text>
+        {/* Header */}
+        <Text style={styles.title}>Optimize Every Day</Text>
         <Text style={styles.subtitle}>
-          Unlock the full potential of your hormonal tracking
+          Join 2,000+ men who take control of their energy, mood, and
+          performance
         </Text>
+
+        {/* Feature Blocks */}
+        <View style={styles.featuresContainer}>
+          {FEATURES.map((feature, idx) => (
+            <View
+              key={idx}
+              style={[
+                styles.featureCard,
+                { borderLeftColor: feature.borderColor },
+              ]}
+            >
+              <View
+                style={[styles.featureIcon, { backgroundColor: feature.bgColor }]}
+              >
+                <Ionicons name={feature.icon} size={22} color={feature.color} />
+              </View>
+              <View style={styles.featureText}>
+                <Text style={styles.featureTitle}>{feature.title}</Text>
+                <Text style={styles.featureDescription}>
+                  {feature.description}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
 
         {/* Billing Toggle */}
         <View style={styles.toggleContainer}>
@@ -173,114 +203,92 @@ export default function PaywallScreen() {
             >
               Annual
             </Text>
-            {billingCycle === 'annual' && (
-              <View style={styles.saveBadge}>
-                <Text style={styles.saveText}>Save 50%</Text>
-              </View>
-            )}
+            <View style={styles.saveBadge}>
+              <Text style={styles.saveText}>SAVE 50%</Text>
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* Feature Comparison Table */}
-        <View style={styles.table}>
-          {/* Header */}
-          <View style={styles.tableHeader}>
-            <View style={styles.featureColumn}>
-              <Text style={styles.headerText}>Feature</Text>
-            </View>
-            <View style={styles.planColumn}>
-              <Text style={styles.headerText}>Free</Text>
-            </View>
-            <View style={[styles.planColumn, styles.premiumColumn]}>
-              <Text style={[styles.headerText, styles.premiumText]}>Premium</Text>
-            </View>
-            <View style={[styles.planColumn, styles.proColumn]}>
-              <Text style={[styles.headerText, styles.proText]}>Pro</Text>
-            </View>
-          </View>
-
-          {/* Rows */}
-          {FEATURES.map((feature, idx) => (
-            <View
-              key={idx}
-              style={[styles.tableRow, idx % 2 === 0 && styles.tableRowAlt]}
+        {/* Pricing Cards */}
+        <View style={styles.pricingContainer}>
+          {/* Monthly */}
+          <TouchableOpacity
+            style={[
+              styles.priceCard,
+              billingCycle === 'monthly' && styles.priceCardActive,
+            ]}
+            onPress={() => setBillingCycle('monthly')}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.priceLabel,
+                billingCycle === 'monthly' && styles.priceLabelActive,
+              ]}
             >
-              <View style={styles.featureColumn}>
-                <Text style={styles.featureLabel}>{feature.label}</Text>
-              </View>
-              <View style={styles.planColumn}>
-                {renderFeatureCell(feature.free)}
-              </View>
-              <View style={[styles.planColumn, styles.premiumColumn]}>
-                {renderFeatureCell(feature.premium)}
-              </View>
-              <View style={[styles.planColumn, styles.proColumn]}>
-                {renderFeatureCell(feature.pro)}
-              </View>
-            </View>
-          ))}
+              Monthly
+            </Text>
+            <Text
+              style={[
+                styles.priceAmount,
+                billingCycle === 'monthly' && styles.priceAmountActive,
+              ]}
+            >
+              14.99{'\u20ac'}/month
+            </Text>
+          </TouchableOpacity>
+
+          {/* Annual */}
+          <TouchableOpacity
+            style={[
+              styles.priceCard,
+              billingCycle === 'annual' && styles.priceCardActive,
+            ]}
+            onPress={() => setBillingCycle('annual')}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.priceLabel,
+                billingCycle === 'annual' && styles.priceLabelActive,
+              ]}
+            >
+              Annual
+            </Text>
+            <Text
+              style={[
+                styles.priceAmount,
+                billingCycle === 'annual' && styles.priceAmountActive,
+              ]}
+            >
+              89.99{'\u20ac'}/year
+            </Text>
+            <Text style={styles.priceSubtext}>7.49{'\u20ac'}/month</Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Purchase Buttons */}
-        <View style={styles.purchaseSection}>
-          {/* Premium */}
-          <TouchableOpacity
-            style={styles.premiumButton}
-            onPress={() => handlePurchase('premium')}
-            disabled={purchasing || tier === 'premium'}
-            activeOpacity={0.8}
-          >
-            {purchasing ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
-            ) : (
-              <>
-                <View>
-                  <Text style={styles.purchaseButtonTitle}>Premium</Text>
-                  <Text style={styles.purchaseButtonPrice}>
-                    {billingCycle === 'monthly'
-                      ? `${PRICES.premium.monthly}\u20AC/mo`
-                      : `${PRICES.premium.annual}\u20AC/yr`}
-                  </Text>
-                </View>
-                <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
-              </>
-            )}
-          </TouchableOpacity>
-
-          {/* Pro */}
-          <TouchableOpacity
-            style={styles.proButton}
-            onPress={() => handlePurchase('pro')}
-            disabled={purchasing || tier === 'pro'}
-            activeOpacity={0.8}
-          >
-            {purchasing ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
-            ) : (
-              <>
-                <View>
-                  <Text style={styles.purchaseButtonTitle}>Pro</Text>
-                  <Text style={styles.purchaseButtonPrice}>
-                    {billingCycle === 'monthly'
-                      ? `${PRICES.pro.monthly}\u20AC/mo`
-                      : `${PRICES.pro.annual}\u20AC/yr`}
-                  </Text>
-                </View>
-                <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
-              </>
-            )}
-          </TouchableOpacity>
-
-          {/* Trial CTA */}
-          {!isTrialActive && tier === 'free' && (
-            <View style={styles.trialNote}>
-              <FontAwesome name="gift" size={14} color="#2563EB" />
-              <Text style={styles.trialNoteText}>
-                Start with a 7-day free trial of Premium
-              </Text>
-            </View>
+        {/* CTA Button */}
+        <TouchableOpacity
+          style={styles.ctaButton}
+          onPress={handlePurchase}
+          disabled={purchasing || tier === 'premium'}
+          activeOpacity={0.8}
+        >
+          {purchasing ? (
+            <ActivityIndicator color="#FFFFFF" size="small" />
+          ) : (
+            <Text style={styles.ctaText}>
+              {showTrial ? 'Start 7-Day Free Trial' : 'Subscribe Now'}
+            </Text>
           )}
-        </View>
+        </TouchableOpacity>
+        <Text style={styles.ctaSubtext}>
+          {showTrial
+            ? 'Then 14.99\u20ac/month \u00b7 Cancel anytime'
+            : billingCycle === 'monthly'
+              ? '14.99\u20ac/month \u00b7 Cancel anytime'
+              : '89.99\u20ac/year \u00b7 Cancel anytime'}
+        </Text>
 
         {/* Restore */}
         <TouchableOpacity
@@ -306,6 +314,14 @@ export default function PaywallScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Downsell Modal */}
+      <DownsellModal
+        visible={downsellVisible}
+        billingCycle={billingCycle}
+        onClaim={handleDownsellClaim}
+        onDismiss={handleDownsellDismiss}
+      />
     </SafeAreaView>
   );
 }
@@ -341,17 +357,55 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#8B8BA3',
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: 28,
+    lineHeight: 20,
+    paddingHorizontal: 8,
+  },
+  featuresContainer: {
+    gap: 12,
+    marginBottom: 28,
+  },
+  featureCard: {
+    flexDirection: 'row',
+    backgroundColor: '#1A1A2E',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    borderLeftWidth: 3,
+    borderWidth: 1,
+    borderColor: '#2A2A45',
+  },
+  featureIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  featureText: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 3,
+  },
+  featureDescription: {
+    fontSize: 13,
+    color: '#8B8BA3',
+    lineHeight: 18,
   },
   toggleContainer: {
     flexDirection: 'row',
     backgroundColor: '#16162A',
     borderRadius: 12,
     padding: 3,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   toggleButton: {
     flex: 1,
@@ -389,128 +443,68 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#22C55E',
   },
-  table: {
-    backgroundColor: '#1A1A2E',
-    borderRadius: 16,
-    overflow: 'hidden',
+  pricingContainer: {
+    flexDirection: 'row',
+    gap: 12,
     marginBottom: 24,
-    borderWidth: 1,
+  },
+  priceCard: {
+    flex: 1,
+    backgroundColor: '#1A1A2E',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 1.5,
     borderColor: '#2A2A45',
   },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#16162A',
-    borderBottomWidth: 1,
-    borderBottomColor: '#2A2A45',
-    paddingVertical: 10,
+  priceCardActive: {
+    borderColor: '#3B82F6',
+    backgroundColor: 'rgba(59, 130, 246, 0.08)',
   },
-  tableRow: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#2A2A45',
+  priceLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#5A5A7A',
+    marginBottom: 6,
   },
-  tableRowAlt: {
-    backgroundColor: '#16162A',
-  },
-  featureColumn: {
-    flex: 2,
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-  },
-  planColumn: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  premiumColumn: {
-    backgroundColor: 'rgba(59, 130, 246, 0.05)',
-  },
-  proColumn: {
-    backgroundColor: 'rgba(34, 197, 94, 0.05)',
-  },
-  headerText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#8B8BA3',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  premiumText: {
+  priceLabelActive: {
     color: '#3B82F6',
   },
-  proText: {
-    color: '#22C55E',
-  },
-  featureLabel: {
-    fontSize: 13,
+  priceAmount: {
+    fontSize: 18,
+    fontWeight: '800',
     color: '#8B8BA3',
-    fontWeight: '500',
   },
-  checkCell: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  priceAmountActive: {
+    color: '#FFFFFF',
   },
-  featureCellText: {
-    fontSize: 11,
-    color: '#8B8BA3',
-    fontWeight: '600',
-    textAlign: 'center',
+  priceSubtext: {
+    fontSize: 12,
+    color: '#5A5A7A',
+    marginTop: 4,
   },
-  purchaseSection: {
-    gap: 12,
-    marginBottom: 20,
-  },
-  premiumButton: {
-    flexDirection: 'row',
+  ctaButton: {
     backgroundColor: '#3B82F6',
     borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    paddingVertical: 18,
     alignItems: 'center',
+    marginBottom: 8,
     shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
-  proButton: {
-    flexDirection: 'row',
-    backgroundColor: '#22C55E',
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#22C55E',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  purchaseButtonTitle: {
+  ctaText: {
     fontSize: 17,
     fontWeight: '800',
     color: '#FFFFFF',
   },
-  purchaseButtonPrice: {
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontWeight: '500',
-    marginTop: 2,
-  },
-  trialNote: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 8,
-  },
-  trialNoteText: {
-    fontSize: 13,
-    color: '#3B82F6',
-    fontWeight: '600',
+  ctaSubtext: {
+    fontSize: 12,
+    color: '#5A5A7A',
+    textAlign: 'center',
+    marginBottom: 24,
   },
   restoreButton: {
     alignItems: 'center',

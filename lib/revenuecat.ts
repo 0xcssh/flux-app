@@ -129,7 +129,6 @@ export async function getTrialStatus(): Promise<{
 }
 
 export function tierFromCustomerInfo(info: CustomerInfo): PlanTier {
-  if (info.entitlements.active['pro']) return 'pro';
   if (info.entitlements.active['premium']) return 'premium';
   return 'free';
 }

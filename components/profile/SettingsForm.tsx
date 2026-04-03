@@ -1,8 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Switch, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
+import { useSettingsStore } from '@/store/settingsStore';
+import { useSubscription } from '@/hooks/useSubscription';
 import i18n from '@/i18n';
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
@@ -11,8 +14,11 @@ const MINUTES = [0, 15, 30, 45];
 export default function SettingsForm() {
   const initialNotificationTime = '08:00';
   const initialLanguage = 'en';
-  const { t } = useTranslation('profile');
+  const { t } = useTranslation(['profile', 'common']);
   const updateProfile = useAuthStore((s) => s.updateProfile);
+  const { isPremium } = useSubscription();
+  const smartRemindersEnabled = useSettingsStore((s) => s.smartRemindersEnabled);
+  const setSmartRemindersEnabled = useSettingsStore((s) => s.setSmartRemindersEnabled);
 
   const [hour, setHour] = useState(() => {
     const parts = initialNotificationTime.split(':');
@@ -122,6 +128,31 @@ export default function SettingsForm() {
         </View>
       )}
 
+      {/* Smart Reminders (Premium only) */}
+      {isPremium && (
+        <View style={styles.settingRow}>
+          <View style={styles.settingLeft}>
+            <View style={styles.iconContainer}>
+              <Ionicons name="notifications" size={16} color="#3B82F6" />
+            </View>
+            <View style={styles.settingTextContainer}>
+              <Text style={styles.settingLabel}>
+                {t('common:smart_reminders')}
+              </Text>
+              <Text style={styles.settingSubtitle}>
+                {t('common:smart_reminders_desc')}
+              </Text>
+            </View>
+          </View>
+          <Switch
+            value={smartRemindersEnabled}
+            onValueChange={setSmartRemindersEnabled}
+            trackColor={{ false: '#2A2A45', true: '#3B82F6' }}
+            thumbColor={smartRemindersEnabled ? '#FFFFFF' : '#8B8BA3'}
+          />
+        </View>
+      )}
+
       {/* Language Selector */}
       <View style={styles.settingRow}>
         <View style={styles.settingLeft}>
@@ -198,10 +229,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
+  settingTextContainer: {
+    flex: 1,
+  },
   settingLabel: {
     fontSize: 15,
     fontWeight: '500',
     color: '#FFFFFF',
+  },
+  settingSubtitle: {
+    fontSize: 12,
+    color: '#5A5A7A',
+    marginTop: 2,
   },
   settingRight: {
     flexDirection: 'row',

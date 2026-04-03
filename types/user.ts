@@ -8,7 +8,7 @@ export interface UserProfile {
   notification_time: string | null;
   language: string;
   dark_mode: boolean;
-  subscription_tier: 'free' | 'premium' | 'pro';
+  subscription_tier: 'free' | 'premium';
   trial_expires_at: string | null;
   created_at: string;
   updated_at: string;

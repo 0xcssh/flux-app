@@ -1,4 +1,4 @@
-export type PlanTier = 'free' | 'premium' | 'pro';
+export type PlanTier = 'free' | 'premium';
 
 export interface SubscriptionState {
   tier: PlanTier;
@@ -13,7 +13,6 @@ export type PremiumFeature =
   | 'cycle_analysis'
   | 'correlations'
   | 'pdf_export'
-  | 'priority_support'
   | 'advanced_charts'
   | 'ai_recommendations'
   | 'action_plan'
@@ -29,18 +28,7 @@ export const featureAccess: Record<PlanTier, PremiumFeature[]> = {
     'advanced_charts',
     'ai_recommendations',
     'action_plan',
-    'challenges',
-  ],
-  pro: [
-    'full_history',
-    'insights',
-    'cycle_analysis',
-    'correlations',
-    'advanced_charts',
-    'ai_recommendations',
-    'action_plan',
     'pdf_export',
-    'priority_support',
     'challenges',
   ],
 };

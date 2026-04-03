@@ -92,5 +92,16 @@
   "action_plan_see_full": "See full plan",
   "action_plan_personalized": "{{count}} personalized actions",
   "action_plan_morning_cta": "See your full plan every morning",
-  "action_plan_current_phase": "Right now"
+  "action_plan_current_phase": "Right now",
+  "share_score": "Share",
+  "share_tagline": "Track your rhythm",
+  "weekly_report_title": "WEEKLY REPORT",
+  "weekly_report_ready": "Your weekly report is ready",
+  "weekly_report_unlock": "Unlock weekly insights",
+  "weekly_report_best": "Best day",
+  "weekly_report_worst": "Worst day",
+  "weekly_report_trend_up": "+{{percent}}% vs last week",
+  "weekly_report_trend_down": "{{percent}}% vs last week",
+  "weekly_report_actions": "This week's focus",
+  "weekly_report_dismiss": "Dismiss"
 }
