@@ -21,8 +21,8 @@ export default function StreakBar({ days }: StreakBarProps) {
     <View style={[styles.container, { backgroundColor: tier.bg, borderColor: tier.color + '30' }]}>
       <Ionicons name="flame" size={20} color={tier.color} />
       <Text style={[styles.days, { color: tier.color }]}>{days}</Text>
-      <Text style={styles.label}>day streak</Text>
-      {days > 0 && <Text style={styles.message}>Keep going!</Text>}
+      <Text style={[styles.label, { color: tier.color }]}>day streak</Text>
+      {days > 0 && <Text style={[styles.message, { color: tier.color }]}>Keep going!</Text>}
     </View>
   );
 }
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
   },
   fire: { },
   days: { fontSize: 22, fontWeight: '800' },
-  label: { fontSize: 14, color: darkPalette.textSecondary, fontWeight: '500' },
-  message: { marginLeft: 'auto', fontSize: 12, color: darkPalette.textTertiary, fontWeight: '600' },
+  label: { fontSize: 14, fontWeight: '600' },
+  message: { marginLeft: 'auto', fontSize: 12, fontWeight: '700' },
 });
