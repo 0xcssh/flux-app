@@ -27,6 +27,7 @@ import { useSettingsStore } from '@/store/settingsStore';
 // ── Constants ────────────────────────────────────────────────────────
 
 const WAKE_TIMES = [
+  { label: '5:00', value: 5 },
   { label: '5:30', value: 5.5 },
   { label: '6:00', value: 6 },
   { label: '6:30', value: 6.5 },
@@ -36,6 +37,9 @@ const WAKE_TIMES = [
   { label: '8:30', value: 8.5 },
   { label: '9:00', value: 9 },
   { label: '9:30', value: 9.5 },
+  { label: '10:00', value: 10 },
+  { label: '10:30', value: 10.5 },
+  { label: '11:00', value: 11 },
 ];
 
 const DOT_COLORS = ['#EF4444', '#F59E0B', '#3B82F6', '#22C55E', '#10B981'];
@@ -220,20 +224,44 @@ export default function QuizScreen() {
         {/* Age */}
         <View style={styles.card}>
           <Text style={styles.fieldLabel}>How old are you?</Text>
-          <TextInput
-            style={[
-              styles.ageInput,
-              ageFocused && styles.ageInputFocused,
-            ]}
-            value={age}
-            onChangeText={(text) => setAge(text.replace(/[^0-9]/g, ''))}
-            keyboardType="numeric"
-            maxLength={3}
-            onFocus={() => setAgeFocused(true)}
-            onBlur={() => setAgeFocused(false)}
-            placeholderTextColor="#5A5A7A"
-            selectionColor="#3B82F6"
-          />
+          <View style={styles.ageRow}>
+            <TouchableOpacity
+              style={styles.ageButton}
+              onPress={() => {
+                const v = Math.max(14, parseInt(age || '25', 10) - 1);
+                setAge(String(v));
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="remove" size={24} color="#3B82F6" />
+            </TouchableOpacity>
+            <TextInput
+              style={[
+                styles.ageInput,
+                ageFocused && styles.ageInputFocused,
+              ]}
+              value={age}
+              onChangeText={(text) => setAge(text.replace(/[^0-9]/g, ''))}
+              keyboardType="numeric"
+              maxLength={3}
+              onFocus={() => setAgeFocused(true)}
+              onBlur={() => setAgeFocused(false)}
+              placeholderTextColor="#5A5A7A"
+              selectionColor="#3B82F6"
+            />
+            <TouchableOpacity
+              style={styles.ageButton}
+              onPress={() => {
+                const v = Math.min(99, parseInt(age || '25', 10) + 1);
+                setAge(String(v));
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="add" size={24} color="#3B82F6" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Wake up time */}
@@ -403,7 +431,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  // Age input
+  // Age
+  ageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  ageButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#252540',
+    borderWidth: 1,
+    borderColor: '#3B82F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   ageInput: {
     backgroundColor: '#0A0A0F',
     borderRadius: 12,
@@ -415,8 +459,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#FFFFFF',
     textAlign: 'center',
-    alignSelf: 'center',
-    width: 120,
+    width: 100,
   },
   ageInputFocused: {
     borderColor: '#3B82F6',
