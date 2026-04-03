@@ -191,8 +191,8 @@ function DashboardContent() {
                 <Text style={styles.statusText}>Logged</Text>
               </View>
               <View style={styles.statusItem}>
-                <Ionicons name="flame" size={16} color={loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#94A3B8' : loggingStreak >= 7 ? '#CD7F32' : darkPalette.textSecondary} />
-                <Text style={[styles.statusText, { color: loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#94A3B8' : loggingStreak >= 7 ? '#CD7F32' : darkPalette.textSecondary }]}>{loggingStreak} day streak</Text>
+                <Ionicons name="flame" size={16} color={loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#E879F9' : loggingStreak >= 7 ? '#3B82F6' : '#22C55E'} />
+                <Text style={[styles.statusText, { color: loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#E879F9' : loggingStreak >= 7 ? '#3B82F6' : '#22C55E' }]}>{loggingStreak} day streak</Text>
               </View>
             </View>
 

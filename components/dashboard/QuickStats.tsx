@@ -22,15 +22,15 @@ const PHASE_ICONS: Record<PhaseType, { iconName: string; color: string }> = {
 
 function getStreakColor(days: number): string {
   if (days >= 30) return '#F59E0B'; // gold
-  if (days >= 14) return '#94A3B8'; // silver
-  if (days >= 7) return '#CD7F32'; // bronze
-  return darkPalette.textSecondary;
+  if (days >= 14) return '#E879F9'; // purple
+  if (days >= 7) return '#3B82F6';  // blue
+  return '#22C55E';                  // green — always vibrant
 }
 
 export default function QuickStats({ phase, phaseLabel, yesterdayScore, todayScore, noFapStreakDays }: QuickStatsProps) {
   const phaseInfo = PHASE_ICONS[phase];
   const trend = todayScore != null && yesterdayScore != null ? todayScore - yesterdayScore : null;
-  const streakColor = noFapStreakDays === 0 ? darkPalette.textTertiary : getStreakColor(noFapStreakDays);
+  const streakColor = noFapStreakDays === 0 ? '#8B8BA3' : getStreakColor(noFapStreakDays);
 
   return (
     <View style={styles.row}>
