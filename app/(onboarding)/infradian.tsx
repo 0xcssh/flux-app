@@ -95,7 +95,7 @@ export default function InfradianScreen() {
       </View>
 
       <Animated.View style={[styles.footer, { opacity: footerOpacity }]}>
-        <PaginationDots total={6} current={2} />
+        <PaginationDots total={5} current={2} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/quiz')}

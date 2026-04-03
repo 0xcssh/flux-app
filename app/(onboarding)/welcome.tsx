@@ -100,7 +100,7 @@ export default function WelcomeScreen() {
       </View>
 
       <Animated.View style={[styles.footer, { opacity: footerOpacity }]}>
-        <PaginationDots total={6} current={0} />
+        <PaginationDots total={5} current={0} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/circadian')}
