@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 export default function StreakImpactCard() {
   const { t } = useTranslation('insights');
@@ -36,7 +37,7 @@ export default function StreakImpactCard() {
       for (let i = 1; i <= 7; i++) {
         const prev = new Date(logDate);
         prev.setDate(prev.getDate() - i);
-        const prevStr = prev.toISOString().split('T')[0];
+        const prevStr = formatLocalDate(prev);
         if (dateSet.has(prevStr)) {
           consecutiveBefore++;
         } else {
@@ -47,7 +48,7 @@ export default function StreakImpactCard() {
       for (let i = 1; i <= 7; i++) {
         const next = new Date(logDate);
         next.setDate(next.getDate() + i);
-        const nextStr = next.toISOString().split('T')[0];
+        const nextStr = formatLocalDate(next);
         if (dateSet.has(nextStr)) {
           consecutiveAfter++;
         } else {

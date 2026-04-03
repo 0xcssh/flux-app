@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { zustandStorage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import type { DailyLogEntry, LogFormData } from '@/types/log';
+import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 function generateUUID(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -10,11 +11,6 @@ function generateUUID(): string {
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
-
-function getTodayDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function computeVitalityScore(data: LogFormData): number {
@@ -171,7 +167,7 @@ export const useLogStore = create<LogState>()(
         try {
           const startDate = new Date();
           startDate.setDate(startDate.getDate() - days);
-          const startStr = startDate.toISOString().split('T')[0];
+          const startStr = formatLocalDate(startDate);
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const { data, error } = await (supabase as any)

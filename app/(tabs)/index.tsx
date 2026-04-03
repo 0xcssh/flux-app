@@ -32,11 +32,7 @@ import ComparisonCard from '@/components/dashboard/ComparisonCard';
 import AdaptiveLearn from '@/components/dashboard/AdaptiveLearn';
 import ActionPlanCard from '@/components/dashboard/ActionPlanCard';
 import CommunityScore from '@/components/dashboard/CommunityScore';
-
-function getTodayDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
+import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 function DashboardContent() {
   const { t } = useTranslation('dashboard');
@@ -61,7 +57,7 @@ function DashboardContent() {
     for (let i = 0; i < 365; i++) {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       if (logs[dateStr]) {
         streak++;
       } else {
@@ -75,7 +71,7 @@ function DashboardContent() {
   const yesterdayScore = useMemo(() => {
     const d = new Date();
     d.setDate(d.getDate() - 1);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = formatLocalDate(d);
     return logs[dateStr]?.vitality_score ?? null;
   }, [logs]);
 

@@ -1,234 +1,200 @@
-# FLUX — Suivi hormonal masculin
-> Fichier de contexte projet pour Claude Code
+# FLUX — Men's Hormonal Cycle Tracker
+> Project context file for Claude Code
 
 ---
 
 ## Vision
 
-**Aider les hommes à comprendre leurs fluctuations naturelles d'énergie, d'humeur et de performance pour prendre de meilleures décisions au quotidien.**
+**Help men understand their natural energy, mood, and performance fluctuations to make better daily decisions.**
 
 ---
 
-## Fondation scientifique
+## Scientific Foundation
 
-L'app repose sur des faits endocrinologiques documentés :
+- **Circadian rhythm (24h)**: testosterone peaks 5:30-8:00 AM, drops 20-43% by evening (Diver 2003, Brambilla 2008)
+- **Infradian rhythm (~20-30 days)**: detected in 60% of men (Doering 1975, Celec 2003). Presented with nuance.
+- **Seasonal rhythm**: peak late summer/autumn, nadir winter/spring (Tromsø study, 1,500+ men)
+- **Functional impact**: mood, energy, libido, cognition, physical performance fluctuate with these cycles
 
-- **Rythme circadien (24h)** : la testostérone pic entre 5h30 et 8h00, puis chute de 20 à 43% en soirée. Fait robuste, validé par de nombreuses études (Diver et al. 2003, Brambilla et al. 2008).
-- **Rythme infradien (~20-30 jours)** : Doering et al. (1975) a détecté des cycles chez 60% des hommes suivis. Celec et al. (2003) a identifié deux rythmes distincts (~20 jours et ~30 jours) sur la testostérone salivaire. Résultats fascinants mais non encore pleinement établis — à présenter avec nuance dans l'app.
-- **Rythme saisonnier** : pic en fin d'été/automne, nadir en hiver/printemps. Validé sur de larges cohortes (1 500+ hommes, étude de Tromsø).
-- **Impact fonctionnel** : humeur, énergie, libido, cognition, performance physique fluctuent en corrélation avec ces cycles.
-
-L'app ne prétend pas remplacer un bilan médical. Elle aide l'utilisateur à observer ses propres patterns.
+The app does not replace medical advice. It helps users observe their own patterns.
 
 ---
 
-## Positionnement produit
+## Product Positioning
 
-- **Catégorie** : santé masculine / bien-être / biohacking
-- **Analogie** : "Le Flo (suivi menstruel) pour les hommes"
-- **Ton** : scientifique et accessible, jamais moralisateur, jamais "bro science"
-- **Plateforme** : iOS + Android simultanément (Expo + EAS Build). Compte Apple Developer actif. Dev depuis Windows.
-- **Langue** : anglais par défaut + français. Multi-langue dès le lancement.
-- **Design** : clean et médical — fond clair, tons bleus/verts, vibe confiance/santé, style Apple Health
-- **Modèle** : Freemium avec trial 7 jours Premium à l'inscription, puis paywall. Free + Premium + Pro.
-- **Module NoFap** : intégré et visible dès le lancement, levier d'acquisition principal
-
----
-
-## Architecture de l'app
-
-### 5 écrans principaux
-
-#### 1. Dashboard — Score du jour
-- Score de vitalité quotidien (0-100) calculé depuis les logs
-- Indicateurs : énergie, humeur, libido, sommeil, performance physique
-- Phase du cycle circadien actuelle (montée / pic / descente / récupération)
-- Conseil personnalisé du jour basé sur la phase
-
-#### 2. Mon Cycle
-- Visualisation du rythme circadien sur 24h
-- Courbe infradienne sur 30 jours (débloquée après 14 jours de logs)
-- 4 phases simplifiées : montée / pic / descente / récupération
-- Comparaison avec les logs passés
-
-#### 3. Log quotidien
-- Check-in max 60 secondes
-- 6 curseurs : énergie, humeur, libido, sommeil (durée + qualité), stress, entraînement
-- Champ notes libre (optionnel)
-- Module NoFap/NoPorn (optionnel, activable dans les paramètres)
-- Notification push à heure fixe choisie par l'utilisateur
-
-#### 4. Insights & Corrélations *(Premium)*
-- Disponible après 14 jours de données
-- Détection de patterns personnels par IA
-- Corrélations habitudes ↔ bien-être
-- Exemples : "Tu dors moins bien les lundis → énergie en chute le mardi", "Tes pics d'énergie arrivent tous les 22-24 jours"
-- Recommandations actionnables : sport, nutrition, sommeil, récupération
-
-#### 5. Profil & Progression
-- Historique 3 / 6 / 12 mois
-- Intégration wearables : Apple Watch, Oura Ring, WHOOP
-- Export rapport PDF (partage médecin)
-- Gestion abonnement
-- Paramètres (heure de notification, modules actifs)
+- **Category**: men's health / wellness / biohacking
+- **Analogy**: "Flo (period tracker) for men"
+- **Tone**: scientific and accessible, never preachy, never "bro science"
+- **Platform**: iOS + Android simultaneously (Expo + EAS Build). Apple Developer account active. Dev from Windows.
+- **Language**: English only for now. French translations exist in JSON files, ready for re-activation.
+- **Design**: Dark masculine theme — deep black (#0A0A0F), dark cards (#1A1A2E), electric blue (#3B82F6), neon green (#22C55E), amber (#F59E0B), purple (#A78BFA). Premium feel, no emojis — vector icons only (Ionicons + MaterialCommunityIcons).
+- **Monetization**: Freemium with 7-day Premium trial. Free + Premium (€9.99/mo) + Pro (€19.99/mo).
+- **User flow**: No account required. Onboarding → app immediately. Account optional for sync.
+- **Module NoFap**: enabled by default, integrated into daily log and insights.
 
 ---
 
-## Module NoFap / NoPorn
+## Architecture — Current State (Built)
 
-### Philosophie
-Module **optionnel**, activable dans les paramètres. FLUX ne prend aucune position morale. L'app montre uniquement les données personnelles de l'utilisateur — est-ce que son énergie, sa libido, son humeur changent réellement avec l'abstinence ? La science parle, pas l'app.
+### 5 Tab Screens
 
-### Fonctionnalités
-- Compteur de streak (jours consécutifs)
-- Intégration dans le log quotidien (case à cocher discrète)
-- Graphique de corrélation streak ↔ score de vitalité
-- Comparaison anonyme et agrégée avec d'autres utilisateurs (opt-in)
-- Notifications de milestone : 7j, 14j, 30j, 90j
+#### 1. Dashboard — Adaptive & Contextual
+- **DaySelector**: horizontal 7-day calendar (3 past + today + 3 future), scores colored by vitality
+- **4 states**: today not-logged (minimal + LogCTA), today logged (full), past logged (review), past not-logged (missed)
+- **Today logged layout**: VitalityScore → Logged badge → ActionPlanCard (Premium) → StreakBar → CommunityScore → QuickStats → IndicatorRow → SymptomPredictionCard → AdaptiveLearn → ArticleSuggestion (carousel)
+- **Today not-logged**: VitalityScore(?) → LogCTA → SymptomPredictionCard → ActionPlanCard → CircadianPhaseCard → AdaptiveLearn
 
-### Ce que le module ne fait PAS
-- Pas de contenu moralisateur
-- Pas de badge honteux en cas d'échec
-- Pas de positionnement idéologique (ni pro ni anti)
-- Pas d'accès à du contenu externe
+#### 2. My Cycle
+- Tab selector: 24h / 30 Days
+- CircadianChart: 24h SVG curve with phase zones and current time marker
+- InfradianChart: 30-day vitality trend (Premium gated)
+- WeeklySummary: 7-day bar chart
+- PhaseIndicator: 4-segment progress bar
+- SymptomTimeline: vertical timeline showing predicted symptoms per phase
+- PhaseCalendar: monthly calendar colored by daily vitality score
+- HistoryComparison: today vs yesterday vs last week
 
----
+#### 3. Daily Log
+- 6 sliders (1-10): energy, mood, libido, sleep_quality, stress, training
+- Optional notes field
+- NoFap checkbox (always visible)
+- Vitality score computed on submit
+- Offline-first: saves to local store, syncs to Supabase when connected
 
-## Modèle économique
+#### 4. Insights — Progressive Tiered System
+- **Universal (day 0)**: 6 science-based insights (always available)
+- **Early (day 3+)**: per-metric averages, best/worst days, trends
+- **Weekly (day 7+)**: day-of-week patterns, sleep→energy correlation, SymptomAccuracy, BestDaysCard, StreakImpactCard, Challenges (Premium)
+- **Deep (day 14+)**: all correlations, infradian cycle detection, MonthlyReportCard (Premium)
+- TierProgress indicator shows current level
+- Insights screen is NEVER empty
 
-### Gratuit
-- Log quotidien illimité
-- Score de vitalité du jour
-- Visualisation circadienne basique
-- Historique 7 jours
-- Contenu éducatif (articles sur les cycles masculins)
-- Module NoFap basique (streak + log)
+#### 5. Profile
+- User stats (total logs, streak, avg vitality)
+- HistoryChart with range selector (7d free, 30d/90d/6M/1Y premium)
+- Settings: notification time, language selector
+- Export PDF (Premium)
+- Logout
 
-### Premium — 9,99€/mois ou 59,99€/an
-- Historique illimité
-- Détection du cycle infradien personnel
-- Corrélations IA habitudes ↔ énergie
-- Intégration wearables (Apple Watch, Oura, WHOOP)
-- Rapports mensuels PDF
-- Recommandations personnalisées sport / nutrition / sommeil
-- Module NoFap avancé (corrélations, comparaison anonyme)
+### Onboarding (6 screens)
+1. Welcome — "Your hormones tell a story"
+2. Circadian — 24h cycle explanation
+3. Infradian — ~20-30 day cycle teaser
+4. **Quiz** — 5 questions (age, wake time, activity, sleep, goal) → generates Hormonal Profile (Early Riser / Night Owl / Balanced) → adjusts circadian curve
+5. Setup — notification time + language
+6. Trial — Premium 7-day offer (skippable)
 
-### Pro — 19,99€/mois
-- Tout Premium +
-- Intégration kits de test testostérone à domicile (partenaires : Everlywell, myLAB Box)
-- Suivi TRT (Testosterone Replacement Therapy)
-- Rapport médecin exportable
-- Coaching IA personnalisé
-
-### Revenus additionnels (phase 2)
-- Marketplace de tests sanguins (commission ~20%)
-- Suppléments recommandés (affiliation)
-- Coaching individuel (80-100€/session)
-- B2B corporate wellness
-
----
-
-## Données de marché
-
-- Marché santé numérique masculine : **4,2 Mds$ en 2024**, projection **17,5 Mds$ en 2033** (TCAC 18,7%)
-- Flo (référence féminine) : 380M+ téléchargements, 70M+ MAU, **275M$ de revenus en 2025**
-- Taux de conversion Flo : ~28% free → payant
-- Aucun concurrent direct occupant ce positionnement
-- Communauté NoFap : plusieurs millions d'hommes actifs (Reddit r/NoFap : 900K+ membres)
-- Intérêt culturel en forte hausse : prescriptions TRT +13% en Angleterre en 2024, triplement aux USA en une décennie
+### Modals
+- Paywall: Free vs Premium vs Pro comparison table
+- Article viewer: magazine-style with hero area
+- Action Plan detail: full daily plan (Premium)
+- PDF preview
+- NoFap details
 
 ---
 
-## Go-to-market
+## Premium Features (Monetization)
 
-### Phase 1 — Lancement
-- iOS + Android simultanément (Expo)
-- App complète : 5 écrans + module NoFap + onboarding éducatif + notifications contextuelles
-- Freemium avec trial 7 jours Premium
-- Contenu éducatif : onboarding + 5-10 articles + tips quotidiens contextuels
-- Cible : hommes 25-40 ans, sportifs, biohackers, communauté NoFap
-- Canal principal : TikTok / Instagram Reels (contenu éducatif : "ce que personne ne t'a dit sur tes hormones")
-- Micro-influenceurs santé masculine (10K-100K abonnés)
-- Présence organique Reddit : r/NoFap, r/Testosterone, r/biohacking, r/malehealth
+### Free
+- Daily log + vitality score
+- Circadian phase + symptom predictions
+- 7-day history
+- Universal insights (science-based)
+- Basic NoFap tracking
+- Articles library
+- Community score percentile
 
-### Phase 2 — Croissance (mois 6-18)
-- Partenariats wearables (Oura, WHOOP)
-- Intégration kits de test à domicile
-- IA avancée pour détection de patterns
-- SEO long-tail sur les cycles masculins
+### Premium — €9.99/mo or €59.99/yr
+- **Daily Action Plan** — personalized 4-block daily plan based on circadian phase + user data
+- **Guided Challenges** — 7-Day Sleep Reset, 14-Day Energy Boost, 30-Day Peak Performance
+- Unlimited history
+- Infradian cycle detection
+- Weekly + Deep insights (correlations, patterns, recommendations)
+- SymptomAccuracy score
+- Monthly Report Card
+- PDF export
+- Advanced NoFap analytics
 
-### Objectifs an 1
-- 50 000 utilisateurs actifs mensuels
-- 5 000 abonnés payants
-- ARR cible : ~300 000€
-
----
-
-## Stack technique (décidée)
-
-- **Frontend mobile** : React Native + Expo (iOS + Android depuis une codebase, dev sur Windows)
-- **Build** : EAS Build (compilation iOS cloud, pas besoin de Mac)
-- **Backend** : Supabase (auth + PostgreSQL + Row Level Security + Realtime)
-- **Base de données** : PostgreSQL via Supabase (idéal pour séries temporelles / logs quotidiens)
-- **IA / ML** : corrélations statistiques simples au lancement (moyennes glissantes, Pearson), IA avancée en phase 2
-- **Notifications push** : Expo Notifications
-- **Wearables** : phase 2 (Apple HealthKit, Oura API, WHOOP API)
-- **Paiement** : RevenueCat (gestion abonnements iOS/Android + trial 7 jours)
-- **Analytics** : Mixpanel ou PostHog
-- **i18n** : multi-langue dès le départ (anglais + français)
+### Pro — €19.99/mo
+- Everything Premium +
+- TRT tracking (phase 2)
+- Doctor-exportable reports (phase 2)
+- AI coaching (phase 2)
 
 ---
 
-## Principes de développement
+## Key Features Implemented
 
-- **Privacy first** : données de santé sensibles. Row Level Security Supabase. Pas de revente de données. Conformité RGPD obligatoire.
-- **Offline first** : le log quotidien doit fonctionner sans connexion, sync en arrière-plan.
-- **Performance** : app légère, check-in < 60 secondes garanti.
-- **Accessibilité** : support mode sombre natif, tailles de texte dynamiques.
-- **Ton de l'UI** : clean et médical, scientifique mais chaleureux. Pas de culpabilisation. Pas de gamification agressive.
-- **Approche MVP** : pas de beta test préalable — on build l'app complète et on lance directement sur les stores pour monétiser.
+### Symptom Predictions
+- 16 symptoms mapped across 4 circadian phases with intensity indicators
+- Works from day 1 (universal science)
+- Personalizes after 7+ days of data
+- File: `lib/symptomPredictions.ts`
 
-## Stratégie de contenu éducatif
+### Phase-Aware Notifications
+- 4 daily notifications aligned to circadian phases (6:30, 9:00, 14:00, 21:00)
+- Personalizes after 7+ days (energy dip warnings, sleep priority)
+- File: `lib/notifications.ts`
 
-- **Onboarding** : 3-4 écrans au premier lancement expliquant les cycles masculins (circadien, infradien, saisonnier)
-- **Articles** : bibliothèque de 5-10 articles (rythmes circadiens, sommeil, testostérone, etc.)
-- **Notifications contextuelles** : tips quotidiens liés à l'heure ("Il est 7h, ton pic de testostérone est maintenant — bon moment pour l'entraînement")
+### Adaptive Learning
+- Article suggestions based on user's low metrics
+- Contextual recommendations change based on logged data
+- File: `components/dashboard/AdaptiveLearn.tsx`
 
----
+### Community Score
+- Mock percentile based on normal distribution (mean=55, stddev=15)
+- "Top X% of men your age" — motivational display
+- File: `components/dashboard/CommunityScore.tsx`
 
-## Fichiers et dossiers du projet (à créer)
-
-```
-flux/
-├── CLAUDE.md              ← ce fichier
-├── app/
-│   ├── (tabs)/
-│   │   ├── index.tsx      ← Dashboard
-│   │   ├── cycle.tsx      ← Mon Cycle
-│   │   ├── log.tsx        ← Log quotidien
-│   │   ├── insights.tsx   ← Insights (Premium)
-│   │   └── profile.tsx    ← Profil
-│   └── _layout.tsx
-├── components/
-│   ├── VitalityScore.tsx
-│   ├── CircadianChart.tsx
-│   ├── DailyLogForm.tsx
-│   ├── NoFapTracker.tsx
-│   └── InsightCard.tsx
-├── lib/
-│   ├── hormoneEngine.ts   ← logique cycles + score
-│   ├── correlations.ts    ← détection patterns IA
-│   └── notifications.ts
-├── store/
-│   └── userStore.ts       ← état global (Zustand)
-└── supabase/
-    └── schema.sql
-```
+### Hormonal Profile Quiz
+- Adjusts circadian acrophase based on wake-up hour
+- 3 profiles: Early Riser, Night Owl, Balanced
+- File: `lib/hormonalProfile.ts`
 
 ---
 
-## Contexte créateur
+## Stack Technique
 
-Projet initié par **Cash (Anthony Awdi)**, entrepreneur basé à Toulouse. Fondateur de Meara (agence d'automatisation SAV e-commerce via IA). Profil : marketing digital, e-commerce, automatisation n8n, Shopify, IA.
+- **Frontend**: React Native + Expo SDK 52+ (managed workflow)
+- **Build**: EAS Build (iOS cloud compilation from Windows)
+- **Backend**: Supabase (Auth + PostgreSQL + RLS)
+- **State**: Zustand with expo-secure-store persistence
+- **Charts**: react-native-svg (pure SVG, no victory-native/Skia — Expo Go compatible)
+- **Icons**: @expo/vector-icons (Ionicons + MaterialCommunityIcons + FontAwesome)
+- **i18n**: i18next + react-i18next (English active, French ready)
+- **Payments**: RevenueCat
+- **Notifications**: Expo Notifications (phase-aware scheduling)
+- **Analytics**: PostHog (configured, not yet active)
+- **Date handling**: `lib/dateUtils.ts` — always use local dates, never toISOString()
 
-L'app FLUX est un projet parallèle en phase d'exploration / validation d'idée.
+---
+
+## Database Schema (Supabase)
+
+- `profiles` — user profile (birth_year, timezone, language, notification_time)
+- `daily_logs` — one per user per day (6 metrics + vitality_score + nofap_checked)
+- `nofap_streaks` — start_date, end_date, is_active
+- `push_tokens` — Expo push tokens
+- `user_insights` — cached insight computations
+- RLS policies: all tables scoped to `auth.uid()`
+- Trigger: auto-create profile on signup
+
+---
+
+## Development Principles
+
+- **Privacy first**: Row Level Security. No data resale. GDPR compliant.
+- **Offline first**: daily log works without connection, syncs in background.
+- **No account required**: user can use the app fully without signing up. Account for sync only.
+- **Dark theme only**: premium masculine aesthetic. No light mode.
+- **No emojis**: vector icons only (Ionicons, MaterialCommunityIcons).
+- **English first**: French translations ready but disabled. Will re-enable later.
+- **Local dates**: always use `formatLocalDate()` from `lib/dateUtils.ts`, never `toISOString().split('T')[0]`.
+
+---
+
+## Project Creator
+
+**Cash (Anthony Awdi)**, entrepreneur based in Toulouse. Founder of Meara (e-commerce customer service automation via AI). Profile: digital marketing, e-commerce, Shopify, n8n automation, AI.
+
+FLUX is a parallel project in active development phase.

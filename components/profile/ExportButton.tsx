@@ -9,6 +9,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useRouter } from 'expo-router';
 import { track, AnalyticsEvents } from '@/lib/analytics';
+import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 export default function ExportButton() {
   const { t } = useTranslation('profile');
@@ -35,10 +36,10 @@ export default function ExportButton() {
         return;
       }
 
-      const endDate = new Date().toISOString().split('T')[0];
+      const endDate = getTodayDate();
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - 30);
-      const startStr = startDate.toISOString().split('T')[0];
+      const startStr = formatLocalDate(startDate);
 
       const userName = profile?.display_name ?? profile?.email ?? 'User';
 

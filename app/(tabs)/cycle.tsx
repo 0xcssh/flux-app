@@ -12,13 +12,14 @@ import HistoryComparison from '@/components/cycle/HistoryComparison';
 import WeeklySummary from '@/components/dashboard/WeeklySummary';
 import SymptomTimeline from '@/components/cycle/SymptomTimeline';
 import PhaseCalendar from '@/components/cycle/PhaseCalendar';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 type TabKey = 'circadian' | 'infradian';
 
 function getDateString(daysAgo: number): string {
   const d = new Date();
   d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().split('T')[0];
+  return formatLocalDate(d);
 }
 
 export default function CycleScreen() {

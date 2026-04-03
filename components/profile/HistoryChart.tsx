@@ -4,6 +4,7 @@ import Svg, { Path, Defs, LinearGradient, Stop, Circle, Text as SvgText, Line as
 import { useTranslation } from 'react-i18next';
 import type { DailyLogEntry } from '@/types/log';
 import PremiumGate from '@/components/insights/PremiumGate';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 const CHART_WIDTH = Dimensions.get('window').width - 96;
 const CHART_HEIGHT = 160;
@@ -42,7 +43,7 @@ export default function HistoryChart({ logs, range: initialRange }: HistoryChart
   const filtered = useMemo(() => {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - selectedDays);
-    const cutoffStr = cutoff.toISOString().split('T')[0];
+    const cutoffStr = formatLocalDate(cutoff);
     return [...logs].filter((l) => l.log_date >= cutoffStr).sort((a, b) => a.log_date.localeCompare(b.log_date));
   }, [logs, selectedDays]);
 

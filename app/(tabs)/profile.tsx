@@ -17,6 +17,7 @@ import HistoryChart from '@/components/profile/HistoryChart';
 import SettingsForm from '@/components/profile/SettingsForm';
 import ExportButton from '@/components/profile/ExportButton';
 import Constants from 'expo-constants';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 export default function ProfileScreen() {
   const { t } = useTranslation('profile');
@@ -51,7 +52,7 @@ export default function ProfileScreen() {
     for (let i = 0; i < sorted.length; i++) {
       const expected = new Date(today);
       expected.setDate(expected.getDate() - i);
-      const expectedStr = expected.toISOString().split('T')[0];
+      const expectedStr = formatLocalDate(expected);
       if (sorted[i].log_date === expectedStr) {
         streak++;
       } else {

@@ -4,6 +4,7 @@ import { zustandStorage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import type { NoFapStreak, NoFapMilestone } from '@/types/nofap';
 import { MILESTONE_DAYS } from '@/types/nofap';
+import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 function generateUUID(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -11,10 +12,6 @@ function generateUUID(): string {
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
-
-function getTodayDate(): string {
-  return new Date().toISOString().split('T')[0];
 }
 
 function daysBetween(startDate: string, endDate: string): number {
@@ -116,7 +113,7 @@ export const useNoFapStore = create<NoFapState>()(
           if (achieved && state.currentStreak) {
             const d = new Date(state.currentStreak.startDate + 'T00:00:00');
             d.setDate(d.getDate() + days - 1);
-            achievedDate = d.toISOString().split('T')[0];
+            achievedDate = formatLocalDate(d);
           }
           return {
             days,

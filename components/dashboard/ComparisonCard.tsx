@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 interface ComparisonCardProps {
   dateStr: string;
@@ -18,7 +19,7 @@ export default function ComparisonCard({ dateStr, score }: ComparisonCardProps) 
     // Previous day
     const d = new Date(dateStr + 'T12:00:00');
     d.setDate(d.getDate() - 1);
-    const prevStr = d.toISOString().split('T')[0];
+    const prevStr = formatLocalDate(d);
     const prevLog = logs[prevStr];
     const prevDayDiff = prevLog ? score - prevLog.vitality_score : null;
 

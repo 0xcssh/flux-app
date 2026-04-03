@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Rect, Line as SvgLine } from 'react-native-svg';
 import { darkPalette } from '@/theme/colors';
 import type { DailyLogEntry } from '@/types/log';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 interface WeeklySummaryProps {
   logs: DailyLogEntry[];
@@ -21,7 +22,7 @@ export default function WeeklySummary({ logs }: WeeklySummaryProps) {
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       const log = logs.find((l) => l.log_date === dateStr);
       days.push(log || null);
     }

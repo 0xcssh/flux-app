@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useLogStore } from '@/store/logStore';
+import { getTodayDate } from '@/lib/dateUtils';
 import type { LogFormData } from '@/types/log';
 
 export function useDailyLog(userId?: string) {
@@ -11,7 +12,7 @@ export function useDailyLog(userId?: string) {
   const submitLog = useCallback(
     (data: LogFormData) => {
       if (isLogged) {
-        const today = new Date().toISOString().split('T')[0];
+        const today = getTodayDate();
         store.updateLog(today, data, userId);
       } else {
         store.submitLog(data, userId);
