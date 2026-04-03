@@ -50,14 +50,16 @@ interface DayItem {
 
 function buildDays(count: number): DayItem[] {
   const days: DayItem[] = [];
-  const today = new Date();
+  const now = new Date();
   const todayStr = getTodayDate();
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const seen = new Set<string>();
 
   for (let i = count - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if (seen.has(dateStr)) continue;
+    seen.add(dateStr);
     days.push({
       dateStr,
       dayAbbr: dayNames[d.getDay()],
@@ -152,12 +154,12 @@ export default function DaySelector() {
         ref={flatListRef}
         data={days}
         renderItem={renderItem}
-        keyExtractor={(item) => item.dateStr}
+        keyExtractor={(item, index) => `${item.dateStr}-${index}`}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
-        initialScrollIndex={days.length - 1}
+        initialScrollIndex={Math.max(0, days.length - 1)}
         getItemLayout={(_, index) => ({
           length: CELL_WIDTH + 6,
           offset: (CELL_WIDTH + 6) * index,
