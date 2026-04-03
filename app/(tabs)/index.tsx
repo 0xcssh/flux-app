@@ -165,14 +165,9 @@ function DashboardContent() {
             </View>
           </>
         ) : isToday && isLogged ? (
-          // TODAY - LOGGED (lean layout)
+          // TODAY - LOGGED
           <>
-            {showWeeklyReport && (
-              <View style={styles.section}>
-                <WeeklyReportCard />
-              </View>
-            )}
-
+            {/* SECTION 1: YOUR SCORE */}
             <View style={styles.scoreContainer}>
               <VitalityScore score={selectedLog!.vitality_score} size={210} />
               <ShareButton
@@ -183,30 +178,27 @@ function DashboardContent() {
               />
             </View>
 
-            {/* Logged badge + Streak together */}
-            <View style={styles.loggedBadge}>
-              <View style={styles.loggedContent}>
-                <Ionicons
-                  name="checkmark-circle"
-                  size={16}
-                  color={darkPalette.secondary}
-                />
-                <Text style={styles.loggedText}>{t('logged_today')}</Text>
+            <View style={styles.statusRow}>
+              <View style={styles.statusItem}>
+                <Ionicons name="checkmark-circle" size={16} color={darkPalette.secondary} />
+                <Text style={styles.statusText}>Logged</Text>
+              </View>
+              <View style={styles.statusItem}>
+                <Ionicons name="flame" size={16} color={loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#94A3B8' : loggingStreak >= 7 ? '#CD7F32' : darkPalette.textSecondary} />
+                <Text style={[styles.statusText, { color: loggingStreak >= 30 ? '#F59E0B' : loggingStreak >= 14 ? '#94A3B8' : loggingStreak >= 7 ? '#CD7F32' : darkPalette.textSecondary }]}>{loggingStreak} day streak</Text>
               </View>
             </View>
 
+            <View style={styles.sectionDivider} />
+
+            {/* SECTION 2: YOUR PLAN */}
             <View style={styles.section}>
               <ActionPlanCard />
             </View>
 
-            <View style={styles.section}>
-              <StreakBar days={loggingStreak} />
-            </View>
+            <View style={styles.sectionDivider} />
 
-            <View style={styles.section}>
-              <CommunityScore score={selectedLog!.vitality_score} />
-            </View>
-
+            {/* SECTION 3: YOUR STATE */}
             <View style={styles.section}>
               <QuickStats
                 phase={phase}
@@ -224,6 +216,22 @@ function DashboardContent() {
               <SymptomPredictionCard />
             </View>
 
+            <View style={styles.sectionDivider} />
+
+            {/* SECTION 4: YOUR PROGRESS */}
+            <View style={styles.section}>
+              <CommunityScore score={selectedLog!.vitality_score} />
+            </View>
+
+            {showWeeklyReport && (
+              <View style={styles.section}>
+                <WeeklyReportCard />
+              </View>
+            )}
+
+            <View style={styles.sectionDivider} />
+
+            {/* SECTION 5: LEARN */}
             <View style={styles.section}>
               <AdaptiveLearn log={selectedLog} />
             </View>
@@ -302,21 +310,20 @@ const styles = StyleSheet.create({
   },
   scoreContainer: { alignItems: 'center', marginBottom: 20 },
   section: { marginBottom: 16 },
-  loggedBadge: {
+  statusRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-    borderRadius: 12,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(34, 197, 94, 0.2)',
+    paddingHorizontal: 4,
     marginBottom: 16,
   },
-  loggedContent: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  loggedText: {
-    fontSize: 14,
+  statusItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  statusText: {
+    fontSize: 13,
     fontWeight: '600',
-    color: darkPalette.secondary,
+    color: darkPalette.textSecondary,
   },
+  sectionDivider: { height: 8 },
   fab: {
     position: 'absolute',
     bottom: 24,
