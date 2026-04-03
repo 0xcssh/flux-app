@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { PurchasesPackage, PurchasesOfferings } from 'react-native-purchases';
 import type { PlanTier } from '@/types/subscription';
+import { useSubscriptionStore } from '@/store/subscriptionStore';
 import {
   initRevenueCat,
   getOfferings,
@@ -33,6 +34,9 @@ const PREMIUM_FEATURES: FeatureKey[] = [
 
 const PRO_FEATURES: FeatureKey[] = ['trt_tracking', 'ai_coaching'];
 
+// Module-level flag to prevent multiple RevenueCat inits
+let _rcInitialized = false;
+
 interface UseSubscriptionReturn {
   tier: PlanTier;
   isPremium: boolean;
@@ -47,14 +51,25 @@ interface UseSubscriptionReturn {
 }
 
 export function useSubscription(): UseSubscriptionReturn {
-  const [tier, setTier] = useState<PlanTier>('free');
-  const [isTrialActive, setIsTrialActive] = useState(false);
-  const [trialExpiresAt, setTrialExpiresAt] = useState<Date | null>(null);
+  // Read from Zustand store (source of truth)
+  const tier = useSubscriptionStore((s) => s.tier);
+  const storeTrial = useSubscriptionStore((s) => s.isTrialActive);
+  const storeTrialExpiry = useSubscriptionStore((s) => s.trialExpiresAt);
+  const setSubscription = useSubscriptionStore((s) => s.setSubscription);
+
   const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
+  const isTrialActive = storeTrial;
+  const trialExpiresAt = storeTrialExpiry ? new Date(storeTrialExpiry) : null;
+
   useEffect(() => {
+    if (_rcInitialized) {
+      setIsLoading(false);
+      return;
+    }
+    _rcInitialized = true;
     let mounted = true;
 
     async function init() {
@@ -69,28 +84,15 @@ export function useSubscription(): UseSubscriptionReturn {
 
         if (!mounted) return;
 
-        setTier(currentTier);
-        setIsTrialActive(trialStatus.isActive);
-        setTrialExpiresAt(trialStatus.expiresAt);
+        setSubscription(currentTier, trialStatus.expiresAt?.toISOString() ?? null);
         setOfferings(currentOfferings);
 
-        // Listen for subscription changes
         unsubscribeRef.current = addCustomerInfoListener((info) => {
           if (!mounted) return;
-          setTier(tierFromCustomerInfo(info));
-
+          const newTier = tierFromCustomerInfo(info);
           const premiumEntitlement = info.entitlements.active['premium'];
-          if (premiumEntitlement && premiumEntitlement.periodType === 'TRIAL') {
-            setIsTrialActive(true);
-            setTrialExpiresAt(
-              premiumEntitlement.expirationDate
-                ? new Date(premiumEntitlement.expirationDate)
-                : null,
-            );
-          } else {
-            setIsTrialActive(false);
-            setTrialExpiresAt(null);
-          }
+          const expiry = premiumEntitlement?.expirationDate ?? null;
+          setSubscription(newTier, expiry);
         });
       } catch (error) {
         console.error('[useSubscription] init error:', error);
@@ -128,7 +130,9 @@ export function useSubscription(): UseSubscriptionReturn {
       setIsLoading(true);
       const result = await purchasePackage(pkg);
       if (result.success) {
-        setTier(tierFromCustomerInfo(result.customerInfo));
+        const newTier = tierFromCustomerInfo(result.customerInfo);
+        const expiry = result.customerInfo.entitlements.active['premium']?.expirationDate ?? null;
+        setSubscription(newTier, expiry);
       }
       return result.success;
     } catch (error) {
@@ -137,19 +141,21 @@ export function useSubscription(): UseSubscriptionReturn {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setSubscription]);
 
   const restore = useCallback(async () => {
     try {
       setIsLoading(true);
       const info = await restorePurchases();
-      setTier(tierFromCustomerInfo(info));
+      const newTier = tierFromCustomerInfo(info);
+      const expiry = info.entitlements.active['premium']?.expirationDate ?? null;
+      setSubscription(newTier, expiry);
     } catch (error) {
       console.error('[useSubscription] restore error:', error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setSubscription]);
 
   return {
     tier,
