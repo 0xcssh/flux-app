@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Rect, Text as SvgText } from 'react-native-svg';
 import { darkPalette } from '@/theme/colors';
 import { getCircadianCurve } from '@/lib/hormoneEngine';
+import { useSettingsStore } from '@/store/settingsStore';
 
 interface CircadianChartProps {
   birthYear?: number;
@@ -31,8 +32,13 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
   const now = new Date();
   const hour = currentHour ?? now.getHours() + now.getMinutes() / 60;
 
+  const hormonalProfile = useSettingsStore((s) => s.hormonalProfile);
+
   const curveData = useMemo(() => {
-    const raw = getCircadianCurve(birthYear);
+    const options = hormonalProfile?.adjustedAcrophase
+      ? { acrophase: hormonalProfile.adjustedAcrophase }
+      : undefined;
+    const raw = getCircadianCurve(birthYear, options);
     return raw.filter((_, i) => i % 4 === 0);
   }, [birthYear]);
 

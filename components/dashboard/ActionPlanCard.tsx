@@ -7,6 +7,7 @@ import { darkPalette } from '@/theme/colors';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useLogStore } from '@/store/logStore';
 import { generateDailyPlan } from '@/lib/actionPlan';
+import { useSettingsStore } from '@/store/settingsStore';
 import type { TimeBlock } from '@/lib/actionPlan';
 
 const PHASE_COLORS: Record<string, string> = {
@@ -37,12 +38,13 @@ export default function ActionPlanCard() {
   const { canAccess } = useSubscription();
   const logs = useLogStore((s) => s.logs);
   const hasPremium = canAccess('action_plan');
+  const hormonalProfile = useSettingsStore((s) => s.hormonalProfile);
 
   const plan = useMemo(() => {
     const hour = new Date().getHours();
     const allLogs = Object.values(logs);
-    return generateDailyPlan(hour, allLogs);
-  }, [logs]);
+    return generateDailyPlan(hour, allLogs, hormonalProfile?.wakeUpHour);
+  }, [logs, hormonalProfile]);
 
   const currentPhaseIndex = getCurrentPhaseIndex();
   const currentBlock = plan.timeBlocks[currentPhaseIndex];
