@@ -14,6 +14,7 @@ import LogSlider from './LogSlider';
 import NoFapCheckbox from './NoFapCheckbox';
 import LogConfirmation from './LogConfirmation';
 import { useDailyLog } from '@/hooks/useDailyLog';
+import { useNoFapStore } from '@/store/nofapStore';
 import type { LogFormData } from '@/types/log';
 
 interface DailyLogFormProps {
@@ -84,6 +85,7 @@ export default function DailyLogForm({
 }: DailyLogFormProps) {
   const { t } = useTranslation('log');
   const { todayLog, isLogged, submitLog } = useDailyLog(userId);
+  const recordNoFapDay = useNoFapStore((s) => s.recordDay);
 
   const [formData, setFormData] = useState<LogFormData>({
     energy: todayLog?.energy ?? 5,
@@ -111,12 +113,14 @@ export default function DailyLogForm({
 
   const handleSubmit = useCallback(async () => {
     submitLog(formData);
+    // Sync NoFap streak with the checkbox
+    recordNoFapDay(formData.nofap_checked);
     const score = computeScore(formData);
     setLastScore(score);
 
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setShowConfirmation(true);
-  }, [formData, submitLog]);
+  }, [formData, submitLog, recordNoFapDay]);
 
   return (
     <View style={styles.wrapper}>
