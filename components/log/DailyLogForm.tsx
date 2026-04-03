@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import LogSlider from './LogSlider';
@@ -24,40 +25,64 @@ const SLIDER_CONFIG = [
   {
     key: 'energy' as const,
     color: '#F59E0B',
-    minLabel: '\u{1F634} Exhausted',
-    maxLabel: '\u{26A1} Unstoppable',
+    minLabel: 'Exhausted',
+    maxLabel: 'Unstoppable',
   },
   {
     key: 'mood' as const,
     color: '#2563EB',
-    minLabel: '\u{1F61E} Very Low',
-    maxLabel: '\u{1F604} Excellent',
+    minLabel: 'Very Low',
+    maxLabel: 'Excellent',
   },
   {
     key: 'libido' as const,
     color: '#EF4444',
-    minLabel: '\u{2744}\u{FE0F} Low',
-    maxLabel: '\u{1F525} High',
+    minLabel: 'Low',
+    maxLabel: 'High',
   },
   {
     key: 'sleep_quality' as const,
     color: '#8B5CF6',
-    minLabel: '\u{1F635} Terrible',
-    maxLabel: '\u{1F634}\u{1F4A4} Perfect',
+    minLabel: 'Terrible',
+    maxLabel: 'Perfect',
   },
   {
     key: 'stress' as const,
     color: '#EF4444',
-    minLabel: '\u{1F60C} Calm',
-    maxLabel: '\u{1F630} Stressed',
+    minLabel: 'Calm',
+    maxLabel: 'Stressed',
   },
   {
     key: 'training' as const,
     color: '#10B981',
-    minLabel: '\u{1F6CB}\u{FE0F} Rest Day',
-    maxLabel: '\u{1F4AA} Max Effort',
+    minLabel: 'Rest Day',
+    maxLabel: 'Max Effort',
   },
 ];
+
+function computeScore(data: LogFormData): number {
+  const raw =
+    data.energy * 0.2 +
+    data.mood * 0.2 +
+    data.libido * 0.15 +
+    data.sleep_quality * 0.2 +
+    (10 - data.stress) * 0.15 +
+    data.training * 0.1;
+  return Math.round(((raw - 1) / 9) * 100);
+}
+
+function getScoreColor(score: number): string {
+  if (score >= 80) return '#22C55E';
+  if (score >= 60) return '#3B82F6';
+  if (score >= 40) return '#F59E0B';
+  return '#EF4444';
+}
+
+const RING_SIZE = 80;
+const RING_STROKE = 6;
+const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+const RING_CENTER = RING_SIZE / 2;
 
 export default function DailyLogForm({
   userId,
@@ -80,6 +105,13 @@ export default function DailyLogForm({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [lastScore, setLastScore] = useState(0);
 
+  const liveScore = useMemo(() => computeScore(formData), [formData]);
+  const scoreColor = useMemo(() => getScoreColor(liveScore), [liveScore]);
+  const dashOffset = useMemo(
+    () => RING_CIRCUMFERENCE - (liveScore / 100) * RING_CIRCUMFERENCE,
+    [liveScore]
+  );
+
   const handleSliderChange = useCallback(
     (key: keyof LogFormData, value: number) => {
       setFormData((prev) => ({ ...prev, [key]: value }));
@@ -89,16 +121,7 @@ export default function DailyLogForm({
 
   const handleSubmit = useCallback(async () => {
     submitLog(formData);
-
-    // Compute score for display
-    const raw =
-      formData.energy * 0.2 +
-      formData.mood * 0.2 +
-      formData.libido * 0.15 +
-      formData.sleep_quality * 0.2 +
-      (10 - formData.stress) * 0.15 +
-      formData.training * 0.1;
-    const score = Math.round(((raw - 1) / 9) * 100);
+    const score = computeScore(formData);
     setLastScore(score);
 
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -112,12 +135,48 @@ export default function DailyLogForm({
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {isLogged && (
-          <View style={styles.updateBanner}>
-            <Text style={styles.updateBannerText}>{t('already_logged')}</Text>
+        {/* Live Score Preview */}
+        <View style={styles.scoreRow}>
+          <View style={styles.scoreRing}>
+            <Svg width={RING_SIZE} height={RING_SIZE}>
+              <Circle
+                cx={RING_CENTER}
+                cy={RING_CENTER}
+                r={RING_RADIUS}
+                stroke="#1A1A2E"
+                strokeWidth={RING_STROKE}
+                fill="none"
+              />
+              <Circle
+                cx={RING_CENTER}
+                cy={RING_CENTER}
+                r={RING_RADIUS}
+                stroke={scoreColor}
+                strokeWidth={RING_STROKE}
+                fill="none"
+                strokeDasharray={RING_CIRCUMFERENCE}
+                strokeDashoffset={dashOffset}
+                strokeLinecap="round"
+                transform={`rotate(-90 ${RING_CENTER} ${RING_CENTER})`}
+              />
+            </Svg>
+            <View style={styles.scoreCenter}>
+              <Text style={[styles.scoreValue, { color: scoreColor }]}>
+                {liveScore}
+              </Text>
+            </View>
           </View>
-        )}
+          <View style={styles.scoreInfo}>
+            <Text style={styles.scoreLabel}>{t('live_score')}</Text>
+            {isLogged && (
+              <View style={styles.updateBadge}>
+                <Text style={styles.updateBadgeText}>{t('update')}</Text>
+              </View>
+            )}
+          </View>
+        </View>
 
+        {/* Sliders */}
         {SLIDER_CONFIG.map((config) => (
           <LogSlider
             key={config.key}
@@ -130,6 +189,7 @@ export default function DailyLogForm({
           />
         ))}
 
+        {/* Notes */}
         <View style={styles.notesContainer}>
           <TextInput
             style={styles.notesInput}
@@ -145,6 +205,7 @@ export default function DailyLogForm({
           />
         </View>
 
+        {/* NoFap Toggle Card */}
         {showNofap && (
           <NoFapCheckbox
             checked={formData.nofap_checked}
@@ -157,6 +218,7 @@ export default function DailyLogForm({
           />
         )}
 
+        {/* Submit */}
         <TouchableOpacity
           style={styles.submitButton}
           onPress={handleSubmit}
@@ -165,6 +227,9 @@ export default function DailyLogForm({
           <Text style={styles.submitButtonText}>
             {isLogged ? t('update') : t('submit')}
           </Text>
+          <View style={styles.submitScore}>
+            <Text style={styles.submitScoreText}>{liveScore}</Text>
+          </View>
         </TouchableOpacity>
 
         <View style={styles.bottomSpacer} />
@@ -191,41 +256,74 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 40,
   },
-  updateBanner: {
-    backgroundColor: '#252540',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#3B82F6',
+  // Live Score Preview
+  scoreRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1A1A2E',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 14,
   },
-  updateBannerText: {
-    fontSize: 13,
+  scoreRing: {
+    width: RING_SIZE,
+    height: RING_SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scoreCenter: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scoreValue: {
+    fontSize: 24,
+    fontWeight: '900',
+    letterSpacing: -1,
+  },
+  scoreInfo: {
+    marginLeft: 14,
+    flex: 1,
+  },
+  scoreLabel: {
+    fontSize: 14,
+    color: '#8B8BA3',
+    fontWeight: '600',
+  },
+  updateBadge: {
+    backgroundColor: '#3B82F620',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+  },
+  updateBadgeText: {
+    fontSize: 12,
     color: '#3B82F6',
-    fontWeight: '500',
+    fontWeight: '600',
   },
+  // Notes
   notesContainer: {
     backgroundColor: '#1A1A2E',
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 1,
+    padding: 14,
+    marginBottom: 12,
   },
   notesInput: {
     fontSize: 14,
     color: '#FFFFFF',
-    minHeight: 72,
+    minHeight: 60,
     lineHeight: 20,
   },
+  // Submit
   submitButton: {
+    flexDirection: 'row',
     backgroundColor: '#3B82F6',
     borderRadius: 12,
-    paddingVertical: 16,
+    paddingVertical: 14,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#3B82F6',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
@@ -235,6 +333,18 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '700',
+  },
+  submitScore: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginLeft: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  submitScoreText: {
+    color: '#FFFFFF',
+    fontSize: 13,
     fontWeight: '700',
   },
   bottomSpacer: {

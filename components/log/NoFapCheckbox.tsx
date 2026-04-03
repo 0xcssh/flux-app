@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Switch, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 interface NoFapCheckboxProps {
@@ -11,16 +12,24 @@ export default function NoFapCheckbox({ checked, onToggle }: NoFapCheckboxProps)
   const { t } = useTranslation('log');
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={onToggle}
-      activeOpacity={0.7}
-    >
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <Text style={styles.checkmark}>✓</Text>}
+    <View style={styles.container}>
+      <View style={styles.left}>
+        <Ionicons
+          name="shield-checkmark"
+          size={20}
+          color={checked ? '#22C55E' : '#5A5A7A'}
+        />
+        <Text style={[styles.label, checked && styles.labelActive]}>
+          {t('nofap_label')}
+        </Text>
       </View>
-      <Text style={styles.label}>{t('nofap_checkbox')}</Text>
-    </TouchableOpacity>
+      <Switch
+        value={checked}
+        onValueChange={onToggle}
+        trackColor={{ false: '#2A2A45', true: '#22C55E40' }}
+        thumbColor={checked ? '#22C55E' : '#5A5A7A'}
+      />
+    </View>
   );
 }
 
@@ -28,39 +37,25 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: '#1A1A2E',
+    justifyContent: 'space-between',
+    backgroundColor: '#252540',
     borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    marginBottom: 16,
   },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#5A5A7A',
+  left: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  checkboxChecked: {
-    backgroundColor: '#22C55E',
-    borderColor: '#22C55E',
-  },
-  checkmark: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '700',
+    gap: 10,
+    flex: 1,
   },
   label: {
     fontSize: 14,
     color: '#8B8BA3',
     fontWeight: '500',
+  },
+  labelActive: {
+    color: '#FFFFFF',
   },
 });

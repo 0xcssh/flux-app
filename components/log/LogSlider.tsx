@@ -39,8 +39,8 @@ export default function LogSlider({
         thumbTintColor={color}
       />
       <View style={styles.labelsRow}>
-        <Text style={styles.emojiLabel}>{minLabel}</Text>
-        <Text style={styles.emojiLabel}>{maxLabel}</Text>
+        <Text style={styles.rangeLabel}>{minLabel}</Text>
+        <Text style={styles.rangeLabel}>{maxLabel}</Text>
       </View>
     </View>
   );
@@ -48,49 +48,47 @@ export default function LogSlider({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: '#1A1A2E',
     borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 1,
+    paddingHorizontal: 14,
+    paddingTop: 12,
+    paddingBottom: 8,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   label: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
     color: '#FFFFFF',
   },
   valueBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
   valueText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '700',
   },
   slider: {
     width: '100%',
-    height: 40,
+    height: 36,
   },
   labelsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 4,
   },
-  emojiLabel: {
-    fontSize: 13,
-    color: '#8B8BA3',
+  rangeLabel: {
+    fontSize: 11,
+    color: '#5A5A7A',
+    fontWeight: '500',
   },
 });

@@ -54,7 +54,7 @@ export default function TabLayout() {
         name="log"
         options={{
           title: t('nav.log'),
-          headerTitle: t('nav.log'),
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.logIconContainer, focused && styles.logIconActive]}>
               <FontAwesome
