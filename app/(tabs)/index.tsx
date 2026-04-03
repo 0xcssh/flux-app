@@ -199,6 +199,10 @@ function DashboardContent() {
             </View>
 
             <View style={styles.section}>
+              <AdaptiveLearn log={selectedLog} />
+            </View>
+
+            <View style={styles.section}>
               <ArticleSuggestion />
             </View>
           </>
