@@ -6,14 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/store/authStore';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useSubscription } from '@/hooks/useSubscription';
-import i18n from '@/i18n';
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 const MINUTES = [0, 15, 30, 45];
 
 export default function SettingsForm() {
   const initialNotificationTime = '08:00';
-  const initialLanguage = 'en';
   const { t } = useTranslation(['profile', 'common']);
   const updateProfile = useAuthStore((s) => s.updateProfile);
   const { isPremium } = useSubscription();
@@ -28,7 +26,6 @@ export default function SettingsForm() {
     const parts = initialNotificationTime.split(':');
     return parseInt(parts[1], 10) || 0;
   });
-  const [language, setLanguage] = useState(initialLanguage);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const formatTime = (h: number, m: number) => {
@@ -40,15 +37,6 @@ export default function SettingsForm() {
       setHour(newHour);
       setMinute(newMinute);
       updateProfile({ notification_time: formatTime(newHour, newMinute) });
-    },
-    [updateProfile],
-  );
-
-  const handleLanguageChange = useCallback(
-    (lang: string) => {
-      setLanguage(lang);
-      i18n.changeLanguage(lang);
-      updateProfile({ language: lang });
     },
     [updateProfile],
   );
@@ -153,35 +141,6 @@ export default function SettingsForm() {
         </View>
       )}
 
-      {/* Language Selector */}
-      <View style={styles.settingRow}>
-        <View style={styles.settingLeft}>
-          <View style={styles.iconContainer}>
-            <FontAwesome name="language" size={16} color="#2563EB" />
-          </View>
-          <Text style={styles.settingLabel}>{t('settings.language')}</Text>
-        </View>
-        <View style={styles.languageButtons}>
-          <TouchableOpacity
-            style={[styles.langButton, language === 'en' && styles.langButtonActive]}
-            onPress={() => handleLanguageChange('en')}
-          >
-            <Text style={[styles.langButtonText, language === 'en' && styles.langButtonTextActive]}>
-              {t('languages.en')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.langButton, language === 'fr' && styles.langButtonActive]}
-            onPress={() => handleLanguageChange('fr')}
-          >
-            <Text style={[styles.langButtonText, language === 'fr' && styles.langButtonTextActive]}>
-              {t('languages.fr')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Language is the last row */}
     </View>
   );
 }
@@ -290,27 +249,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   timeChipTextActive: {
-    color: '#FFFFFF',
-  },
-  languageButtons: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  langButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: '#16162A',
-  },
-  langButtonActive: {
-    backgroundColor: '#3B82F6',
-  },
-  langButtonText: {
-    fontSize: 13,
-    color: '#8B8BA3',
-    fontWeight: '600',
-  },
-  langButtonTextActive: {
     color: '#FFFFFF',
   },
 });
