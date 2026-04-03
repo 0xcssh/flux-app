@@ -2,12 +2,12 @@ import React, { useState, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+
+import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import LogSlider from './LogSlider';
@@ -60,6 +60,15 @@ const SLIDER_CONFIG = [
   },
 ];
 
+const SCORE_STACK_CONFIG = [
+  { key: 'energy', label: 'Energy', weight: 0.20, color: '#F59E0B' },
+  { key: 'mood', label: 'Mood', weight: 0.20, color: '#A78BFA' },
+  { key: 'libido', label: 'Libido', weight: 0.15, color: '#EF4444' },
+  { key: 'sleep', label: 'Sleep', weight: 0.20, color: '#6366F1' },
+  { key: 'stress', label: 'Stress', weight: 0.15, color: '#F97316' },
+  { key: 'training', label: 'Training', weight: 0.10, color: '#22C55E' },
+] as const;
+
 function computeScore(data: LogFormData): number {
   const raw =
     data.energy * 0.2 +
@@ -72,17 +81,11 @@ function computeScore(data: LogFormData): number {
 }
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#22C55E';
-  if (score >= 60) return '#3B82F6';
-  if (score >= 40) return '#F59E0B';
+  if (score >= 71) return '#22C55E';
+  if (score >= 51) return '#3B82F6';
+  if (score >= 31) return '#F59E0B';
   return '#EF4444';
 }
-
-const RING_SIZE = 80;
-const RING_STROKE = 6;
-const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-const RING_CENTER = RING_SIZE / 2;
 
 export default function DailyLogForm({
   userId,
@@ -98,7 +101,7 @@ export default function DailyLogForm({
     sleep_quality: todayLog?.sleep_quality ?? 5,
     stress: todayLog?.stress ?? 5,
     training: todayLog?.training ?? 5,
-    notes: todayLog?.notes ?? '',
+    notes: '',
     nofap_checked: todayLog?.nofap_checked ?? false,
   });
 
@@ -107,10 +110,6 @@ export default function DailyLogForm({
 
   const liveScore = useMemo(() => computeScore(formData), [formData]);
   const scoreColor = useMemo(() => getScoreColor(liveScore), [liveScore]);
-  const dashOffset = useMemo(
-    () => RING_CIRCUMFERENCE - (liveScore / 100) * RING_CIRCUMFERENCE,
-    [liveScore]
-  );
 
   const handleSliderChange = useCallback(
     (key: keyof LogFormData, value: number) => {
@@ -135,44 +134,40 @@ export default function DailyLogForm({
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* Live Score Preview */}
-        <View style={styles.scoreRow}>
-          <View style={styles.scoreRing}>
-            <Svg width={RING_SIZE} height={RING_SIZE}>
-              <Circle
-                cx={RING_CENTER}
-                cy={RING_CENTER}
-                r={RING_RADIUS}
-                stroke="#1A1A2E"
-                strokeWidth={RING_STROKE}
-                fill="none"
-              />
-              <Circle
-                cx={RING_CENTER}
-                cy={RING_CENTER}
-                r={RING_RADIUS}
-                stroke={scoreColor}
-                strokeWidth={RING_STROKE}
-                fill="none"
-                strokeDasharray={RING_CIRCUMFERENCE}
-                strokeDashoffset={dashOffset}
-                strokeLinecap="round"
-                transform={`rotate(-90 ${RING_CENTER} ${RING_CENTER})`}
-              />
-            </Svg>
-            <View style={styles.scoreCenter}>
-              <Text style={[styles.scoreValue, { color: scoreColor }]}>
-                {liveScore}
-              </Text>
-            </View>
+        {/* Already Logged Badge */}
+        {isLogged && (
+          <View style={styles.alreadyLoggedBadge}>
+            <Ionicons name="checkmark-circle" size={14} color="#22C55E" />
+            <Text style={styles.alreadyLoggedText}>Already logged — updating</Text>
           </View>
-          <View style={styles.scoreInfo}>
-            <Text style={styles.scoreLabel}>{t('live_score')}</Text>
-            {isLogged && (
-              <View style={styles.updateBadge}>
-                <Text style={styles.updateBadgeText}>{t('update')}</Text>
-              </View>
-            )}
+        )}
+
+        {/* Score Stack */}
+        <View style={styles.scoreStackContainer}>
+          <Text style={styles.scoreStackLabel}>YOUR SCORE</Text>
+          <View style={styles.scoreStackRow}>
+            <View style={styles.scoreStackBars}>
+              {SCORE_STACK_CONFIG.map((c) => {
+                const rawValue = c.key === 'stress'
+                  ? 10 - formData.stress
+                  : c.key === 'sleep'
+                    ? formData.sleep_quality
+                    : formData[c.key as keyof LogFormData] as number;
+                const contribution = Math.round(((rawValue - 1) / 9) * c.weight * 100);
+                return (
+                  <View key={c.key} style={styles.barRow}>
+                    <Text style={styles.barLabel}>{c.label}</Text>
+                    <View style={styles.barTrack}>
+                      <View style={[styles.barFill, { width: `${(rawValue / 10) * 100}%`, backgroundColor: c.color }]} />
+                    </View>
+                    <Text style={[styles.barContrib, { color: c.color }]}>+{contribution}</Text>
+                  </View>
+                );
+              })}
+            </View>
+            <View style={styles.scoreStackTotal}>
+              <Text style={[styles.scoreStackValue, { color: scoreColor }]}>{liveScore}</Text>
+            </View>
           </View>
         </View>
 
@@ -188,22 +183,6 @@ export default function DailyLogForm({
             color={config.color}
           />
         ))}
-
-        {/* Notes */}
-        <View style={styles.notesContainer}>
-          <TextInput
-            style={styles.notesInput}
-            placeholder={t('notes_placeholder')}
-            placeholderTextColor="#5A5A7A"
-            multiline
-            numberOfLines={3}
-            value={formData.notes}
-            onChangeText={(text) =>
-              setFormData((prev) => ({ ...prev, notes: text }))
-            }
-            textAlignVertical="top"
-          />
-        </View>
 
         {/* NoFap Toggle Card */}
         {showNofap && (
@@ -256,65 +235,81 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 40,
   },
-  // Live Score Preview
-  scoreRow: {
+  // Already Logged Badge
+  alreadyLoggedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1A1A2E',
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 14,
+    alignSelf: 'center',
+    backgroundColor: '#252540',
+    borderWidth: 1,
+    borderColor: '#2A2A45',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    gap: 6,
+    marginBottom: 8,
   },
-  scoreRing: {
-    width: RING_SIZE,
-    height: RING_SIZE,
+  alreadyLoggedText: {
+    fontSize: 12,
+    color: '#5A5A7A',
+  },
+  // Score Stack
+  scoreStackContainer: {
+    marginBottom: 20,
+  },
+  scoreStackLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#5A5A7A',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginBottom: 10,
+  },
+  scoreStackRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  scoreCenter: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scoreValue: {
-    fontSize: 24,
-    fontWeight: '900',
-    letterSpacing: -1,
-  },
-  scoreInfo: {
-    marginLeft: 14,
+  scoreStackBars: {
     flex: 1,
   },
-  scoreLabel: {
-    fontSize: 14,
+  barRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+    gap: 8,
+  },
+  barLabel: {
+    width: 60,
+    fontSize: 11,
     color: '#8B8BA3',
+    fontWeight: '500',
+  },
+  barTrack: {
+    flex: 1,
+    height: 8,
+    backgroundColor: '#252540',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  barFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  barContrib: {
+    width: 30,
+    fontSize: 10,
     fontWeight: '600',
+    textAlign: 'right',
   },
-  updateBadge: {
-    backgroundColor: '#3B82F620',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-    marginTop: 6,
+  scoreStackTotal: {
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 12,
   },
-  updateBadgeText: {
-    fontSize: 12,
-    color: '#3B82F6',
-    fontWeight: '600',
-  },
-  // Notes
-  notesContainer: {
-    backgroundColor: '#1A1A2E',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 12,
-  },
-  notesInput: {
-    fontSize: 14,
-    color: '#FFFFFF',
-    minHeight: 60,
-    lineHeight: 20,
+  scoreStackValue: {
+    fontSize: 42,
+    fontWeight: '900',
   },
   // Submit
   submitButton: {
