@@ -56,8 +56,9 @@ function buildDays(count: number): DayItem[] {
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const seen = new Set<string>();
 
-  // Today first, then future days
-  for (let i = 0; i < count; i++) {
+  // 3 days past + today + 3 days future = 7 cells
+  const pastDays = 3;
+  for (let i = -pastDays; i < count - pastDays; i++) {
     const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
     const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     if (seen.has(dateStr)) continue;
@@ -161,7 +162,7 @@ export default function DaySelector() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
-        initialScrollIndex={0}
+        initialScrollIndex={3}
         getItemLayout={(_, index) => ({
           length: CELL_WIDTH + 6,
           offset: (CELL_WIDTH + 6) * index,
