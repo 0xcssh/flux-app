@@ -7,6 +7,7 @@ export default function OnboardingLayout() {
         headerShown: false,
         gestureEnabled: true,
         animation: 'slide_from_right',
+        animationDuration: 300,
       }}
     >
       <Stack.Screen name="welcome" />

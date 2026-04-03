@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
 import { darkPalette } from '@/theme/colors';
 
 function TabBarIcon(props: {
@@ -41,6 +42,11 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
+        listeners={{
+          tabPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          },
+        }}
       />
       <Tabs.Screen
         name="cycle"
@@ -48,6 +54,11 @@ export default function TabLayout() {
           title: t('nav.cycle'),
           headerTitle: t('nav.cycle'),
           tabBarIcon: ({ color }) => <TabBarIcon name="refresh" color={color} />,
+        }}
+        listeners={{
+          tabPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          },
         }}
       />
       <Tabs.Screen
@@ -66,6 +77,11 @@ export default function TabLayout() {
           ),
           tabBarLabelStyle: { display: 'none' },
         }}
+        listeners={{
+          tabPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          },
+        }}
       />
       <Tabs.Screen
         name="insights"
@@ -74,6 +90,11 @@ export default function TabLayout() {
           headerTitle: t('nav.insights'),
           tabBarIcon: ({ color }) => <TabBarIcon name="lightbulb-o" color={color} />,
         }}
+        listeners={{
+          tabPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          },
+        }}
       />
       <Tabs.Screen
         name="profile"
@@ -81,6 +102,11 @@ export default function TabLayout() {
           title: t('nav.profile'),
           headerTitle: t('nav.profile'),
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        }}
+        listeners={{
+          tabPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          },
         }}
       />
     </Tabs>

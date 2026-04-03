@@ -6,11 +6,13 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import ProfileResult from '@/components/onboarding/ProfileResult';
 import {
@@ -20,6 +22,8 @@ import {
   computeProfile,
 } from '@/lib/hormonalProfile';
 import { useSettingsStore } from '@/store/settingsStore';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // ── Question definitions ──────────────────────────────────────────────
 
@@ -91,6 +95,68 @@ const QUESTIONS: QuestionDef[] = [
   },
 ];
 
+// ── Animated Option Card ──────────────────────────────────────────────
+
+function OptionCard({
+  option,
+  isSelected,
+  onPress,
+}: {
+  option: OptionDef;
+  isSelected: boolean;
+  onPress: () => void;
+}) {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  function handlePressIn() {
+    Animated.timing(scaleAnim, {
+      toValue: 0.97,
+      duration: 80,
+      useNativeDriver: true,
+    }).start();
+  }
+
+  function handlePressOut() {
+    Animated.timing(scaleAnim, {
+      toValue: 1,
+      duration: 80,
+      useNativeDriver: true,
+    }).start();
+  }
+
+  return (
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <TouchableOpacity
+        style={[
+          styles.optionCard,
+          isSelected && styles.optionCardSelected,
+        ]}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={0.8}
+      >
+        {option.icon && (
+          <Ionicons
+            name={option.icon}
+            size={22}
+            color={isSelected ? '#3B82F6' : '#8B8BA3'}
+            style={styles.optionIcon}
+          />
+        )}
+        <Text
+          style={[
+            styles.optionLabel,
+            isSelected && styles.optionLabelSelected,
+          ]}
+        >
+          {option.label}
+        </Text>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
+
 // ── Component ─────────────────────────────────────────────────────────
 
 export default function QuizScreen() {
@@ -102,34 +168,40 @@ export default function QuizScreen() {
   const [answers, setAnswers] = useState<Record<string, number | string>>({});
   const [profile, setProfile] = useState<HormonalProfile | null>(null);
 
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
 
   const isShowingResult = profile !== null;
   const totalQuestions = QUESTIONS.length;
 
-  function animateTransition(callback: () => void) {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 150,
+  function animateSlide(callback: () => void) {
+    // Slide current question out left
+    Animated.timing(slideAnim, {
+      toValue: -SCREEN_WIDTH,
+      duration: 250,
       useNativeDriver: true,
     }).start(() => {
       callback();
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
+      // Reset position to right
+      slideAnim.setValue(SCREEN_WIDTH);
+      // Slide new question in from right
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 250,
         useNativeDriver: true,
       }).start();
     });
   }
 
   function selectOption(questionKey: string, value: number | string) {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
     const newAnswers = { ...answers, [questionKey]: value };
     setAnswers(newAnswers);
 
     // Auto-advance after brief delay
     setTimeout(() => {
       if (step < totalQuestions - 1) {
-        animateTransition(() => setStep(step + 1));
+        animateSlide(() => setStep(step + 1));
       } else {
         // Last question answered: compute profile
         const quizAnswers: QuizAnswers = {
@@ -141,7 +213,7 @@ export default function QuizScreen() {
         };
         const computed = computeProfile(quizAnswers);
         setHormonalProfile(computed);
-        animateTransition(() => setProfile(computed));
+        animateSlide(() => setProfile(computed));
       }
     }, 250);
   }
@@ -150,17 +222,31 @@ export default function QuizScreen() {
     router.push('/(onboarding)/setup');
   }
 
-  // ── Render ──────────────────────────────────────────────────────────
+  // ── Progress bar width ──────────────────────────────────────────────
+
+  const progressFraction = isShowingResult
+    ? 1
+    : (step + 1) / totalQuestions;
+
+  // ── Render: Profile Result ──────────────────────────────────────────
 
   if (isShowingResult) {
     return (
       <SafeAreaView style={styles.container}>
-        <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+        {/* Progress bar (full) */}
+        <View style={styles.progressBarTrack}>
+          <View style={[styles.progressBarFill, { width: '100%' }]} />
+        </View>
+
+        <ScrollView
+          style={styles.resultScroll}
+          contentContainerStyle={styles.resultScrollContent}
+          showsVerticalScrollIndicator={false}
+        >
           <ProfileResult profile={profile} />
-        </Animated.View>
+        </ScrollView>
 
         <View style={styles.footer}>
-          <PaginationDots total={6} current={3} />
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={handleContinue}
@@ -174,12 +260,30 @@ export default function QuizScreen() {
     );
   }
 
+  // ── Render: Questions ───────────────────────────────────────────────
+
   const currentQuestion = QUESTIONS[step];
   const selectedValue = answers[currentQuestion.key];
 
   return (
     <SafeAreaView style={styles.container}>
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      {/* Progress bar */}
+      <View style={styles.progressBarTrack}>
+        <View
+          style={[
+            styles.progressBarFill,
+            { width: `${progressFraction * 100}%` },
+          ]}
+        />
+      </View>
+
+      <Animated.View
+        style={[
+          styles.content,
+          { transform: [{ translateX: slideAnim }] },
+        ]}
+      >
+        {/* Question counter */}
         <Text style={styles.stepIndicator}>
           {step + 1} / {totalQuestions}
         </Text>
@@ -196,34 +300,14 @@ export default function QuizScreen() {
           {currentQuestion.options.map((option) => {
             const isSelected = selectedValue === option.value;
             return (
-              <TouchableOpacity
+              <OptionCard
                 key={String(option.value)}
-                style={[
-                  styles.optionCard,
-                  isSelected && styles.optionCardSelected,
-                ]}
+                option={option}
+                isSelected={isSelected}
                 onPress={() =>
                   selectOption(currentQuestion.key, option.value)
                 }
-                activeOpacity={0.7}
-              >
-                {option.icon && (
-                  <Ionicons
-                    name={option.icon}
-                    size={22}
-                    color={isSelected ? '#3B82F6' : '#8B8BA3'}
-                    style={styles.optionIcon}
-                  />
-                )}
-                <Text
-                  style={[
-                    styles.optionLabel,
-                    isSelected && styles.optionLabelSelected,
-                  ]}
-                >
-                  {option.label}
-                </Text>
-              </TouchableOpacity>
+              />
             );
           })}
         </ScrollView>
@@ -242,6 +326,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0A0A0F',
+  },
+  progressBarTrack: {
+    height: 4,
+    backgroundColor: '#252540',
+    marginHorizontal: 24,
+    marginTop: 8,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 4,
+    backgroundColor: '#3B82F6',
+    borderRadius: 2,
   },
   content: {
     flex: 1,
@@ -283,7 +380,7 @@ const styles = StyleSheet.create({
   },
   optionCardSelected: {
     borderColor: '#3B82F6',
-    backgroundColor: 'rgba(59, 130, 246, 0.08)',
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
   },
   optionIcon: {
     marginRight: 12,
@@ -295,6 +392,13 @@ const styles = StyleSheet.create({
   },
   optionLabelSelected: {
     color: '#FFFFFF',
+  },
+  resultScroll: {
+    flex: 1,
+  },
+  resultScrollContent: {
+    paddingTop: 24,
+    paddingBottom: 16,
   },
   footer: {
     paddingHorizontal: 32,

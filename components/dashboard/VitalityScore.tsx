@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { darkPalette } from '@/theme/colors';
 
@@ -22,8 +22,37 @@ export default function VitalityScore({ score, size = 200 }: VitalityScoreProps)
   const center = size / 2;
 
   const info = score != null ? getScoreInfo(score) : null;
-  const progress = score != null ? (score / 100) * circumference : 0;
-  const dashOffset = circumference - progress;
+
+  // Animation
+  const animValue = useRef(new Animated.Value(0)).current;
+  const [displayScore, setDisplayScore] = useState(0);
+  const [displayOffset, setDisplayOffset] = useState(circumference);
+
+  useEffect(() => {
+    if (score != null) {
+      animValue.setValue(0);
+
+      const listenerId = animValue.addListener(({ value }) => {
+        setDisplayScore(Math.round(value));
+        const progress = (value / 100) * circumference;
+        setDisplayOffset(circumference - progress);
+      });
+
+      Animated.timing(animValue, {
+        toValue: score,
+        duration: 800,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: false,
+      }).start();
+
+      return () => {
+        animValue.removeListener(listenerId);
+      };
+    } else {
+      setDisplayScore(0);
+      setDisplayOffset(circumference);
+    }
+  }, [score]);
 
   return (
     <View style={[styles.container, { width: size, height: size }]}>
@@ -50,7 +79,7 @@ export default function VitalityScore({ score, size = 200 }: VitalityScoreProps)
           <Circle
             cx={center} cy={center} r={radius}
             stroke="url(#scoreGrad)" strokeWidth={strokeWidth} fill="none"
-            strokeDasharray={circumference} strokeDashoffset={dashOffset}
+            strokeDasharray={circumference} strokeDashoffset={displayOffset}
             strokeLinecap="round" transform={`rotate(-90 ${center} ${center})`}
           />
         )}
@@ -59,7 +88,7 @@ export default function VitalityScore({ score, size = 200 }: VitalityScoreProps)
       <View style={[styles.centerText, { width: size, height: size }]}>
         {score != null ? (
           <>
-            <Text style={[styles.score, { color: info!.color }]}>{score}</Text>
+            <Text style={[styles.score, { color: info!.color }]}>{displayScore}</Text>
             <Text style={styles.label}>Vitality</Text>
             <Text style={[styles.quality, { color: info!.color }]}>{info!.label}</Text>
           </>

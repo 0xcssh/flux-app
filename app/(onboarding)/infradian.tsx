@@ -1,35 +1,66 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
+
+const CYCLE_BARS = [
+  40, 45, 55, 65, 72, 80, 88, 92, 95, 90, 82, 75, 68,
+  60, 52, 48, 45, 42, 40, 42, 48, 55, 65, 75, 82,
+];
 
 export default function InfradianScreen() {
   const router = useRouter();
   const { t } = useTranslation('onboarding');
 
-  // Simulated ~25 day cycle illustration
-  const cycleBars = [
-    40, 45, 55, 65, 72, 80, 88, 92, 95, 90, 82, 75, 68,
-    60, 52, 48, 45, 42, 40, 42, 48, 55, 65, 75, 82,
-  ];
+  // Bar stagger animations
+  const barAnims = useRef(CYCLE_BARS.map(() => new Animated.Value(0))).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
+  const footerOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const barAnimations = barAnims.map((anim) =>
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: false,
+      }),
+    );
+    Animated.stagger(40, barAnimations).start(() => {
+      Animated.parallel([
+        Animated.timing(textOpacity, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(footerOpacity, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Cycle illustration */}
+        {/* Animated bar chart */}
         <View style={styles.chartContainer}>
           <View style={styles.chartBackground}>
             <View style={styles.barChart}>
-              {cycleBars.map((h, i) => (
-                <View
+              {CYCLE_BARS.map((h, i) => (
+                <Animated.View
                   key={i}
                   style={[
                     styles.bar,
                     {
-                      height: `${h}%`,
+                      height: barAnims[i].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0%', `${h}%`],
+                      }),
                       backgroundColor:
                         h > 85
                           ? '#10B981'
@@ -50,42 +81,30 @@ export default function InfradianScreen() {
             </View>
           </View>
 
-          <View style={styles.cycleMarker}>
-            <FontAwesome name="refresh" size={12} color="#10B981" />
-            <Text style={styles.cycleText}>~20-30 day cycle</Text>
-          </View>
+          <Animated.View style={[styles.badge, { opacity: textOpacity }]}>
+            <Text style={styles.badgeText}>~20-30 day cycle</Text>
+          </Animated.View>
         </View>
 
-        <Text style={styles.title}>{t('infradian.title')}</Text>
-        <Text style={styles.description}>{t('infradian.description')}</Text>
-
-        <View style={styles.nuanceCard}>
-          <FontAwesome name="flask" size={16} color="#0D9488" />
-          <Text style={styles.nuanceText}>
-            Research suggests ~60% of men have detectable hormonal cycles lasting 20-30 days
-            (Doering et al., 1975; Celec et al., 2003). Log daily and we'll find your unique pattern.
+        <Animated.View style={[styles.textContainer, { opacity: textOpacity }]}>
+          <Text style={styles.title}>Your Monthly Rhythm</Text>
+          <Text style={styles.description}>
+            Log daily and we'll detect your personal cycle.
           </Text>
-        </View>
-
-        <View style={styles.teaseCard}>
-          <FontAwesome name="magic" size={14} color="#2563EB" />
-          <Text style={styles.teaseText}>
-            After 14 days of logging, Flux begins detecting your personal cycle.
-          </Text>
-        </View>
+        </Animated.View>
       </View>
 
-      <View style={styles.footer}>
+      <Animated.View style={[styles.footer, { opacity: footerOpacity }]}>
         <PaginationDots total={6} current={2} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/quiz')}
           activeOpacity={0.8}
         >
-          <Text style={styles.ctaText}>{t('common:buttons.next', { defaultValue: 'Next' })}</Text>
-          <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
+          <Text style={styles.ctaText}>Next</Text>
+          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -143,67 +162,33 @@ const styles = StyleSheet.create({
     color: '#22C55E',
     fontWeight: '700',
   },
-  cycleMarker: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#064E3B',
+  badge: {
+    backgroundColor: '#134E4A',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginTop: 8,
-    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginTop: 10,
   },
-  cycleText: {
-    fontSize: 12,
+  badgeText: {
+    fontSize: 13,
     fontWeight: '700',
-    color: '#4ADE80',
+    color: '#14B8A6',
+  },
+  textContainer: {
+    alignItems: 'center',
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '800',
     color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 12,
-    letterSpacing: -0.5,
+    marginBottom: 8,
   },
   description: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#8B8BA3',
     textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 16,
-  },
-  nuanceCard: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1A2E',
-    borderRadius: 12,
-    padding: 14,
-    gap: 10,
-    alignItems: 'flex-start',
-    borderWidth: 1,
-    borderColor: '#2A2A45',
-    marginBottom: 10,
-  },
-  nuanceText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#8B8BA3',
-    lineHeight: 19,
-  },
-  teaseCard: {
-    flexDirection: 'row',
-    backgroundColor: '#252540',
-    borderRadius: 12,
-    padding: 12,
-    gap: 8,
-    alignItems: 'center',
-    width: '100%',
-  },
-  teaseText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#60A5FA',
-    fontWeight: '500',
+    lineHeight: 21,
   },
   footer: {
     paddingHorizontal: 32,

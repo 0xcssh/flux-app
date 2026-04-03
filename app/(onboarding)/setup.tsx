@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,14 @@ import {
   Switch,
   StyleSheet,
   SafeAreaView,
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import { useAuthStore } from '@/store/authStore';
-import i18n from '@/i18n';
 
 const TIME_OPTIONS = [
   { label: '7:00 AM', value: '07:00' },
@@ -30,14 +31,42 @@ export default function SetupScreen() {
 
   const [notificationTime, setNotificationTime] = useState('08:00');
   const [nofapEnabled, setNofapEnabled] = useState(false);
-  const [language, setLanguage] = useState(i18n.language === 'fr' ? 'fr' : 'en');
+
+  // Stagger fade-in animations
+  const notifCardAnim = useRef(new Animated.Value(0)).current;
+  const nofapCardAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.stagger(200, [
+      Animated.timing(notifCardAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(nofapCardAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [notifCardAnim, nofapCardAnim]);
+
+  const handleTimeSelect = (value: string) => {
+    setNotificationTime(value);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
+  const handleNofapToggle = (value: boolean) => {
+    setNofapEnabled(value);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
 
   const handleContinue = async () => {
     try {
       await updateProfile({
         notification_time: notificationTime,
         nofap_enabled: nofapEnabled,
-        language,
+        language: 'en',
       });
     } catch {
       // Continue anyway
@@ -45,25 +74,25 @@ export default function SetupScreen() {
     router.push('/(onboarding)/trial');
   };
 
-  const handleLanguageChange = (lang: string) => {
-    setLanguage(lang);
-    i18n.changeLanguage(lang);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.iconCircle}>
-          <FontAwesome name="sliders" size={32} color="#2563EB" />
+          <Ionicons name="settings-outline" size={28} color="#3B82F6" />
         </View>
 
-        <Text style={styles.title}>{t('setup.title')}</Text>
+        <Text style={styles.title}>{t('setup.title', { defaultValue: 'Personalize Your Experience' })}</Text>
 
         {/* Notification Time */}
-        <View style={styles.settingCard}>
+        <Animated.View
+          style={[
+            styles.settingCard,
+            { opacity: notifCardAnim, transform: [{ translateY: notifCardAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] },
+          ]}
+        >
           <View style={styles.settingHeader}>
-            <FontAwesome name="bell" size={16} color="#2563EB" />
-            <Text style={styles.settingTitle}>{t('setup.notification_prompt')}</Text>
+            <Ionicons name="notifications-outline" size={16} color="#3B82F6" />
+            <Text style={styles.settingTitle}>{t('setup.notification_prompt', { defaultValue: 'Reminder Time' })}</Text>
           </View>
           <View style={styles.timeGrid}>
             {TIME_OPTIONS.map((opt) => (
@@ -73,7 +102,7 @@ export default function SetupScreen() {
                   styles.timeChip,
                   notificationTime === opt.value && styles.timeChipActive,
                 ]}
-                onPress={() => setNotificationTime(opt.value)}
+                onPress={() => handleTimeSelect(opt.value)}
                 activeOpacity={0.7}
               >
                 <Text
@@ -87,54 +116,31 @@ export default function SetupScreen() {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </Animated.View>
 
         {/* NoFap Toggle */}
-        <View style={styles.settingCard}>
+        <Animated.View
+          style={[
+            styles.settingCard,
+            { opacity: nofapCardAnim, transform: [{ translateY: nofapCardAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] },
+          ]}
+        >
           <View style={styles.settingRow}>
             <View style={styles.settingLeft}>
-              <FontAwesome name="shield" size={16} color="#0D9488" />
+              <Ionicons name="shield-checkmark-outline" size={16} color="#0D9488" />
               <View style={styles.settingTextContainer}>
-                <Text style={styles.settingTitle}>{t('setup.nofap_prompt')}</Text>
-                <Text style={styles.settingDescription}>{t('setup.nofap_description')}</Text>
+                <Text style={styles.settingTitle}>{t('setup.nofap_prompt', { defaultValue: 'NoFap Tracking' })}</Text>
+                <Text style={styles.settingDescription}>{t('setup.nofap_description', { defaultValue: 'Track retention streaks and see their impact on your vitality.' })}</Text>
               </View>
             </View>
             <Switch
               value={nofapEnabled}
-              onValueChange={setNofapEnabled}
+              onValueChange={handleNofapToggle}
               trackColor={{ false: '#2A2A45', true: '#064E3B' }}
               thumbColor={nofapEnabled ? '#22C55E' : '#5A5A7A'}
             />
           </View>
-        </View>
-
-        {/* Language Selector */}
-        <View style={styles.settingCard}>
-          <View style={styles.settingHeader}>
-            <FontAwesome name="language" size={16} color="#2563EB" />
-            <Text style={styles.settingTitle}>Language</Text>
-          </View>
-          <View style={styles.languageRow}>
-            <TouchableOpacity
-              style={[styles.langButton, language === 'en' && styles.langButtonActive]}
-              onPress={() => handleLanguageChange('en')}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.langText, language === 'en' && styles.langTextActive]}>
-                English
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.langButton, language === 'fr' && styles.langButtonActive]}
-              onPress={() => handleLanguageChange('fr')}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.langText, language === 'fr' && styles.langTextActive]}>
-                Francais
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </Animated.View>
       </View>
 
       <View style={styles.footer}>
@@ -145,7 +151,7 @@ export default function SetupScreen() {
           activeOpacity={0.8}
         >
           <Text style={styles.ctaText}>{t('common:buttons.continue', { defaultValue: 'Continue' })}</Text>
-          <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
+          <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -160,32 +166,32 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingTop: 32,
     alignItems: 'center',
   },
   iconCircle: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: '#252540',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: '800',
     color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
     letterSpacing: -0.5,
   },
   settingCard: {
     width: '100%',
     backgroundColor: '#1A1A2E',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -195,8 +201,8 @@ const styles = StyleSheet.create({
   settingHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 12,
+    gap: 8,
+    marginBottom: 10,
   },
   settingRow: {
     flexDirection: 'row',
@@ -221,7 +227,7 @@ const styles = StyleSheet.create({
   settingDescription: {
     fontSize: 12,
     color: '#8B8BA3',
-    marginTop: 4,
+    marginTop: 3,
     lineHeight: 17,
   },
   timeGrid: {
@@ -247,31 +253,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   timeChipTextActive: {
-    color: '#3B82F6',
-  },
-  languageRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  langButton: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
-    backgroundColor: '#16162A',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: '#2A2A45',
-  },
-  langButtonActive: {
-    backgroundColor: '#252540',
-    borderColor: '#3B82F6',
-  },
-  langText: {
-    fontSize: 14,
-    color: '#8B8BA3',
-    fontWeight: '600',
-  },
-  langTextActive: {
     color: '#3B82F6',
   },
   footer: {

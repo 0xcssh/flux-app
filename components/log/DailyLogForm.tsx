@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Animated,
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -104,6 +105,15 @@ export default function DailyLogForm({
   const liveScore = useMemo(() => computeScore(formData), [formData]);
   const scoreColor = useMemo(() => getScoreColor(liveScore), [liveScore]);
 
+  // Pulse animation on score change
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    Animated.sequence([
+      Animated.timing(pulseAnim, { toValue: 1.08, duration: 100, useNativeDriver: true }),
+      Animated.timing(pulseAnim, { toValue: 1, duration: 100, useNativeDriver: true }),
+    ]).start();
+  }, [liveScore]);
+
   const handleSliderChange = useCallback(
     (key: keyof LogFormData, value: number) => {
       setFormData((prev) => ({ ...prev, [key]: value }));
@@ -138,10 +148,10 @@ export default function DailyLogForm({
         )}
 
         {/* Live Score — just the number */}
-        <View style={styles.liveScoreContainer}>
+        <Animated.View style={[styles.liveScoreContainer, { transform: [{ scale: pulseAnim }] }]}>
           <Text style={[styles.liveScoreValue, { color: scoreColor }]}>{liveScore}</Text>
           <Text style={styles.liveScoreLabel}>Vitality</Text>
-        </View>
+        </Animated.View>
 
         {/* Sliders */}
         {SLIDER_CONFIG.map((config) => (

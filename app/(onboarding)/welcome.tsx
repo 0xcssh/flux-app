@@ -1,59 +1,115 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 
 export default function WelcomeScreen() {
   const router = useRouter();
   const { t } = useTranslation('onboarding');
 
+  // Animations
+  const titleScale = useRef(new Animated.Value(0.8)).current;
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const subtitleTranslateY = useRef(new Animated.Value(20)).current;
+  const subtitleOpacity = useRef(new Animated.Value(0)).current;
+  const descOpacity = useRef(new Animated.Value(0)).current;
+  const footerOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // FLUX title: fade in + spring scale
+    Animated.parallel([
+      Animated.spring(titleScale, {
+        toValue: 1,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+      Animated.timing(titleOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Subtitle: slide up + fade in with 300ms delay
+    Animated.parallel([
+      Animated.timing(subtitleTranslateY, {
+        toValue: 0,
+        duration: 500,
+        delay: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(subtitleOpacity, {
+        toValue: 1,
+        duration: 500,
+        delay: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Description: fade in with 600ms delay
+    Animated.timing(descOpacity, {
+      toValue: 1,
+      duration: 500,
+      delay: 600,
+      useNativeDriver: true,
+    }).start();
+
+    // Footer: fade in with 800ms delay
+    Animated.timing(footerOpacity, {
+      toValue: 1,
+      duration: 400,
+      delay: 800,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Hero illustration area */}
-        <View style={styles.heroContainer}>
-          <View style={styles.iconCircle}>
-            <FontAwesome name="heartbeat" size={48} color="#3B82F6" />
-          </View>
-          <View style={styles.waveIndicators}>
-            <View style={[styles.waveDot, { backgroundColor: '#2563EB', height: 24 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#3B82F6', height: 36 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#2563EB', height: 48 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#10B981', height: 40 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#0D9488', height: 28 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#10B981', height: 20 }]} />
-            <View style={[styles.waveDot, { backgroundColor: '#2563EB', height: 32 }]} />
-          </View>
-        </View>
+        <Animated.Text
+          style={[
+            styles.title,
+            {
+              opacity: titleOpacity,
+              transform: [{ scale: titleScale }],
+            },
+          ]}
+        >
+          FLUX
+        </Animated.Text>
 
-        <Text style={styles.title}>{t('welcome.title')}</Text>
-        <Text style={styles.subtitle}>{t('welcome.subtitle')}</Text>
-        <Text style={styles.description}>{t('welcome.description')}</Text>
+        <Animated.Text
+          style={[
+            styles.subtitle,
+            {
+              opacity: subtitleOpacity,
+              transform: [{ translateY: subtitleTranslateY }],
+            },
+          ]}
+        >
+          Your hormonal rhythm tracker
+        </Animated.Text>
 
-        <View style={styles.scienceCard}>
-          <FontAwesome name="flask" size={16} color="#0D9488" />
-          <Text style={styles.scienceText}>
-            Your hormones tell a story. Men experience natural hormonal fluctuations daily and monthly
-            that affect energy, mood, and performance. Flux helps you decode these patterns with
-            science-backed tracking.
-          </Text>
-        </View>
+        <Animated.Text style={[styles.description, { opacity: descOpacity }]}>
+          Understand your energy, mood, and performance{'\n'}patterns with science.
+        </Animated.Text>
       </View>
 
-      <View style={styles.footer}>
+      <Animated.View style={[styles.footer, { opacity: footerOpacity }]}>
         <PaginationDots total={6} current={0} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/circadian')}
           activeOpacity={0.8}
         >
-          <Text style={styles.ctaText}>Discover Your Rhythm</Text>
-          <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
+          <Text style={styles.ctaText}>Get Started</Text>
+          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -69,66 +125,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 32,
   },
-  heroContainer: {
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  iconCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: '#252540',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  waveIndicators: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 8,
-    height: 56,
-  },
-  waveDot: {
-    width: 8,
-    borderRadius: 4,
-  },
   title: {
-    fontSize: 30,
-    fontWeight: '800',
-    color: '#FFFFFF',
+    fontSize: 60,
+    fontWeight: '900',
+    color: '#3B82F6',
+    letterSpacing: 4,
     textAlign: 'center',
-    marginBottom: 8,
-    letterSpacing: -0.5,
+    marginBottom: 12,
   },
   subtitle: {
     fontSize: 16,
-    color: '#3B82F6',
-    fontWeight: '600',
+    color: '#8B8BA3',
     textAlign: 'center',
     marginBottom: 16,
   },
   description: {
-    fontSize: 15,
-    color: '#8B8BA3',
+    fontSize: 14,
+    color: '#5A5A7A',
     textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  scienceCard: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1A2E',
-    borderRadius: 12,
-    padding: 14,
-    gap: 10,
-    alignItems: 'flex-start',
-    borderWidth: 1,
-    borderColor: '#2A2A45',
-  },
-  scienceText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#8B8BA3',
-    lineHeight: 19,
+    lineHeight: 21,
+    maxWidth: 280,
   },
   footer: {
     paddingHorizontal: 32,

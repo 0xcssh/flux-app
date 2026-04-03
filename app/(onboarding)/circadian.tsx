@@ -1,22 +1,72 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
+
+const BAR_HEIGHTS = [20, 45, 85, 95, 90, 75, 60, 50, 42, 38, 35, 30, 28, 25, 22, 20];
 
 export default function CircadianScreen() {
   const router = useRouter();
   const { t } = useTranslation('onboarding');
 
+  // Bar stagger animations
+  const barAnims = useRef(BAR_HEIGHTS.map(() => new Animated.Value(0))).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
+  const footerOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Stagger bars growing in
+    const barAnimations = barAnims.map((anim) =>
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: false,
+      }),
+    );
+    Animated.stagger(40, barAnimations).start(() => {
+      // After bars finish, fade in text
+      Animated.parallel([
+        Animated.timing(textOpacity, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(footerOpacity, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Simple circadian curve illustration */}
+        {/* Animated bar chart */}
         <View style={styles.chartContainer}>
           <View style={styles.chartBackground}>
-            {/* Time labels */}
+            <View style={styles.barChart}>
+              {BAR_HEIGHTS.map((h, i) => (
+                <Animated.View
+                  key={i}
+                  style={[
+                    styles.bar,
+                    {
+                      height: barAnims[i].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0%', `${h}%`],
+                      }),
+                      backgroundColor:
+                        h > 80 ? '#2563EB' : h > 50 ? '#3B82F6' : '#93C5FD',
+                    },
+                  ]}
+                />
+              ))}
+            </View>
             <View style={styles.timeLabels}>
               <Text style={styles.timeLabel}>4AM</Text>
               <Text style={[styles.timeLabel, styles.peakLabel]}>8AM</Text>
@@ -24,58 +74,32 @@ export default function CircadianScreen() {
               <Text style={styles.timeLabel}>6PM</Text>
               <Text style={styles.timeLabel}>12AM</Text>
             </View>
-
-            {/* Simplified curve using bars */}
-            <View style={styles.barChart}>
-              {[20, 45, 85, 95, 90, 75, 60, 50, 42, 38, 35, 30, 28, 25, 22, 20].map(
-                (h, i) => (
-                  <View
-                    key={i}
-                    style={[
-                      styles.bar,
-                      {
-                        height: `${h}%`,
-                        backgroundColor:
-                          h > 80 ? '#2563EB' : h > 50 ? '#3B82F6' : '#93C5FD',
-                      },
-                    ]}
-                  />
-                ),
-              )}
-            </View>
           </View>
 
-          <View style={styles.peakMarker}>
-            <FontAwesome name="arrow-up" size={12} color="#2563EB" />
-            <Text style={styles.peakText}>Peak: 5:30-8:00 AM</Text>
-          </View>
+          <Animated.View style={[styles.badge, { opacity: textOpacity }]}>
+            <Text style={styles.badgeText}>Peak: 5:30-8:00 AM</Text>
+          </Animated.View>
         </View>
 
-        <Text style={styles.title}>{t('circadian.title')}</Text>
-        <Text style={styles.description}>{t('circadian.description')}</Text>
-
-        <View style={styles.factCard}>
-          <View style={styles.factIcon}>
-            <FontAwesome name="info-circle" size={16} color="#2563EB" />
-          </View>
-          <Text style={styles.factText}>
-            Testosterone peaks between 5:30-8:00 AM and drops 20-43% by evening (Diver et al., 2003).
-            This daily rhythm affects your energy, focus, and physical performance.
+        <Animated.View style={[styles.textContainer, { opacity: textOpacity }]}>
+          <Text style={styles.title}>Your 24-Hour Cycle</Text>
+          <Text style={styles.description}>
+            Testosterone peaks in the morning and drops by evening.
           </Text>
-        </View>
+        </Animated.View>
       </View>
 
-      <View style={styles.footer}>
+      <Animated.View style={[styles.footer, { opacity: footerOpacity }]}>
         <PaginationDots total={6} current={1} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/infradian')}
           activeOpacity={0.8}
         >
-          <Text style={styles.ctaText}>{t('common:buttons.next', { defaultValue: 'Next' })}</Text>
-          <FontAwesome name="arrow-right" size={16} color="#FFFFFF" />
+          <Text style={styles.ctaText}>Next</Text>
+          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -104,6 +128,18 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: 'flex-end',
   },
+  barChart: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 4,
+    height: 110,
+    paddingBottom: 16,
+  },
+  bar: {
+    flex: 1,
+    borderRadius: 3,
+    minWidth: 4,
+  },
   timeLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -121,66 +157,33 @@ const styles = StyleSheet.create({
     color: '#3B82F6',
     fontWeight: '700',
   },
-  barChart: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 4,
-    height: 110,
-    paddingBottom: 16,
-  },
-  bar: {
-    flex: 1,
-    borderRadius: 3,
-    minWidth: 4,
-  },
-  peakMarker: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#252540',
+  badge: {
+    backgroundColor: '#1E3A5F',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginTop: 8,
-    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginTop: 10,
   },
-  peakText: {
-    fontSize: 12,
+  badgeText: {
+    fontSize: 13,
     fontWeight: '700',
-    color: '#60A5FA',
+    color: '#3B82F6',
+  },
+  textContainer: {
+    alignItems: 'center',
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: '800',
     color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 12,
-    letterSpacing: -0.5,
+    marginBottom: 8,
   },
   description: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#8B8BA3',
     textAlign: 'center',
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-  factCard: {
-    flexDirection: 'row',
-    backgroundColor: '#1A1A2E',
-    borderRadius: 12,
-    padding: 14,
-    gap: 10,
-    alignItems: 'flex-start',
-    borderWidth: 1,
-    borderColor: '#2A2A45',
-  },
-  factIcon: {
-    marginTop: 2,
-  },
-  factText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#8B8BA3',
-    lineHeight: 19,
+    lineHeight: 21,
   },
   footer: {
     paddingHorizontal: 32,

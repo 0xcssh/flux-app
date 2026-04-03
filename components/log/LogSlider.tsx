@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
+import * as Haptics from 'expo-haptics';
 
 interface LogSliderProps {
   label: string;
@@ -19,6 +20,17 @@ export default function LogSlider({
   maxLabel,
   color = '#2563EB',
 }: LogSliderProps) {
+  const prevStep = useRef(Math.round(value));
+
+  const handleValueChange = (v: number) => {
+    const rounded = Math.round(v);
+    if (rounded !== prevStep.current) {
+      prevStep.current = rounded;
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+    onValueChange(v);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -33,7 +45,7 @@ export default function LogSlider({
         maximumValue={10}
         step={1}
         value={value}
-        onValueChange={onValueChange}
+        onValueChange={handleValueChange}
         minimumTrackTintColor={color}
         maximumTrackTintColor="#2A2A45"
         thumbTintColor={color}
