@@ -154,9 +154,7 @@ export default function ArticleScreen() {
           <View style={styles.disclaimer}>
             <FontAwesome name="info-circle" size={14} color={darkPalette.textTertiary} />
             <Text style={styles.disclaimerText}>
-              {lang === 'fr'
-                ? "Cet article est fourni à titre informatif uniquement et ne constitue pas un avis médical."
-                : "This article is for informational purposes only and does not constitute medical advice."}
+              This article is for informational purposes only and does not constitute medical advice.
             </Text>
           </View>
         </View>

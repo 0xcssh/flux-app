@@ -73,7 +73,7 @@ export default function HistoryComparison({
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>
-        {t('comparison.vs_yesterday', { defaultValue: 'Comparison' }).split('.').pop()}
+        {t('comparison.title', { defaultValue: 'Comparison' })}
       </Text>
 
       {/* Tab buttons */}

@@ -26,7 +26,6 @@ import StreakImpactCard from '@/components/insights/StreakImpactCard';
 import MonthlyReportCard from '@/components/insights/MonthlyReportCard';
 import ChallengeCard from '@/components/challenges/ChallengeCard';
 import ChallengeDetail from '@/components/challenges/ChallengeDetail';
-import DailyTaskCard from '@/components/challenges/DailyTaskCard';
 import { CHALLENGES, getChallengeById } from '@/lib/challenges';
 import { useChallengeStore } from '@/store/challengeStore';
 import { track, AnalyticsEvents } from '@/lib/analytics';
@@ -94,8 +93,6 @@ export default function InsightsScreen() {
         />
       }
     >
-      <Text style={styles.screenTitle}>{t('title')}</Text>
-
       {/* HEADER: Tier Progress — always visible */}
       <TierProgress currentTier={tier} />
 

@@ -9,9 +9,11 @@ import {
   Linking,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAuthStore } from '@/store/authStore';
 import { useLogStore } from '@/store/logStore';
+import { useSettingsStore } from '@/store/settingsStore';
 import SubscriptionCard from '@/components/profile/SubscriptionCard';
 import HistoryChart from '@/components/profile/HistoryChart';
 import SettingsForm from '@/components/profile/SettingsForm';
@@ -21,6 +23,7 @@ import { formatLocalDate } from '@/lib/dateUtils';
 
 export default function ProfileScreen() {
   const { t } = useTranslation('profile');
+  const router = useRouter();
   const profile = useAuthStore((s) => s.profile);
   const user = useAuthStore((s) => s.user);
   const signOut = useAuthStore((s) => s.signOut);
@@ -130,6 +133,19 @@ export default function ProfileScreen() {
       {/* Export Button */}
       <ExportButton />
 
+      {/* Replay Onboarding (dev) */}
+      <TouchableOpacity
+        style={styles.devButton}
+        onPress={() => {
+          useSettingsStore.getState().setOnboardingSeen(false);
+          router.replace('/(onboarding)/welcome');
+        }}
+        activeOpacity={0.7}
+      >
+        <FontAwesome name="refresh" size={16} color="#3B82F6" />
+        <Text style={styles.devButtonText}>Replay Onboarding</Text>
+      </TouchableOpacity>
+
       {/* Logout */}
       <TouchableOpacity
         style={styles.logoutButton}
@@ -233,6 +249,23 @@ const styles = StyleSheet.create({
     color: '#5A5A7A',
     fontWeight: '500',
     marginTop: 4,
+  },
+  devButton: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    borderRadius: 12,
+    paddingVertical: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(59, 130, 246, 0.2)',
+  },
+  devButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#3B82F6',
   },
   logoutButton: {
     flexDirection: 'row',

@@ -19,7 +19,6 @@ import { useVitalityScore } from '@/hooks/useVitalityScore';
 import VitalityScore from '@/components/dashboard/VitalityScore';
 import IndicatorRow from '@/components/dashboard/IndicatorRow';
 import CircadianPhaseCard from '@/components/dashboard/CircadianPhaseCard';
-import StreakBar from '@/components/dashboard/StreakBar';
 import QuickStats from '@/components/dashboard/QuickStats';
 import ArticleSuggestion from '@/components/dashboard/ArticleSuggestion';
 import SymptomPredictionCard from '@/components/dashboard/SymptomPredictionCard';

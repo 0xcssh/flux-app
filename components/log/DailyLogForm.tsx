@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     gap: 6,
-    marginBottom: 8,
+    marginBottom: 0,
   },
   alreadyLoggedText: {
     fontSize: 12,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   liveScoreContainer: {
     alignItems: 'center',
     marginBottom: 20,
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   liveScoreValue: {
     fontSize: 48,
