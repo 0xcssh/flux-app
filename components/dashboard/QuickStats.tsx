@@ -38,7 +38,7 @@ export default function QuickStats({ phase, phaseLabel, yesterdayScore, todaySco
       <View style={styles.card}>
         <Ionicons name="shield-checkmark" size={20} color={streakColor} />
         <Text style={[styles.cardValue, { color: streakColor }]}>Day {noFapStreakDays}</Text>
-        <Text style={styles.cardLabel}>Streak</Text>
+        <Text style={styles.cardLabel}>NoFap</Text>
       </View>
 
       {/* Current Phase */}

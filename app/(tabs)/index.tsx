@@ -203,10 +203,6 @@ function DashboardContent() {
               <ActionPlanCard />
             </View>
 
-            <View style={styles.section}>
-              <ChallengeWidget />
-            </View>
-
             <View style={styles.sectionDivider} />
 
             {/* SECTION 3: YOUR STATE */}
@@ -244,6 +240,10 @@ function DashboardContent() {
             <View style={styles.sectionDivider} />
 
             {/* SECTION 5: LEARN */}
+            <View style={styles.section}>
+              <ChallengeWidget />
+            </View>
+
             <View style={styles.section}>
               <AdaptiveLearn log={selectedLog} />
             </View>
