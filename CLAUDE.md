@@ -162,7 +162,7 @@ The app does not replace medical advice. It helps users observe their own patter
 - **Charts**: react-native-svg (pure SVG, no victory-native/Skia — Expo Go compatible)
 - **Icons**: @expo/vector-icons (Ionicons + MaterialCommunityIcons + FontAwesome)
 - **i18n**: i18next + react-i18next (English active, French ready)
-- **Payments**: RevenueCat
+- **Payments**: RevenueCat (configured, test key active). `useSubscription` hook reads from `subscriptionStore` (Zustand). RevenueCat writes to store on purchase/restore. Set `tier: 'premium'` in store for testing.
 - **Notifications**: Expo Notifications (phase-aware scheduling)
 - **Analytics**: PostHog (configured, not yet active)
 - **Date handling**: `lib/dateUtils.ts` — always use local dates, never toISOString()
@@ -190,6 +190,16 @@ The app does not replace medical advice. It helps users observe their own patter
 - **No emojis**: vector icons only (Ionicons, MaterialCommunityIcons).
 - **English first**: French translations ready but disabled. Will re-enable later.
 - **Local dates**: always use `formatLocalDate()` from `lib/dateUtils.ts`, never `toISOString().split('T')[0]`.
+- **Subscription testing**: set `tier: 'premium'` in `store/subscriptionStore.ts` to test premium features. Reset to `'free'` before production build.
+
+---
+
+## Current Status
+
+- **Phase 0-2**: Complete (scaffolding, build, integration)
+- **Phase 3**: In progress (polish, bug fixes)
+- **Phase 4**: Pending (EAS Build + store submission)
+- **Known issues**: RevenueCat needs App Store Connect P8 key for real purchases. Currently using test key.
 
 ---
 
