@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 import { useNoFapStore } from '@/store/nofapStore';
@@ -23,6 +24,11 @@ import SymptomAccuracyCard from '@/components/insights/SymptomAccuracyCard';
 import BestDaysCard from '@/components/insights/BestDaysCard';
 import StreakImpactCard from '@/components/insights/StreakImpactCard';
 import MonthlyReportCard from '@/components/insights/MonthlyReportCard';
+import ChallengeCard from '@/components/challenges/ChallengeCard';
+import ChallengeDetail from '@/components/challenges/ChallengeDetail';
+import DailyTaskCard from '@/components/challenges/DailyTaskCard';
+import { CHALLENGES, getChallengeById } from '@/lib/challenges';
+import { useChallengeStore } from '@/store/challengeStore';
 import { track, AnalyticsEvents } from '@/lib/analytics';
 
 export default function InsightsScreen() {
@@ -30,7 +36,21 @@ export default function InsightsScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   const logs = useLogStore((s) => s.logs);
+  const todayLog = useLogStore((s) => s.getTodayLog());
   const streaks = useNoFapStore((s) => s.history);
+
+  const activeChallenge = useChallengeStore((s) => s.activeChallenge);
+  const completedChallenges = useChallengeStore((s) => s.completedChallenges);
+  const startChallenge = useChallengeStore((s) => s.startChallenge);
+  const completeDay = useChallengeStore((s) => s.completeDay);
+  const abandonChallenge = useChallengeStore((s) => s.abandonChallenge);
+  const isChallengeCompleted = useChallengeStore((s) => s.isCompleted);
+  const getCurrentDayNumber = useChallengeStore((s) => s.getCurrentDayNumber);
+
+  const activeChallengeData = activeChallenge
+    ? getChallengeById(activeChallenge.challengeId)
+    : undefined;
+  const currentDayNumber = getCurrentDayNumber();
 
   const sortedLogs = useMemo(
     () => Object.values(logs).sort((a, b) => a.log_date.localeCompare(b.log_date)),
@@ -75,6 +95,45 @@ export default function InsightsScreen() {
       }
     >
       <Text style={styles.screenTitle}>{t('title')}</Text>
+
+      {/* Challenges Section */}
+      <View style={styles.section}>
+        <View style={styles.challengesSectionHeader}>
+          <Ionicons name="trophy" size={18} color={darkPalette.accent} />
+          <Text style={styles.sectionTitle}>{t('challenges_title')}</Text>
+        </View>
+        <PremiumGate feature="challenges">
+          {activeChallenge && activeChallengeData && (
+            <ChallengeDetail
+              challenge={activeChallengeData}
+              progress={activeChallenge}
+              currentDayNumber={currentDayNumber}
+              onCompleteDay={completeDay}
+              onAbandon={abandonChallenge}
+            />
+          )}
+          {CHALLENGES.map((challenge) => (
+            <ChallengeCard
+              key={challenge.id}
+              challenge={challenge}
+              progress={
+                activeChallenge?.challengeId === challenge.id
+                  ? activeChallenge
+                  : null
+              }
+              isCompleted={isChallengeCompleted(challenge.id)}
+              onPress={() => {
+                if (
+                  !activeChallenge &&
+                  !isChallengeCompleted(challenge.id)
+                ) {
+                  startChallenge(challenge.id);
+                }
+              }}
+            />
+          ))}
+        </PremiumGate>
+      </View>
 
       {/* Tier Progress */}
       <TierProgress currentTier={tier} />
@@ -256,6 +315,12 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: darkPalette.text,
     marginBottom: 12,
+  },
+  challengesSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 0,
   },
   recommendationCard: {
     backgroundColor: darkPalette.surface,

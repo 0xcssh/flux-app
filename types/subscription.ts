@@ -15,7 +15,9 @@ export type PremiumFeature =
   | 'pdf_export'
   | 'priority_support'
   | 'advanced_charts'
-  | 'ai_recommendations';
+  | 'ai_recommendations'
+  | 'action_plan'
+  | 'challenges';
 
 export const featureAccess: Record<PlanTier, PremiumFeature[]> = {
   free: [],
@@ -26,6 +28,8 @@ export const featureAccess: Record<PlanTier, PremiumFeature[]> = {
     'correlations',
     'advanced_charts',
     'ai_recommendations',
+    'action_plan',
+    'challenges',
   ],
   pro: [
     'full_history',
@@ -34,7 +38,9 @@ export const featureAccess: Record<PlanTier, PremiumFeature[]> = {
     'correlations',
     'advanced_charts',
     'ai_recommendations',
+    'action_plan',
     'pdf_export',
     'priority_support',
+    'challenges',
   ],
 };

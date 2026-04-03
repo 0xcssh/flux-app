@@ -70,5 +70,16 @@
   "monthly_report": "Monthly Report",
   "days_logged_month": "Days Logged",
   "top_pattern": "Top Pattern",
-  "vs_last_month": "vs last month"
+  "vs_last_month": "vs last month",
+  "challenges_title": "Challenges",
+  "challenge_start": "Start Challenge",
+  "challenge_continue": "Continue",
+  "challenge_completed": "Completed",
+  "challenge_day": "Day {{current}} of {{total}}",
+  "challenge_available": "Available",
+  "challenge_active": "Active",
+  "challenge_target": "Target: {{metric}} {{direction}} {{value}}",
+  "challenge_mark_complete": "Mark as Complete",
+  "challenge_abandon": "Abandon Challenge",
+  "challenge_abandon_confirm": "Are you sure? Your progress will be lost."
 }

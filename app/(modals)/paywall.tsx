@@ -29,7 +29,9 @@ const FEATURES: FeatureRow[] = [
   { label: 'Cycle Detection', free: '--', premium: 'check', pro: 'check' },
   { label: 'AI Insights', free: '--', premium: 'check', pro: 'check' },
   { label: 'PDF Reports', free: '--', premium: 'check', pro: 'Medical' },
+  { label: 'Daily Action Plan', free: '--', premium: 'check', pro: 'check' },
   { label: 'NoFap Advanced', free: '--', premium: 'check', pro: 'check' },
+  { label: 'Guided Challenges', free: '--', premium: 'check', pro: 'check' },
   { label: 'TRT Tracking', free: '--', premium: '--', pro: 'check' },
   { label: 'AI Coaching', free: '--', premium: '--', pro: 'check' },
 ];

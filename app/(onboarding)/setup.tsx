@@ -138,7 +138,7 @@ export default function SetupScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PaginationDots total={5} current={3} />
+        <PaginationDots total={6} current={4} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={handleContinue}

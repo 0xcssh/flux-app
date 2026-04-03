@@ -56,6 +56,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(modals)/article/[id]" options={{ presentation: 'modal' }} />
         <Stack.Screen name="(modals)/pdf-preview" options={{ presentation: 'modal' }} />
         <Stack.Screen name="(modals)/nofap-details" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="(modals)/action-plan" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

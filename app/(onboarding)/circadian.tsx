@@ -66,7 +66,7 @@ export default function CircadianScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PaginationDots total={5} current={1} />
+        <PaginationDots total={6} current={1} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/infradian')}

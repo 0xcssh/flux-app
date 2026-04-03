@@ -12,6 +12,7 @@ export default function OnboardingLayout() {
       <Stack.Screen name="welcome" />
       <Stack.Screen name="circadian" />
       <Stack.Screen name="infradian" />
+      <Stack.Screen name="quiz" />
       <Stack.Screen name="setup" />
       <Stack.Screen name="trial" />
     </Stack>

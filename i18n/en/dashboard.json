@@ -82,5 +82,13 @@
   "adaptive_reason_sleep_low": "Because your sleep was low",
   "adaptive_reason_stress_high": "Because your stress was high",
   "adaptive_reason_energy_low": "Because your energy was low",
-  "adaptive_reason_training_low": "Because your training was low"
+  "adaptive_reason_training_low": "Because your training was low",
+  "community_title": "COMMUNITY",
+  "community_top": "Top {{percent}}%",
+  "community_subtitle": "of men your age",
+  "community_score_label": "Your Score",
+  "action_plan_title": "YOUR DAILY PLAN",
+  "action_plan_unlock": "Unlock your full daily plan",
+  "action_plan_see_full": "See full plan",
+  "action_plan_personalized": "{{count}} personalized actions"
 }

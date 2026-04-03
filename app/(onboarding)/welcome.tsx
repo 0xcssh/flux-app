@@ -44,7 +44,7 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PaginationDots total={5} current={0} />
+        <PaginationDots total={6} current={0} />
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={() => router.push('/(onboarding)/circadian')}

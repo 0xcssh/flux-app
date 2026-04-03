@@ -55,7 +55,7 @@ export default function TrialScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PaginationDots total={5} current={4} />
+        <PaginationDots total={6} current={5} />
       </View>
     </SafeAreaView>
   );

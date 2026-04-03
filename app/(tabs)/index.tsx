@@ -30,6 +30,8 @@ import LogCTA from '@/components/dashboard/LogCTA';
 import MissedDayCard from '@/components/dashboard/MissedDayCard';
 import ComparisonCard from '@/components/dashboard/ComparisonCard';
 import AdaptiveLearn from '@/components/dashboard/AdaptiveLearn';
+import ActionPlanCard from '@/components/dashboard/ActionPlanCard';
+import CommunityScore from '@/components/dashboard/CommunityScore';
 
 function getTodayDate(): string {
   const d = new Date();
@@ -151,6 +153,10 @@ function DashboardContent() {
             </View>
 
             <View style={styles.section}>
+              <ActionPlanCard />
+            </View>
+
+            <View style={styles.section}>
               <CircadianPhaseCard phase={phase} progress={progress} />
             </View>
 
@@ -178,7 +184,15 @@ function DashboardContent() {
             </View>
 
             <View style={styles.section}>
+              <ActionPlanCard />
+            </View>
+
+            <View style={styles.section}>
               <StreakBar days={loggingStreak} />
+            </View>
+
+            <View style={styles.section}>
+              <CommunityScore score={selectedLog!.vitality_score} />
             </View>
 
             <View style={styles.section}>

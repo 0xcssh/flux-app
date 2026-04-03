@@ -48,22 +48,30 @@ function amplitudeForAge(birthYear?: number): number {
  * Get circadian testosterone value at a given fractional hour (0-24).
  * Returns normalised 0-1 where 1 = daily peak.
  */
-export function getCircadianValue(hour: number, birthYear?: number): number {
+export function getCircadianValue(
+  hour: number,
+  birthYear?: number,
+  options?: { acrophase?: number },
+): number {
   const amplitude = amplitudeForAge(birthYear);
   const baseline = 0.5;
+  const acrophase = options?.acrophase ?? ACROPHASE;
   // Cosine model: peak at acrophase, trough 12 h later
-  const raw = baseline + amplitude * Math.cos((TWO_PI * (hour - ACROPHASE)) / PERIOD);
+  const raw = baseline + amplitude * Math.cos((TWO_PI * (hour - acrophase)) / PERIOD);
   return clamp(raw, 0, 1);
 }
 
 /**
  * Generate a smooth circadian curve — 96 points (every 15 min).
  */
-export function getCircadianCurve(birthYear?: number): { hour: number; value: number }[] {
+export function getCircadianCurve(
+  birthYear?: number,
+  options?: { acrophase?: number },
+): { hour: number; value: number }[] {
   const points: { hour: number; value: number }[] = [];
   for (let i = 0; i < 96; i++) {
     const hour = i * 0.25;
-    points.push({ hour, value: getCircadianValue(hour, birthYear) });
+    points.push({ hour, value: getCircadianValue(hour, birthYear, options) });
   }
   return points;
 }
@@ -73,15 +81,22 @@ export function getCircadianCurve(birthYear?: number): { hour: number; value: nu
  */
 export function getCurrentPhase(
   hour: number,
+  options?: { acrophase?: number },
 ): { phase: PhaseType; progress: number; labelKey: string } {
-  // Normalise hour to handle wrap-around for recovery (20-4)
+  // Compute offset from the default acrophase to shift phase boundaries
+  const offset = (options?.acrophase ?? ACROPHASE) - ACROPHASE;
+
+  // Normalise hour to handle wrap-around for recovery
   let h = hour;
-  if (h < 4) h += 24; // e.g. 2 AM → 26
+  const recoveryEnd = 4 + offset;
+  if (h < recoveryEnd) h += 24;
 
   for (const pb of PHASE_BOUNDARIES) {
-    if (h >= pb.start && h < pb.end) {
-      const duration = pb.end - pb.start;
-      const progress = clamp((h - pb.start) / duration, 0, 1);
+    const start = pb.start + offset;
+    const end = pb.end + offset;
+    if (h >= start && h < end) {
+      const duration = end - start;
+      const progress = clamp((h - start) / duration, 0, 1);
       return { phase: pb.phase, progress, labelKey: pb.labelKey };
     }
   }

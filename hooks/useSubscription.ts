@@ -17,14 +17,18 @@ type FeatureKey =
   | 'infradian'
   | 'pdf_export'
   | 'unlimited_history'
+  | 'action_plan'
   | 'trt_tracking'
-  | 'ai_coaching';
+  | 'ai_coaching'
+  | 'challenges';
 
 const PREMIUM_FEATURES: FeatureKey[] = [
   'insights',
   'infradian',
   'pdf_export',
   'unlimited_history',
+  'action_plan',
+  'challenges',
 ];
 
 const PRO_FEATURES: FeatureKey[] = ['trt_tracking', 'ai_coaching'];

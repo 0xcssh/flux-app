@@ -18,6 +18,23 @@
     "nofap_prompt": "Would you like to enable the NoFap tracking module?",
     "nofap_description": "Track retention streaks and see how they correlate with your vitality metrics."
   },
+  "quiz_age": "How old are you?",
+  "quiz_wake": "What time do you usually wake up?",
+  "quiz_activity": "How active are you?",
+  "quiz_sleep": "How's your sleep quality lately?",
+  "quiz_goal": "What's your main goal?",
+  "quiz_result_title": "Your Hormonal Profile",
+  "quiz_peak_window": "Your Peak Window",
+  "profile_early_riser": "Early Riser",
+  "profile_night_owl": "Night Owl",
+  "profile_balanced": "Balanced",
+  "profile_early_riser_desc": "Your hormones peak early. You're built for morning productivity and evening rest.",
+  "profile_night_owl_desc": "Your cycle is shifted later. Your peak performance comes mid-morning to early afternoon.",
+  "profile_balanced_desc": "You follow the classic hormonal rhythm. Mornings are your power zone.",
+  "goal_energy": "More Energy",
+  "goal_performance": "Peak Performance",
+  "goal_mood": "Better Mood",
+  "goal_sleep": "Better Sleep",
   "trial": {
     "title": "Try Premium Free for 7 Days",
     "features": [

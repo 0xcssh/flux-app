@@ -76,10 +76,10 @@ export default function InfradianScreen() {
       </View>
 
       <View style={styles.footer}>
-        <PaginationDots total={5} current={2} />
+        <PaginationDots total={6} current={2} />
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => router.push('/(onboarding)/setup')}
+          onPress={() => router.push('/(onboarding)/quiz')}
           activeOpacity={0.8}
         >
           <Text style={styles.ctaText}>{t('common:buttons.next', { defaultValue: 'Next' })}</Text>
