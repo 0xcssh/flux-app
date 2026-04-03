@@ -96,55 +96,34 @@ export default function InsightsScreen() {
     >
       <Text style={styles.screenTitle}>{t('title')}</Text>
 
-      {/* Challenges Section */}
-      <View style={styles.section}>
-        <View style={styles.challengesSectionHeader}>
-          <Ionicons name="trophy" size={18} color={darkPalette.accent} />
-          <Text style={styles.sectionTitle}>{t('challenges_title')}</Text>
-        </View>
-        <PremiumGate feature="challenges">
-          {activeChallenge && activeChallengeData && (
-            <ChallengeDetail
-              challenge={activeChallengeData}
-              progress={activeChallenge}
-              currentDayNumber={currentDayNumber}
-              onCompleteDay={completeDay}
-              onAbandon={abandonChallenge}
-            />
-          )}
-          {CHALLENGES.map((challenge) => (
-            <ChallengeCard
-              key={challenge.id}
-              challenge={challenge}
-              progress={
-                activeChallenge?.challengeId === challenge.id
-                  ? activeChallenge
-                  : null
-              }
-              isCompleted={isChallengeCompleted(challenge.id)}
-              onPress={() => {
-                if (
-                  !activeChallenge &&
-                  !isChallengeCompleted(challenge.id)
-                ) {
-                  startChallenge(challenge.id);
-                }
-              }}
-            />
-          ))}
-        </PremiumGate>
-      </View>
-
-      {/* Tier Progress */}
+      {/* HEADER: Tier Progress — always visible */}
       <TierProgress currentTier={tier} />
 
-      {/* Universal Insights — always shown */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('section.universal')}</Text>
-        {universalInsights.map((insight) => (
-          <UniversalInsightCard key={insight.id} insight={insight} />
-        ))}
-      </View>
+      {/* SECTION 1: YOUR COACHING — active challenge at top */}
+      {activeChallenge && activeChallengeData && (
+        <View style={styles.section}>
+          <View style={styles.challengesSectionHeader}>
+            <Ionicons name="trophy" size={18} color={darkPalette.accent} />
+            <Text style={styles.sectionTitle}>{t('challenges_title')}</Text>
+          </View>
+          <ChallengeDetail
+            challenge={activeChallengeData}
+            progress={activeChallenge}
+            currentDayNumber={currentDayNumber}
+            onCompleteDay={completeDay}
+            onAbandon={abandonChallenge}
+          />
+        </View>
+      )}
+
+      {/* SECTION 2: YOUR PATTERNS */}
+      <Text style={styles.sectionLabel}>YOUR PATTERNS</Text>
+
+      {/* Symptom Accuracy — 7+ days */}
+      {weeklyInsights && <SymptomAccuracyCard />}
+
+      {/* Best Days — 7+ days */}
+      {weeklyInsights && <BestDaysCard />}
 
       {/* Early Patterns — 3+ days */}
       <View style={styles.section}>
@@ -163,7 +142,7 @@ export default function InsightsScreen() {
         )}
       </View>
 
-      {/* Weekly Patterns — 7+ days */}
+      {/* Weekly correlations — 7+ days */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('section.weekly')}</Text>
         {weeklyInsights ? (
@@ -199,9 +178,6 @@ export default function InsightsScreen() {
                   })}
                 </Text>
               )}
-            <SymptomAccuracyCard />
-            <BestDaysCard />
-            <StreakImpactCard />
           </>
         ) : (
           <LockedTeaser
@@ -213,7 +189,7 @@ export default function InsightsScreen() {
         )}
       </View>
 
-      {/* Deep Insights — 14+ days, Premium gated */}
+      {/* Deep correlations — 14+ days, Premium gated */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('section.deep')}</Text>
         {deepInsights ? (
@@ -246,7 +222,6 @@ export default function InsightsScreen() {
                 </Text>
               </View>
             ))}
-            <MonthlyReportCard deepInsights={deepInsights} />
           </PremiumGate>
         ) : (
           <LockedTeaser
@@ -256,6 +231,69 @@ export default function InsightsScreen() {
             t={t}
           />
         )}
+      </View>
+
+      {/* SECTION 3: YOUR DATA */}
+      <Text style={styles.sectionLabel}>YOUR DATA</Text>
+
+      {/* Streak Impact — 7+ days */}
+      {weeklyInsights ? (
+        <StreakImpactCard />
+      ) : (
+        <View style={styles.section}>
+          <LockedTeaser
+            daysUntilNextTier={daysLogged < 7 ? 7 - daysLogged : 0}
+            tierLabel={t('tier.weekly')}
+            progress={daysLogged / 7}
+            t={t}
+          />
+        </View>
+      )}
+
+      {/* Monthly Report — 14+ days, Premium */}
+      {deepInsights && (
+        <PremiumGate feature="insights">
+          <MonthlyReportCard deepInsights={deepInsights} />
+        </PremiumGate>
+      )}
+
+      {/* SECTION 4: SCIENCE */}
+      <Text style={styles.sectionLabel}>SCIENCE</Text>
+
+      {/* Universal Insights — always shown */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t('section.universal')}</Text>
+        {universalInsights.map((insight) => (
+          <UniversalInsightCard key={insight.id} insight={insight} />
+        ))}
+      </View>
+
+      {/* SECTION 5: CHALLENGES — discovery/browse */}
+      <Text style={styles.sectionLabel}>CHALLENGES</Text>
+
+      <View style={styles.section}>
+        <PremiumGate feature="challenges">
+          {CHALLENGES.map((challenge) => (
+            <ChallengeCard
+              key={challenge.id}
+              challenge={challenge}
+              progress={
+                activeChallenge?.challengeId === challenge.id
+                  ? activeChallenge
+                  : null
+              }
+              isCompleted={isChallengeCompleted(challenge.id)}
+              onPress={() => {
+                if (
+                  !activeChallenge &&
+                  !isChallengeCompleted(challenge.id)
+                ) {
+                  startChallenge(challenge.id);
+                }
+              }}
+            />
+          ))}
+        </PremiumGate>
       </View>
     </ScrollView>
   );
@@ -314,6 +352,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: darkPalette.text,
+    marginBottom: 12,
+  },
+  sectionLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: darkPalette.textTertiary,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginTop: 24,
     marginBottom: 12,
   },
   challengesSectionHeader: {
