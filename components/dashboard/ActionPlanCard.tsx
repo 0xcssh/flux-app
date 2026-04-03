@@ -16,6 +16,21 @@ const PHASE_COLORS: Record<string, string> = {
   recovery: '#A78BFA',
 };
 
+const PHASE_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
+  rise: 'sunny',
+  peak: 'flash',
+  decline: 'trending-down',
+  recovery: 'moon',
+};
+
+function getCurrentPhaseIndex(): number {
+  const hour = new Date().getHours();
+  if (hour >= 4 && hour < 10) return 0;   // Morning/Rise
+  if (hour >= 10 && hour < 14) return 1;  // Midday/Peak
+  if (hour >= 14 && hour < 20) return 2;  // Afternoon/Decline
+  return 3;                                 // Evening/Recovery
+}
+
 export default function ActionPlanCard() {
   const { t } = useTranslation('dashboard');
   const router = useRouter();
@@ -29,40 +44,32 @@ export default function ActionPlanCard() {
     return generateDailyPlan(hour, allLogs);
   }, [logs]);
 
-  const visibleBlocks = hasPremium ? plan.timeBlocks : plan.timeBlocks.slice(0, 2);
+  const currentPhaseIndex = getCurrentPhaseIndex();
+  const currentBlock = plan.timeBlocks[currentPhaseIndex];
+  const logCount = Object.keys(logs).length;
+  const isPersonalized = hasPremium && logCount >= 7 && plan.personalizedCount > 0;
 
-  return (
-    <View style={styles.card}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>{t('action_plan_title')}</Text>
-        {hasPremium && plan.personalizedCount > 0 && (
-          <Text style={styles.personalizedBadge}>
-            {t('action_plan_personalized', { count: plan.personalizedCount })}
-          </Text>
+  if (hasPremium) {
+    return (
+      <View style={styles.card}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>{t('action_plan_title')}</Text>
+          {isPersonalized && (
+            <View style={styles.personalizedBadgeContainer}>
+              <Text style={styles.personalizedBadge}>
+                {t('action_plan_personalized', { count: plan.personalizedCount })}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* Current phase block */}
+        {currentBlock && (
+          <CurrentPhaseBlock block={currentBlock} />
         )}
-      </View>
 
-      {/* Time blocks */}
-      {visibleBlocks.map((block, idx) => (
-        <TimeBlockRow
-          key={block.phase}
-          block={block}
-          isLast={idx === visibleBlocks.length - 1}
-          blurred={!hasPremium && idx > 0}
-        />
-      ))}
-
-      {/* CTA */}
-      {!hasPremium ? (
-        <Pressable
-          style={styles.ctaButton}
-          onPress={() => router.push('/(modals)/paywall' as any)}
-        >
-          <Ionicons name="lock-closed" size={14} color={darkPalette.primary} />
-          <Text style={styles.ctaText}>{t('action_plan_unlock')}</Text>
-        </Pressable>
-      ) : (
+        {/* See full plan CTA */}
         <Pressable
           style={styles.seeFullButton}
           onPress={() => router.push('/(modals)/action-plan' as any)}
@@ -70,26 +77,58 @@ export default function ActionPlanCard() {
           <Text style={styles.seeFullText}>{t('action_plan_see_full')}</Text>
           <Ionicons name="chevron-forward" size={14} color={darkPalette.primary} />
         </Pressable>
+      </View>
+    );
+  }
+
+  // Free user layout
+  return (
+    <View style={styles.card}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.title}>{t('action_plan_title')}</Text>
+        <Text style={styles.currentPhaseLabel}>{t('action_plan_current_phase')}</Text>
+      </View>
+
+      {/* Current phase block — fully visible */}
+      {currentBlock && (
+        <CurrentPhaseBlock block={currentBlock} />
       )}
+
+      {/* 3 blurred placeholder blocks */}
+      <View style={styles.blurredSection}>
+        {[0, 1, 2].map((i) => (
+          <View key={i} style={styles.blurredBlock}>
+            <View style={styles.blurredBar} />
+            <View style={styles.blurredBarShort} />
+          </View>
+        ))}
+        <View style={styles.lockOverlay}>
+          <Ionicons name="lock-closed" size={16} color={darkPalette.textTertiary} />
+        </View>
+      </View>
+
+      {/* CTA */}
+      <Pressable
+        style={styles.ctaButton}
+        onPress={() => router.push('/(modals)/paywall' as any)}
+      >
+        <Ionicons name="lock-closed" size={14} color={darkPalette.primary} />
+        <Text style={styles.ctaText}>{t('action_plan_morning_cta')}</Text>
+      </Pressable>
     </View>
   );
 }
 
-function TimeBlockRow({
-  block,
-  isLast,
-  blurred,
-}: {
-  block: TimeBlock;
-  isLast: boolean;
-  blurred: boolean;
-}) {
+function CurrentPhaseBlock({ block }: { block: TimeBlock }) {
+  const { t } = useTranslation('dashboard');
   const phaseColor = PHASE_COLORS[block.phase] ?? darkPalette.primary;
+  const phaseIcon = PHASE_ICONS[block.phase] ?? 'ellipse';
 
   return (
-    <View style={[styles.blockRow, !isLast && styles.blockRowBorder, blurred && styles.blurred]}>
+    <View style={[styles.currentBlock, { borderLeftColor: phaseColor }]}>
       <View style={styles.blockHeader}>
-        <View style={[styles.phaseDot, { backgroundColor: phaseColor }]} />
+        <Ionicons name={phaseIcon} size={16} color={phaseColor} />
         <Text style={styles.blockLabel}>{block.label}</Text>
         <Text style={styles.blockTime}>{block.timeRange}</Text>
       </View>
@@ -97,9 +136,9 @@ function TimeBlockRow({
         {block.actions.slice(0, 3).map((action, i) => (
           <View key={i} style={styles.actionItem}>
             <Ionicons
-              name={(action.iconName as any) ?? 'ellipse'}
+              name={(action.iconName as keyof typeof Ionicons.glyphMap) ?? 'ellipse'}
               size={14}
-              color={darkPalette.textSecondary}
+              color={phaseColor}
             />
             <Text style={styles.actionText} numberOfLines={1}>
               {action.text}
@@ -132,34 +171,38 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
+  currentPhaseLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: darkPalette.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  personalizedBadgeContainer: {
+    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
   personalizedBadge: {
     fontSize: 10,
     fontWeight: '600',
     color: darkPalette.secondary,
   },
-  blockRow: {
-    paddingVertical: 10,
-  },
-  blockRowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: darkPalette.borderLight,
-  },
-  blurred: {
-    opacity: 0.35,
+  currentBlock: {
+    borderLeftWidth: 3,
+    borderLeftColor: darkPalette.primary,
+    paddingLeft: 12,
+    paddingVertical: 8,
   },
   blockHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 6,
-  },
-  phaseDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    marginBottom: 8,
   },
   blockLabel: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '700',
     color: darkPalette.text,
   },
@@ -169,8 +212,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   actionsList: {
-    paddingLeft: 16,
-    gap: 4,
+    gap: 6,
   },
   actionItem: {
     flexDirection: 'row',
@@ -181,6 +223,44 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: darkPalette.textSecondary,
     flex: 1,
+  },
+  // Blurred section for free users
+  blurredSection: {
+    marginTop: 10,
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: 8,
+  },
+  blurredBlock: {
+    height: 48,
+    backgroundColor: 'rgba(37, 37, 64, 0.3)',
+    borderRadius: 8,
+    marginBottom: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    justifyContent: 'center',
+  },
+  blurredBar: {
+    height: 8,
+    width: '60%',
+    backgroundColor: 'rgba(139, 139, 163, 0.12)',
+    borderRadius: 4,
+    marginBottom: 6,
+  },
+  blurredBarShort: {
+    height: 6,
+    width: '40%',
+    backgroundColor: 'rgba(139, 139, 163, 0.08)',
+    borderRadius: 3,
+  },
+  lockOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   ctaButton: {
     flexDirection: 'row',

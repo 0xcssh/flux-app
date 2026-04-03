@@ -90,5 +90,7 @@
   "action_plan_title": "YOUR DAILY PLAN",
   "action_plan_unlock": "Unlock your full daily plan",
   "action_plan_see_full": "See full plan",
-  "action_plan_personalized": "{{count}} personalized actions"
+  "action_plan_personalized": "{{count}} personalized actions",
+  "action_plan_morning_cta": "See your full plan every morning",
+  "action_plan_current_phase": "Right now"
 }
