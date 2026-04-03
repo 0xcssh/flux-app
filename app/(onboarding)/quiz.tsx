@@ -6,7 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Switch,
   Animated,
   Platform,
 } from 'react-native';
@@ -117,7 +116,6 @@ export default function QuizScreen() {
   const [activityLevel, setActivityLevel] = useState<number>(3);
   const [sleepQuality, setSleepQuality] = useState<number>(3);
   const [goal, setGoal] = useState<GoalType>('energy');
-  const [nofap, setNofap] = useState(true);
   const [ageFocused, setAgeFocused] = useState(false);
 
   // Result state
@@ -161,7 +159,7 @@ export default function QuizScreen() {
 
     const computed = computeProfile(quizAnswers);
     setHormonalProfile(computed);
-    setNofapEnabled(nofap);
+    setNofapEnabled(true);
 
     // Request notification permission + schedule
     await requestNotificationPermission();
@@ -334,23 +332,6 @@ export default function QuizScreen() {
               );
             })}
           </View>
-        </View>
-
-        {/* ── PREFERENCES ── */}
-        <Text style={styles.sectionLabel}>PREFERENCES</Text>
-
-        {/* NoFap toggle */}
-        <View style={styles.nofapCard}>
-          <View style={styles.nofapLeft}>
-            <Ionicons name="shield-checkmark" size={20} color="#3B82F6" />
-            <Text style={styles.nofapLabel}>NoFap tracking</Text>
-          </View>
-          <Switch
-            value={nofap}
-            onValueChange={setNofap}
-            trackColor={{ false: '#2A2A45', true: '#3B82F6' }}
-            thumbColor="#FFFFFF"
-          />
         </View>
 
         {/* Spacer for CTA */}
