@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 import { useSettingsStore } from '@/store/settingsStore';
+import { useNoFapStore } from '@/store/nofapStore';
 import { useCircadianPhase } from '@/hooks/useCircadianPhase';
 import { useVitalityScore } from '@/hooks/useVitalityScore';
 import VitalityScore from '@/components/dashboard/VitalityScore';
@@ -31,6 +32,7 @@ import MissedDayCard from '@/components/dashboard/MissedDayCard';
 import ComparisonCard from '@/components/dashboard/ComparisonCard';
 import AdaptiveLearn from '@/components/dashboard/AdaptiveLearn';
 import ActionPlanCard from '@/components/dashboard/ActionPlanCard';
+import ChallengeWidget from '@/components/dashboard/ChallengeWidget';
 import CommunityScore from '@/components/dashboard/CommunityScore';
 import ShareButton from '@/components/dashboard/ShareButton';
 import WeeklyReportCard from '@/components/dashboard/WeeklyReportCard';
@@ -45,6 +47,7 @@ function DashboardContent() {
   const logs = useLogStore((s) => s.logs);
   const { phase, progress } = useCircadianPhase();
   const nofapEnabled = useSettingsStore((s) => s.nofapEnabled);
+  const noFapStreakDays = useNoFapStore((s) => s.getStreakDays());
 
   const isToday = selectedDate === getTodayDate();
   const selectedLog = logs[selectedDate] ?? null;
@@ -157,6 +160,10 @@ function DashboardContent() {
             </View>
 
             <View style={styles.section}>
+              <ChallengeWidget />
+            </View>
+
+            <View style={styles.section}>
               <CircadianPhaseCard phase={phase} progress={progress} />
             </View>
 
@@ -196,6 +203,10 @@ function DashboardContent() {
               <ActionPlanCard />
             </View>
 
+            <View style={styles.section}>
+              <ChallengeWidget />
+            </View>
+
             <View style={styles.sectionDivider} />
 
             {/* SECTION 3: YOUR STATE */}
@@ -205,6 +216,7 @@ function DashboardContent() {
                 phaseLabel={phaseLabel}
                 yesterdayScore={yesterdayScore}
                 todayScore={selectedLog!.vitality_score}
+                noFapStreakDays={noFapStreakDays}
               />
             </View>
 

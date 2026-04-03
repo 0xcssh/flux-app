@@ -103,5 +103,11 @@
   "weekly_report_trend_up": "+{{percent}}% vs last week",
   "weekly_report_trend_down": "{{percent}}% vs last week",
   "weekly_report_actions": "This week's focus",
-  "weekly_report_dismiss": "Dismiss"
+  "weekly_report_dismiss": "Dismiss",
+  "challenge_widget_active": "Active Challenge",
+  "challenge_widget_suggested": "Suggested for you",
+  "challenge_widget_start": "Start Challenge",
+  "challenge_widget_complete": "Mark Complete",
+  "challenge_widget_premium": "Premium",
+  "challenge_widget_based_on": "Based on your recent data"
 }

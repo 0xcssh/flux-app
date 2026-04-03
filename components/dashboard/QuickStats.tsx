@@ -10,6 +10,7 @@ interface QuickStatsProps {
   phaseLabel: string;
   yesterdayScore: number | null;
   todayScore: number | null;
+  noFapStreakDays: number;
 }
 
 const PHASE_ICONS: Record<PhaseType, { iconName: string; color: string }> = {
@@ -19,17 +20,25 @@ const PHASE_ICONS: Record<PhaseType, { iconName: string; color: string }> = {
   recovery: { iconName: 'moon', color: '#A78BFA' },
 };
 
-export default function QuickStats({ phase, phaseLabel, yesterdayScore, todayScore }: QuickStatsProps) {
+function getStreakColor(days: number): string {
+  if (days >= 30) return '#F59E0B'; // gold
+  if (days >= 14) return '#94A3B8'; // silver
+  if (days >= 7) return '#CD7F32'; // bronze
+  return darkPalette.textSecondary;
+}
+
+export default function QuickStats({ phase, phaseLabel, yesterdayScore, todayScore, noFapStreakDays }: QuickStatsProps) {
   const phaseInfo = PHASE_ICONS[phase];
   const trend = todayScore != null && yesterdayScore != null ? todayScore - yesterdayScore : null;
+  const streakColor = noFapStreakDays === 0 ? darkPalette.textTertiary : getStreakColor(noFapStreakDays);
 
   return (
     <View style={styles.row}>
-      {/* Peak Window */}
+      {/* NoFap Streak */}
       <View style={styles.card}>
-        <Ionicons name="time" size={20} color={darkPalette.textSecondary} />
-        <Text style={styles.cardValue}>6-10 AM</Text>
-        <Text style={styles.cardLabel}>Peak Window</Text>
+        <Ionicons name="shield-checkmark" size={20} color={streakColor} />
+        <Text style={[styles.cardValue, { color: streakColor }]}>Day {noFapStreakDays}</Text>
+        <Text style={styles.cardLabel}>Streak</Text>
       </View>
 
       {/* Current Phase */}
