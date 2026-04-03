@@ -20,7 +20,6 @@ import IndicatorRow from '@/components/dashboard/IndicatorRow';
 import CircadianPhaseCard from '@/components/dashboard/CircadianPhaseCard';
 import StreakBar from '@/components/dashboard/StreakBar';
 import QuickStats from '@/components/dashboard/QuickStats';
-import WeeklySummary from '@/components/dashboard/WeeklySummary';
 import ArticleSuggestion from '@/components/dashboard/ArticleSuggestion';
 import SymptomPredictionCard from '@/components/dashboard/SymptomPredictionCard';
 import DaySelector, {
@@ -160,10 +159,22 @@ function DashboardContent() {
             </View>
           </>
         ) : isToday && isLogged ? (
-          // TODAY - LOGGED
+          // TODAY - LOGGED (lean layout)
           <>
             <View style={styles.scoreContainer}>
               <VitalityScore score={selectedLog!.vitality_score} size={210} />
+            </View>
+
+            {/* Logged badge + Streak together */}
+            <View style={styles.loggedBadge}>
+              <View style={styles.loggedContent}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={16}
+                  color={darkPalette.secondary}
+                />
+                <Text style={styles.loggedText}>{t('logged_today')}</Text>
+              </View>
             </View>
 
             <View style={styles.section}>
@@ -188,31 +199,7 @@ function DashboardContent() {
             </View>
 
             <View style={styles.section}>
-              <WeeklySummary logs={allLogs} />
-            </View>
-
-            <View style={styles.section}>
-              <CircadianPhaseCard phase={phase} progress={progress} />
-            </View>
-
-            <View style={styles.section}>
-              <AdaptiveLearn log={selectedLog} />
-            </View>
-
-            <View style={styles.section}>
               <ArticleSuggestion />
-            </View>
-
-            {/* Logged badge */}
-            <View style={styles.loggedBadge}>
-              <View style={styles.loggedContent}>
-                <Ionicons
-                  name="checkmark-circle"
-                  size={16}
-                  color={darkPalette.secondary}
-                />
-                <Text style={styles.loggedText}>{t('logged_today')}</Text>
-              </View>
             </View>
           </>
         ) : selectedLog ? (
