@@ -12,9 +12,6 @@ const ANDROID_KEY = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ?? '';
 
 let initialized = false;
 
-/**
- * Initialize RevenueCat SDK with platform-specific API keys.
- */
 export async function initRevenueCat(): Promise<void> {
   if (initialized) return;
 
@@ -33,9 +30,6 @@ export async function initRevenueCat(): Promise<void> {
   initialized = true;
 }
 
-/**
- * Identify the current user with RevenueCat.
- */
 export async function identifyUser(userId: string): Promise<void> {
   try {
     await Purchases.logIn(userId);
@@ -44,22 +38,15 @@ export async function identifyUser(userId: string): Promise<void> {
   }
 }
 
-/**
- * Fetch available subscription offerings.
- */
 export async function getOfferings(): Promise<PurchasesOfferings | null> {
   try {
-    const offerings = await Purchases.getOfferings();
-    return offerings;
+    return await Purchases.getOfferings();
   } catch (error) {
     console.error('[RevenueCat] getOfferings error:', error);
     return null;
   }
 }
 
-/**
- * Purchase a specific package.
- */
 export async function purchasePackage(
   pkg: PurchasesPackage,
 ): Promise<{ customerInfo: CustomerInfo; success: boolean }> {
@@ -74,17 +61,41 @@ export async function purchasePackage(
   }
 }
 
-/**
- * Restore purchases (e.g., after device transfer).
- */
 export async function restorePurchases(): Promise<CustomerInfo> {
-  const customerInfo = await Purchases.restorePurchases();
-  return customerInfo;
+  return await Purchases.restorePurchases();
 }
 
 /**
- * Check current entitlements and return the user's plan tier.
+ * Single call to get tier + trial status + offerings.
+ * Avoids multiple getCustomerInfo calls that cause 429 rate limits.
  */
+export async function getSubscriptionState(): Promise<{
+  tier: PlanTier;
+  isTrialActive: boolean;
+  trialExpiresAt: Date | null;
+  offerings: PurchasesOfferings | null;
+}> {
+  try {
+    const [customerInfo, offerings] = await Promise.all([
+      Purchases.getCustomerInfo(),
+      Purchases.getOfferings(),
+    ]);
+
+    const tier = tierFromCustomerInfo(customerInfo);
+    const premiumEntitlement = customerInfo.entitlements.active['premium'];
+    const isTrialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+    const trialExpiresAt = isTrialActive && premiumEntitlement?.expirationDate
+      ? new Date(premiumEntitlement.expirationDate)
+      : null;
+
+    return { tier, isTrialActive, trialExpiresAt, offerings };
+  } catch (error) {
+    console.error('[RevenueCat] getSubscriptionState error:', error);
+    return { tier: 'free', isTrialActive: false, trialExpiresAt: null, offerings: null };
+  }
+}
+
+// Keep these for backward compat but prefer getSubscriptionState
 export async function checkEntitlements(): Promise<PlanTier> {
   try {
     const customerInfo = await Purchases.getCustomerInfo();
@@ -95,9 +106,6 @@ export async function checkEntitlements(): Promise<PlanTier> {
   }
 }
 
-/**
- * Get trial status for the current user.
- */
 export async function getTrialStatus(): Promise<{
   isActive: boolean;
   expiresAt: Date | null;
@@ -105,7 +113,6 @@ export async function getTrialStatus(): Promise<{
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     const premiumEntitlement = customerInfo.entitlements.active['premium'];
-
     if (premiumEntitlement && premiumEntitlement.periodType === 'TRIAL') {
       return {
         isActive: true,
@@ -114,7 +121,6 @@ export async function getTrialStatus(): Promise<{
           : null,
       };
     }
-
     return { isActive: false, expiresAt: null };
   } catch (error) {
     console.error('[RevenueCat] getTrialStatus error:', error);
@@ -122,28 +128,15 @@ export async function getTrialStatus(): Promise<{
   }
 }
 
-/**
- * Derive PlanTier from CustomerInfo entitlements.
- */
 export function tierFromCustomerInfo(info: CustomerInfo): PlanTier {
-  if (info.entitlements.active['pro']) {
-    return 'pro';
-  }
-  if (info.entitlements.active['premium']) {
-    return 'premium';
-  }
+  if (info.entitlements.active['pro']) return 'pro';
+  if (info.entitlements.active['premium']) return 'premium';
   return 'free';
 }
 
-/**
- * Add a listener for customer info changes. Returns an unsubscribe function.
- */
 export function addCustomerInfoListener(
   callback: (info: CustomerInfo) => void,
 ): () => void {
   Purchases.addCustomerInfoUpdateListener(callback);
-  return () => {
-    // RevenueCat SDK manages listener lifecycle;
-    // returning a no-op unsubscribe as the listener is tied to SDK lifecycle.
-  };
+  return () => {};
 }

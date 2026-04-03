@@ -4,11 +4,9 @@ import type { PlanTier } from '@/types/subscription';
 import { useSubscriptionStore } from '@/store/subscriptionStore';
 import {
   initRevenueCat,
-  getOfferings,
+  getSubscriptionState,
   purchasePackage,
   restorePurchases,
-  checkEntitlements,
-  getTrialStatus,
   addCustomerInfoListener,
   tierFromCustomerInfo,
 } from '@/lib/revenuecat';
@@ -76,16 +74,12 @@ export function useSubscription(): UseSubscriptionReturn {
       try {
         await initRevenueCat();
 
-        const [currentTier, trialStatus, currentOfferings] = await Promise.all([
-          checkEntitlements(),
-          getTrialStatus(),
-          getOfferings(),
-        ]);
+        const state = await getSubscriptionState();
 
         if (!mounted) return;
 
-        setSubscription(currentTier, trialStatus.expiresAt?.toISOString() ?? null);
-        setOfferings(currentOfferings);
+        setSubscription(state.tier, state.trialExpiresAt?.toISOString() ?? null);
+        setOfferings(state.offerings);
 
         unsubscribeRef.current = addCustomerInfoListener((info) => {
           if (!mounted) return;
