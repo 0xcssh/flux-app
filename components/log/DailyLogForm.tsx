@@ -60,15 +60,6 @@ const SLIDER_CONFIG = [
   },
 ];
 
-const SCORE_STACK_CONFIG = [
-  { key: 'energy', label: 'Energy', weight: 0.20, color: '#F59E0B' },
-  { key: 'mood', label: 'Mood', weight: 0.20, color: '#A78BFA' },
-  { key: 'libido', label: 'Libido', weight: 0.15, color: '#EF4444' },
-  { key: 'sleep', label: 'Sleep', weight: 0.20, color: '#6366F1' },
-  { key: 'stress', label: 'Stress', weight: 0.15, color: '#F97316' },
-  { key: 'training', label: 'Training', weight: 0.10, color: '#22C55E' },
-] as const;
-
 function computeScore(data: LogFormData): number {
   const raw =
     data.energy * 0.2 +
@@ -142,33 +133,10 @@ export default function DailyLogForm({
           </View>
         )}
 
-        {/* Score Stack */}
-        <View style={styles.scoreStackContainer}>
-          <Text style={styles.scoreStackLabel}>YOUR SCORE</Text>
-          <View style={styles.scoreStackRow}>
-            <View style={styles.scoreStackBars}>
-              {SCORE_STACK_CONFIG.map((c) => {
-                const rawValue = c.key === 'stress'
-                  ? 10 - formData.stress
-                  : c.key === 'sleep'
-                    ? formData.sleep_quality
-                    : formData[c.key as keyof LogFormData] as number;
-                const contribution = Math.round(((rawValue - 1) / 9) * c.weight * 100);
-                return (
-                  <View key={c.key} style={styles.barRow}>
-                    <Text style={styles.barLabel}>{c.label}</Text>
-                    <View style={styles.barTrack}>
-                      <View style={[styles.barFill, { width: `${(rawValue / 10) * 100}%`, backgroundColor: c.color }]} />
-                    </View>
-                    <Text style={[styles.barContrib, { color: c.color }]}>+{contribution}</Text>
-                  </View>
-                );
-              })}
-            </View>
-            <View style={styles.scoreStackTotal}>
-              <Text style={[styles.scoreStackValue, { color: scoreColor }]}>{liveScore}</Text>
-            </View>
-          </View>
+        {/* Live Score — just the number */}
+        <View style={styles.liveScoreContainer}>
+          <Text style={[styles.liveScoreValue, { color: scoreColor }]}>{liveScore}</Text>
+          <Text style={styles.liveScoreLabel}>Vitality</Text>
         </View>
 
         {/* Sliders */}
@@ -253,63 +221,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#5A5A7A',
   },
-  // Score Stack
-  scoreStackContainer: {
+  // Live Score
+  liveScoreContainer: {
+    alignItems: 'center',
     marginBottom: 20,
+    paddingVertical: 8,
   },
-  scoreStackLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#5A5A7A',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
-  scoreStackRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  scoreStackBars: {
-    flex: 1,
-  },
-  barRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
-    gap: 8,
-  },
-  barLabel: {
-    width: 60,
-    fontSize: 11,
-    color: '#8B8BA3',
-    fontWeight: '500',
-  },
-  barTrack: {
-    flex: 1,
-    height: 8,
-    backgroundColor: '#252540',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  barFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  barContrib: {
-    width: 30,
-    fontSize: 10,
-    fontWeight: '600',
-    textAlign: 'right',
-  },
-  scoreStackTotal: {
-    width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 12,
-  },
-  scoreStackValue: {
-    fontSize: 42,
+  liveScoreValue: {
+    fontSize: 48,
     fontWeight: '900',
+    letterSpacing: -2,
+  },
+  liveScoreLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#8B8BA3',
+    marginTop: -4,
   },
   // Submit
   submitButton: {
