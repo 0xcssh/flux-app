@@ -10,7 +10,8 @@ import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 
 function getTodayDate(): string {
-  return new Date().toISOString().split('T')[0];
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 // --- Context ---
@@ -55,8 +56,9 @@ function buildDays(count: number): DayItem[] {
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const seen = new Set<string>();
 
-  for (let i = count - 1; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+  // Today first, then future days
+  for (let i = 0; i < count; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
     const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     if (seen.has(dateStr)) continue;
     seen.add(dateStr);
@@ -159,7 +161,7 @@ export default function DaySelector() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={{ width: 6 }} />}
-        initialScrollIndex={Math.max(0, days.length - 1)}
+        initialScrollIndex={0}
         getItemLayout={(_, index) => ({
           length: CELL_WIDTH + 6,
           offset: (CELL_WIDTH + 6) * index,
