@@ -19,6 +19,10 @@ import CorrelationChart from '@/components/insights/CorrelationChart';
 import TierProgress from '@/components/insights/TierProgress';
 import UniversalInsightCard from '@/components/insights/UniversalInsightCard';
 import EarlyPatternCard from '@/components/insights/EarlyPatternCard';
+import SymptomAccuracyCard from '@/components/insights/SymptomAccuracyCard';
+import BestDaysCard from '@/components/insights/BestDaysCard';
+import StreakImpactCard from '@/components/insights/StreakImpactCard';
+import MonthlyReportCard from '@/components/insights/MonthlyReportCard';
 import { track, AnalyticsEvents } from '@/lib/analytics';
 
 export default function InsightsScreen() {
@@ -136,6 +140,9 @@ export default function InsightsScreen() {
                   })}
                 </Text>
               )}
+            <SymptomAccuracyCard />
+            <BestDaysCard />
+            <StreakImpactCard />
           </>
         ) : (
           <LockedTeaser
@@ -180,6 +187,7 @@ export default function InsightsScreen() {
                 </Text>
               </View>
             ))}
+            <MonthlyReportCard deepInsights={deepInsights} />
           </PremiumGate>
         ) : (
           <LockedTeaser

@@ -57,5 +57,18 @@
   "early.worst": "Worst",
   "early.improving": "Improving",
   "early.declining": "Declining",
-  "early.stable": "Stable"
+  "early.stable": "Stable",
+  "prediction_accuracy": "Prediction Accuracy",
+  "predictions_matched": "predictions matched",
+  "best_worst_days": "Your Best & Worst Days",
+  "best_day": "Best",
+  "worst_day": "Worst",
+  "consistency_impact": "Consistency Impact",
+  "during_streaks": "During streaks",
+  "isolated_days": "Isolated days",
+  "streak_motivational": "Logging consistently improves your score",
+  "monthly_report": "Monthly Report",
+  "days_logged_month": "Days Logged",
+  "top_pattern": "Top Pattern",
+  "vs_last_month": "vs last month"
 }

@@ -30,5 +30,13 @@
     "vs_cycle_avg": "vs. Cycle Average"
   },
   "premium_required": "Upgrade to Premium to see your full cycle analysis and historical trends.",
-  "not_enough_data": "Keep logging daily to see your cycle patterns. We need at least 14 days of data."
+  "not_enough_data": "Keep logging daily to see your cycle patterns. We need at least 14 days of data.",
+  "day_at_glance": "Your Day at a Glance",
+  "phase_calendar": "Monthly Overview",
+  "days_logged": "days logged",
+  "avg_score": "Avg score",
+  "rise_time": "4-8 AM",
+  "peak_time": "8 AM-12 PM",
+  "decline_time": "12-8 PM",
+  "recovery_time": "8 PM-4 AM"
 }

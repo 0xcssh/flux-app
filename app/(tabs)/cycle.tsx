@@ -9,6 +9,9 @@ import CircadianChart from '@/components/cycle/CircadianChart';
 import InfradianChart from '@/components/cycle/InfradianChart';
 import PhaseIndicator from '@/components/cycle/PhaseIndicator';
 import HistoryComparison from '@/components/cycle/HistoryComparison';
+import WeeklySummary from '@/components/dashboard/WeeklySummary';
+import SymptomTimeline from '@/components/cycle/SymptomTimeline';
+import PhaseCalendar from '@/components/cycle/PhaseCalendar';
 
 type TabKey = 'circadian' | 'infradian';
 
@@ -99,9 +102,24 @@ export default function CycleScreen() {
         )}
       </View>
 
+      {/* Weekly Summary */}
+      <View style={styles.section}>
+        <WeeklySummary logs={last30Logs} />
+      </View>
+
       {/* Phase Indicator */}
       <View style={styles.section}>
         <PhaseIndicator currentPhase={phase} progress={progress} />
+      </View>
+
+      {/* Symptom Timeline */}
+      <View style={styles.section}>
+        <SymptomTimeline />
+      </View>
+
+      {/* Phase Calendar */}
+      <View style={styles.section}>
+        <PhaseCalendar />
       </View>
 
       {/* History Comparison */}
