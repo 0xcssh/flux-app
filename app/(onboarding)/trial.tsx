@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator,
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,9 +37,11 @@ const FEATURES: { icon: keyof typeof Ionicons.glyphMap; color: string; title: st
 export default function TrialScreen() {
   const router = useRouter();
   const setOnboardingSeen = useSettingsStore((s) => s.setOnboardingSeen);
+  const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('annual');
 
-  // Stagger animations: 3 feature cards + CTA
+  // Stagger animations: 3 feature cards + plan cards + CTA
   const featureAnims = useRef(FEATURES.map(() => new Animated.Value(0))).current;
+  const planAnim = useRef(new Animated.Value(0)).current;
   const ctaAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -54,13 +55,18 @@ export default function TrialScreen() {
 
     Animated.sequence([
       Animated.stagger(150, featureTimings),
+      Animated.timing(planAnim, {
+        toValue: 1,
+        duration: 350,
+        useNativeDriver: true,
+      }),
       Animated.timing(ctaAnim, {
         toValue: 1,
         duration: 350,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [featureAnims, ctaAnim]);
+  }, [featureAnims, planAnim, ctaAnim]);
 
   const finishOnboarding = () => {
     setOnboardingSeen(true);
@@ -69,7 +75,7 @@ export default function TrialScreen() {
   };
 
   const handleStartTrial = () => {
-    track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding' });
+    track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding', plan: billingCycle });
     finishOnboarding();
   };
 
@@ -77,6 +83,10 @@ export default function TrialScreen() {
     track(AnalyticsEvents.TRIAL_SKIPPED, { source: 'onboarding' });
     finishOnboarding();
   };
+
+  const priceLabel = billingCycle === 'annual'
+    ? 'Then 89.99\u20AC/year \u00B7 Cancel anytime'
+    : 'Then 14.99\u20AC/month \u00B7 Cancel anytime';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -114,6 +124,56 @@ export default function TrialScreen() {
           ))}
         </View>
 
+        <Animated.View
+          style={[
+            styles.planSection,
+            {
+              opacity: planAnim,
+              transform: [{
+                translateY: planAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [20, 0],
+                }),
+              }],
+            },
+          ]}
+        >
+          <View style={styles.planRow}>
+            <TouchableOpacity
+              style={[
+                styles.planCard,
+                billingCycle === 'annual' && styles.planCardSelected,
+              ]}
+              onPress={() => setBillingCycle('annual')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.planBadgeRow}>
+                <Text style={styles.planName}>Annual</Text>
+                <View style={styles.saveBadge}>
+                  <Text style={styles.saveBadgeText}>SAVE 50%</Text>
+                </View>
+              </View>
+              <Text style={styles.planPrice}>89.99{'\u20AC'}/year</Text>
+              <Text style={styles.planEquivalent}>(7.49{'\u20AC'}/month)</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.planCard,
+                billingCycle === 'monthly' && styles.planCardSelected,
+              ]}
+              onPress={() => setBillingCycle('monthly')}
+              activeOpacity={0.7}
+            >
+              <View style={styles.planBadgeRow}>
+                <Text style={styles.planName}>Monthly</Text>
+              </View>
+              <Text style={styles.planPrice}>14.99{'\u20AC'}/month</Text>
+              <Text style={styles.planEquivalent}> </Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+
         <Animated.View style={[styles.ctaSection, { opacity: ctaAnim, transform: [{ translateY: ctaAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] }]}>
           <TouchableOpacity
             style={styles.ctaButton}
@@ -122,7 +182,11 @@ export default function TrialScreen() {
           >
             <Text style={styles.ctaText}>Start 7-Day Free Trial</Text>
           </TouchableOpacity>
-          <Text style={styles.priceText}>Then 14.99/month -- Cancel anytime</Text>
+          <Text style={styles.priceText}>{priceLabel}</Text>
+          <View style={styles.socialProof}>
+            <Ionicons name="people" size={14} color="#8B8BA3" />
+            <Text style={styles.socialProofText}>Trusted by 2,000+ men</Text>
+          </View>
           <TouchableOpacity onPress={handleSkip} activeOpacity={0.6}>
             <Text style={styles.skipText}>Continue with Free Plan</Text>
           </TouchableOpacity>
@@ -144,11 +208,12 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 48,
+    paddingTop: 32,
+    justifyContent: 'space-between',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,
@@ -165,7 +230,7 @@ const styles = StyleSheet.create({
   },
   featureList: {
     gap: 10,
-    marginBottom: 32,
+    marginBottom: 20,
   },
   featureCard: {
     flexDirection: 'row',
@@ -195,9 +260,68 @@ const styles = StyleSheet.create({
     color: '#8B8BA3',
     marginTop: 2,
   },
+  planSection: {
+    marginBottom: 20,
+  },
+  planRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  planCard: {
+    flex: 1,
+    backgroundColor: '#1A1A2E',
+    borderRadius: 14,
+    padding: 14,
+    borderWidth: 2,
+    borderColor: '#2A2A45',
+    alignItems: 'center',
+  },
+  planCardSelected: {
+    borderColor: '#3B82F6',
+    backgroundColor: '#1A1A2E' + 'F0',
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  planBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 6,
+  },
+  planName: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  saveBadge: {
+    backgroundColor: '#22C55E',
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  saveBadgeText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  planPrice: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginTop: 2,
+  },
+  planEquivalent: {
+    fontSize: 12,
+    color: '#8B8BA3',
+    marginTop: 2,
+  },
   ctaSection: {
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
+    marginBottom: 8,
   },
   ctaButton: {
     width: '100%',
@@ -220,11 +344,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#8B8BA3',
   },
+  socialProof: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  socialProofText: {
+    fontSize: 12,
+    color: '#8B8BA3',
+  },
   skipText: {
     fontSize: 14,
     color: '#5A5A7A',
     fontWeight: '600',
-    marginTop: 4,
+    marginTop: 2,
   },
   footer: {
     paddingHorizontal: 32,
