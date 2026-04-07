@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -36,7 +36,6 @@ const FEATURES: { icon: keyof typeof Ionicons.glyphMap; color: string; title: st
 ];
 
 export default function TrialScreen() {
-  const router = useRouter();
   const setOnboardingSeen = useSettingsStore((s) => s.setOnboardingSeen);
   const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('annual');
 
@@ -70,9 +69,10 @@ export default function TrialScreen() {
   }, [featureAnims, planAnim, ctaAnim]);
 
   const finishOnboarding = () => {
-    setOnboardingSeen(true);
     track(AnalyticsEvents.ONBOARDING_COMPLETED);
-    router.replace('/(tabs)');
+    // Setting onboardingSeen triggers the conditional navigator in App.tsx
+    // which automatically swaps Onboarding → MainTabs (no manual reset needed)
+    setOnboardingSeen(true);
   };
 
   const handleStartTrial = () => {
@@ -96,18 +96,20 @@ export default function TrialScreen() {
   const handleDownsellClaim = () => {
     setShowDownsell(false);
     track(AnalyticsEvents.TRIAL_STARTED, { source: 'downsell', plan: billingCycle });
-    finishOnboarding();
+    // Delay to let Modal fade-out finish (~300ms) before unmounting the navigator
+    setTimeout(() => finishOnboarding(), 350);
   };
 
   const handleDownsellDismiss = () => {
     setShowDownsell(false);
     track(AnalyticsEvents.TRIAL_SKIPPED, { source: 'downsell' });
-    finishOnboarding();
+    // Delay to let Modal fade-out finish (~300ms) before unmounting the navigator
+    setTimeout(() => finishOnboarding(), 350);
   };
 
   const priceLabel = billingCycle === 'annual'
-    ? 'Then 89.99\u20AC/year \u00B7 Cancel anytime'
-    : 'Then 14.99\u20AC/month \u00B7 Cancel anytime';
+    ? 'Then $119.99/year \u00B7 Cancel anytime'
+    : 'Then $19.99/month \u00B7 Cancel anytime';
 
   return (
     <SafeAreaView style={styles.container}>
@@ -174,8 +176,8 @@ export default function TrialScreen() {
                   <Text style={styles.saveBadgeText}>SAVE 50%</Text>
                 </View>
               </View>
-              <Text style={styles.planPrice}>89.99{'\u20AC'}/year</Text>
-              <Text style={styles.planEquivalent}>(7.49{'\u20AC'}/month)</Text>
+              <Text style={styles.planPrice}>$119.99/year</Text>
+              <Text style={styles.planEquivalent}>($9.99/month)</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -189,7 +191,7 @@ export default function TrialScreen() {
               <View style={styles.planBadgeRow}>
                 <Text style={styles.planName}>Monthly</Text>
               </View>
-              <Text style={styles.planPrice}>14.99{'\u20AC'}/month</Text>
+              <Text style={styles.planPrice}>$19.99/month</Text>
               <Text style={styles.planEquivalent}> </Text>
             </TouchableOpacity>
           </View>
@@ -211,6 +213,18 @@ export default function TrialScreen() {
           <TouchableOpacity onPress={handleSkip} activeOpacity={0.6}>
             <Text style={styles.skipText}>Continue with Free Plan</Text>
           </TouchableOpacity>
+          <Text style={styles.legalDisclaimer}>
+            Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period.
+          </Text>
+          <View style={styles.legalLinks}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://flux-legal.vercel.app/terms')}>
+              <Text style={styles.legalLink}>Terms</Text>
+            </TouchableOpacity>
+            <Text style={styles.legalSeparator}>|</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('https://flux-legal.vercel.app/privacy')}>
+              <Text style={styles.legalLink}>Privacy</Text>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </View>
 
@@ -385,6 +399,30 @@ const styles = StyleSheet.create({
     color: '#5A5A7A',
     fontWeight: '600',
     marginTop: 2,
+  },
+  legalDisclaimer: {
+    fontSize: 10,
+    color: '#5A5A7A',
+    textAlign: 'center',
+    lineHeight: 14,
+    marginTop: 12,
+    paddingHorizontal: 8,
+  },
+  legalLinks: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 6,
+  },
+  legalLink: {
+    fontSize: 10,
+    color: '#5A5A7A',
+    textDecorationLine: 'underline',
+  },
+  legalSeparator: {
+    fontSize: 10,
+    color: '#3A3A5A',
   },
   footer: {
     paddingHorizontal: 32,

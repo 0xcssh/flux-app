@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 
 export default function LogCTA() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t } = useTranslation('dashboard');
 
   return (
     <Pressable
       style={styles.container}
-      onPress={() => router.push('/(tabs)/log' as any)}
+      onPress={() => navigation.navigate('MainTabs', { screen: 'Log' })}
     >
       <View style={styles.iconWrap}>
         <Ionicons name="add-circle" size={40} color={darkPalette.primary} />

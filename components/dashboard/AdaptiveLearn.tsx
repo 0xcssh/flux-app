@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
@@ -105,7 +105,7 @@ interface AdaptiveLearnProps {
 }
 
 export default function AdaptiveLearn({ log = null }: AdaptiveLearnProps) {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t } = useTranslation('dashboard');
   const { t: tArticles } = useTranslation('articles');
   const logs = useLogStore((s) => s.logs);
@@ -126,7 +126,7 @@ export default function AdaptiveLearn({ log = null }: AdaptiveLearnProps) {
       style={[styles.container, { backgroundColor: recommendation.bg }]}
       activeOpacity={0.8}
       onPress={() =>
-        router.push(`/(modals)/article/${recommendation.articleId}` as any)
+        navigation.navigate('Article', { id: recommendation.articleId })
       }
     >
       <View style={styles.headerRow}>

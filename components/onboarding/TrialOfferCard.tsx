@@ -61,8 +61,8 @@ export default function TrialOfferCard({ onStartTrial, onSkip }: TrialOfferCardP
 
       <Text style={styles.priceInfo}>
         {lang === 'fr'
-          ? 'Puis 9,99\u20AC/mois ou 59,99\u20AC/an'
-          : 'Then 9.99\u20AC/month or 59.99\u20AC/year'}
+          ? 'Puis $19.99/mois ou $119.99/an'
+          : 'Then $19.99/month or $119.99/year'}
       </Text>
 
       <TouchableOpacity onPress={onSkip} style={styles.skipButton} activeOpacity={0.6}>

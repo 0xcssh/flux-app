@@ -44,10 +44,10 @@ export default function DownsellModal({
           <View style={styles.offerContainer}>
             <Text style={styles.offerText}>Get Premium for 40% less</Text>
             <Text style={styles.originalPrice}>
-              {isAnnual ? '89.99\u20ac/year' : '14.99\u20ac/month'}
+              {isAnnual ? '$119.99/year' : '$19.99/month'}
             </Text>
             <Text style={styles.discountPrice}>
-              {isAnnual ? '79.99\u20ac/year' : '12.99\u20ac/month'}
+              {isAnnual ? '$99.99/year' : '$14.99/month'}
             </Text>
           </View>
 

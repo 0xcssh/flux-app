@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -11,7 +11,7 @@ import type { WeeklyReport } from '@/lib/weeklyReport';
 
 export default function WeeklyReportCard() {
   const { t } = useTranslation('dashboard');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { canAccess } = useSubscription();
   const logs = useLogStore((s) => s.logs);
   const [dismissed, setDismissed] = useState(false);
@@ -73,7 +73,7 @@ export default function WeeklyReportCard() {
           <Text style={styles.lockText}>{t('weekly_report_ready')}</Text>
           <Pressable
             style={styles.unlockButton}
-            onPress={() => router.push('/(modals)/paywall' as any)}
+            onPress={() => navigation.navigate('Paywall')}
           >
             <Text style={styles.unlockButtonText}>
               {t('weekly_report_unlock')}

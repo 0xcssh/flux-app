@@ -7,7 +7,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import Icon from '@/components/ui/Icon';
@@ -52,7 +52,7 @@ const ARTICLES: ArticleEntry[] = [
 ];
 
 export default function ArticleSuggestion() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t: tDash } = useTranslation('dashboard');
   const { t: tArticles, i18n } = useTranslation('articles');
 
@@ -82,7 +82,7 @@ export default function ArticleSuggestion() {
       <TouchableOpacity
         style={[styles.card, { backgroundColor: cat.bg }]}
         activeOpacity={0.8}
-        onPress={() => router.push(`/(modals)/article/${item.id}` as any)}
+        onPress={() => navigation.navigate('Article', { id: item.id })}
       >
         <Text style={[styles.categoryLabel, { color: cat.accent }]}>
           {item.category.toUpperCase()}

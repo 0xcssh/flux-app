@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useSubscription } from '@/hooks/useSubscription';
 
 const TIER_BADGES = {
@@ -23,7 +23,7 @@ const PREMIUM_FEATURES = [
 export default function SubscriptionCard() {
   const { t } = useTranslation('profile');
   const { tier, isTrialActive, trialExpiresAt } = useSubscription();
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const badge = TIER_BADGES[tier];
 
@@ -65,7 +65,7 @@ export default function SubscriptionCard() {
           </View>
           <TouchableOpacity
             style={styles.upgradeButton}
-            onPress={() => router.push('/(modals)/paywall')}
+            onPress={() => navigation.navigate('Paywall')}
             activeOpacity={0.8}
           >
             <FontAwesome name="star" size={16} color="#FFFFFF" />
@@ -79,7 +79,7 @@ export default function SubscriptionCard() {
           <Text style={styles.planDescription}>{t(`plan_descriptions.${tier}`)}</Text>
           <TouchableOpacity
             style={styles.manageButton}
-            onPress={() => router.push('/(modals)/paywall')}
+            onPress={() => navigation.navigate('Paywall')}
             activeOpacity={0.7}
           >
             <Text style={styles.manageButtonText}>Manage Plan</Text>

@@ -10,7 +10,7 @@ import {
   Alert,
   Linking,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSubscription } from '@/hooks/useSubscription';
 import { track, AnalyticsEvents } from '@/lib/analytics';
@@ -46,7 +46,7 @@ const FEATURES = [
 ];
 
 export default function PaywallScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { offerings, purchase, restore, isLoading, tier, isTrialActive } =
     useSubscription();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
@@ -84,7 +84,9 @@ export default function PaywallScreen() {
           plan: 'premium',
           cycle: billingCycle,
         });
-        router.back();
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        }
       }
     } catch (error) {
       console.error('[Paywall] Purchase error:', error);
@@ -110,7 +112,9 @@ export default function PaywallScreen() {
       return;
     }
     track(AnalyticsEvents.PAYWALL_DISMISSED);
-    router.back();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const handleDownsellClaim = () => {
@@ -122,7 +126,9 @@ export default function PaywallScreen() {
   const handleDownsellDismiss = () => {
     setDownsellVisible(false);
     track(AnalyticsEvents.PAYWALL_DISMISSED);
-    router.back();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
   };
 
   const showTrial = !isTrialActive && tier === 'free';
@@ -234,7 +240,7 @@ export default function PaywallScreen() {
                 billingCycle === 'monthly' && styles.priceAmountActive,
               ]}
             >
-              14.99{'\u20ac'}/month
+              $19.99/month
             </Text>
           </TouchableOpacity>
 
@@ -261,9 +267,9 @@ export default function PaywallScreen() {
                 billingCycle === 'annual' && styles.priceAmountActive,
               ]}
             >
-              89.99{'\u20ac'}/year
+              $119.99/year
             </Text>
-            <Text style={styles.priceSubtext}>7.49{'\u20ac'}/month</Text>
+            <Text style={styles.priceSubtext}>$9.99/month</Text>
           </TouchableOpacity>
         </View>
 
@@ -284,10 +290,10 @@ export default function PaywallScreen() {
         </TouchableOpacity>
         <Text style={styles.ctaSubtext}>
           {showTrial
-            ? 'Then 14.99\u20ac/month \u00b7 Cancel anytime'
+            ? 'Then $19.99/month \u00b7 Cancel anytime'
             : billingCycle === 'monthly'
-              ? '14.99\u20ac/month \u00b7 Cancel anytime'
-              : '89.99\u20ac/year \u00b7 Cancel anytime'}
+              ? '$19.99/month \u00b7 Cancel anytime'
+              : '$119.99/year \u00b7 Cancel anytime'}
         </Text>
 
         {/* Restore */}
@@ -299,16 +305,19 @@ export default function PaywallScreen() {
           <Text style={styles.restoreText}>Restore Purchases</Text>
         </TouchableOpacity>
 
-        {/* Legal */}
+        {/* Legal — required by Apple for auto-renewable subscriptions */}
+        <Text style={styles.legalDisclaimer}>
+          Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage and cancel your subscription in your App Store account settings.
+        </Text>
         <View style={styles.legalSection}>
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://flux-app.com/terms')}
+            onPress={() => Linking.openURL('https://flux-legal.vercel.app/terms')}
           >
             <Text style={styles.legalLink}>Terms of Service</Text>
           </TouchableOpacity>
           <Text style={styles.legalSeparator}>|</Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://flux-app.com/privacy')}
+            onPress={() => Linking.openURL('https://flux-legal.vercel.app/privacy')}
           >
             <Text style={styles.legalLink}>Privacy Policy</Text>
           </TouchableOpacity>
@@ -516,6 +525,14 @@ const styles = StyleSheet.create({
     color: '#8B8BA3',
     fontWeight: '500',
     textDecorationLine: 'underline',
+  },
+  legalDisclaimer: {
+    fontSize: 11,
+    color: '#5A5A7A',
+    textAlign: 'center',
+    lineHeight: 16,
+    marginBottom: 12,
+    paddingHorizontal: 16,
   },
   legalSection: {
     flexDirection: 'row',

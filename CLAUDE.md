@@ -25,16 +25,52 @@ The app does not replace medical advice. It helps users observe their own patter
 - **Category**: men's health / wellness / biohacking
 - **Analogy**: "Flo (period tracker) for men"
 - **Tone**: scientific and accessible, never preachy, never "bro science"
-- **Platform**: iOS + Android simultaneously (Expo + EAS Build). Apple Developer account active. Dev from Windows.
+- **Platform**: iOS first (Android later). Apple Developer account active. Dev from Windows.
 - **Language**: English only for now. French translations exist in JSON files, ready for re-activation.
 - **Design**: Dark masculine theme — deep black (#0A0A0F), dark cards (#1A1A2E), electric blue (#3B82F6), neon green (#22C55E), amber (#F59E0B), purple (#A78BFA). Premium feel, no emojis — vector icons only (Ionicons + MaterialCommunityIcons).
-- **Monetization**: Freemium with 7-day Premium trial. Free + Premium only (no Pro tier). Pricing: 14.99€/mo or 89.99€/yr. Downsell: 12.99€/mo or 79.99€/yr.
+- **Monetization**: Freemium with 7-day Premium trial. Free + Premium only (no Pro tier). Pricing: $19.99/mo or $119.99/yr. Downsell: $14.99/mo or $99.99/yr.
 - **User flow**: No account required. Onboarding → app immediately. Account optional for sync.
 - **Module NoFap**: enabled by default, integrated into daily log and insights.
 
 ---
 
-## Architecture — Current State (Built)
+## Architecture — CRITICAL iOS 26 MIGRATION
+
+### Navigation: React Navigation (NOT expo-router)
+
+**expo-router is INCOMPATIBLE with iOS 26.** The app was migrated to React Navigation.
+
+- **Root component**: `App.tsx` (not app/_layout.tsx)
+- **Entry point**: `"main": "node_modules/expo/AppEntry.js"` in package.json
+- **Navigation library**: `@react-navigation/stack` (JS-based, NOT native-stack)
+- **Tab navigation**: `@react-navigation/bottom-tabs`
+- **All screens**: lazy loaded with `React.lazy()` + `withSuspense()` wrapper
+- **No _layout.tsx files** — they were deleted during migration
+- **No app/index.tsx** — routing handled in App.tsx
+
+### iOS 26 Constraints (DO NOT CHANGE)
+
+- **DO NOT** use expo-router — crashes on iOS 26 (react-native-screens TurboModule issue)
+- **DO NOT** use `createNativeStackNavigator` — uses react-native-screens, crashes on iOS 26
+- **DO NOT** add `newArchEnabled: true` to app.json — crashes on iOS 26
+- **DO NOT** add GestureHandlerRootView, SafeAreaProvider, or useFonts wrappers — caused splash screen to freeze
+- **DO NOT** add plugins to app.json (expo-splash-screen, expo-font, etc.) — native plugins crash on iOS 26
+- **KEEP** app.json minimal — no plugins, no experiments, no newArchEnabled
+- **KEEP** `SplashScreen.hideAsync()` called immediately in useEffect (no waiting for fonts)
+- **KEEP** all screens lazy loaded with React.lazy()
+
+### Working app.json (DO NOT ADD PLUGINS)
+
+The app.json that works on iOS 26 has NO plugins section. Only basic config:
+- bundleIdentifier: com.fluxcycle.app
+- backgroundColor: #0A0A0F
+- No newArchEnabled
+- No experiments
+- No plugins array
+
+---
+
+## Architecture — Screens
 
 ### 5 Tab Screens
 
@@ -82,7 +118,7 @@ The app does not replace medical advice. It helps users observe their own patter
 - HistoryChart with range selector (7d free, 30d/90d/6M/1Y premium)
 - Settings: reminder time, smart reminders toggle (Premium)
 - Export PDF (Premium)
-- Replay Onboarding button (dev)
+- Replay Onboarding button (dev only, __DEV__ guarded)
 - Logout
 
 ### Onboarding (5 screens, animated)
@@ -93,7 +129,7 @@ The app does not replace medical advice. It helps users observe their own patter
 5. Trial — emotional paywall design (3 feature blocks + plan selection annual/monthly + social proof + downsell on skip)
 
 ### Modals
-- Paywall: emotional design, 14.99€/89.99€, downsell 12.99€/79.99€
+- Paywall: emotional design, $19.99/$119.99, downsell $14.99/$99.99
 - Article viewer: magazine-style with hero area
 - Action Plan detail: full daily plan (Premium)
 - PDF preview
@@ -114,7 +150,7 @@ The app does not replace medical advice. It helps users observe their own patter
 - Community score percentile
 - Share card (Instagram story format)
 
-### Premium — €14.99/mo or €89.99/yr (downsell: €12.99/€79.99)
+### Premium — $19.99/mo or $119.99/yr (downsell: $14.99/$99.99)
 - **Full Daily Action Plan** — 4 time blocks visible + detail modal
 - **Weekly Performance Report** — score, trends, 3 weekly actions
 - **Smart Reminders** — phase + pattern + streak notifications (up to 7/day)
@@ -130,67 +166,23 @@ The app does not replace medical advice. It helps users observe their own patter
 
 ---
 
-## Key Features Implemented
-
-### Symptom Predictions
-- 16 symptoms mapped across 4 circadian phases with intensity indicators
-- Works from day 1 (universal science)
-- Personalizes after 7+ days of data
-- File: `lib/symptomPredictions.ts`
-
-### Phase-Aware Smart Reminders
-- Free: 1 notification/day (rise phase)
-- Premium: up to 7/day (4 phase + 2 pattern + 1 streak)
-- Personalizes after 7+ days (energy dip warnings, sleep priority, streak motivation)
-- Files: `lib/smartReminders.ts`, `lib/notifications.ts`
-
-### Adaptive Dashboard
-- Content changes based on: selected day, logged status, time of day
-- DaySelector for temporal navigation
-- AdaptiveLearn suggests articles based on weak metrics
-- ChallengeWidget interactive from dashboard (no navigation to Insights needed)
-
-### Community Score
-- Mock percentile based on normal distribution (mean=55, stddev=15)
-- "Top X% of men your age" — motivational display
-
-### Hormonal Profile Quiz
-- Single page form with precise inputs (age number, wake time, colored dots, goal cards)
-- Adjusts circadian acrophase based on wake-up hour
-- 3 profiles: Early Riser, Night Owl, Balanced
-- Profile result: full screen with personalized data + mini circadian curve
-- Connected to: useCircadianPhase, CircadianChart, ActionPlanCard
-
-### Share Card
-- Instagram story format (score + streak + phase)
-- react-native-view-shot capture + expo-sharing
-- Free for all users (virality)
-
-### Micro-Animations
-- VitalityScore ring: animated fill (0→score, 800ms)
-- Score countUp in dashboard
-- Score pulse in daily log when value changes
-- QuickStats: stagger fade-in
-- Onboarding: bar chart stagger, text fade-in, slide transitions
-- Haptics: sliders, tab changes, toggles, quiz selections
-
----
-
 ## Stack Technique
 
-- **Frontend**: React Native + Expo SDK 52+ (managed workflow)
+- **Frontend**: React Native + Expo SDK 55 (managed workflow)
+- **Navigation**: React Navigation (@react-navigation/stack + bottom-tabs) — NOT expo-router
 - **Build**: EAS Build (iOS cloud compilation from Windows)
 - **Backend**: Supabase (Auth + PostgreSQL + RLS)
 - **State**: Zustand with expo-secure-store persistence
-- **Charts**: react-native-svg (pure SVG, no victory-native/Skia — Expo Go compatible)
+- **Charts**: react-native-svg (pure SVG)
 - **Icons**: @expo/vector-icons (Ionicons + MaterialCommunityIcons + FontAwesome)
 - **i18n**: i18next + react-i18next (English active, French ready)
-- **Payments**: RevenueCat (configured, test key active). `useSubscription` hook reads from `subscriptionStore` (Zustand). RevenueCat writes to store on purchase/restore. Set `tier: 'premium'` in store for testing.
+- **Payments**: RevenueCat (iOS production key active: appl_aRrosXyTcKfgVMkqfhxIFXLAlmW)
 - **Notifications**: Expo Notifications (smart reminders scheduling)
-- **Analytics**: PostHog (configured, not yet active)
+- **Analytics**: PostHog (configured, key in .env)
 - **Date handling**: `lib/dateUtils.ts` — always use `formatLocalDate()`, never `toISOString().split('T')[0]`
-- **Animations**: React Native Animated API (not reanimated) + expo-haptics
+- **Animations**: React Native Animated API (not reanimated for UI) + expo-haptics
 - **Share**: react-native-view-shot + expo-sharing
+- **Legal pages**: flux-legal.vercel.app/terms + /privacy
 
 ---
 
@@ -216,15 +208,49 @@ The app does not replace medical advice. It helps users observe their own patter
 - **English first**: French translations ready but disabled. Will re-enable later.
 - **Local dates**: always use `formatLocalDate()` from `lib/dateUtils.ts`, never `toISOString().split('T')[0]`.
 - **Subscription testing**: set `tier: 'premium'` in `store/subscriptionStore.ts` to test premium features. Reset to `'free'` before production build.
+- **Build discipline**: Each EAS iOS build costs $2. Analyze thoroughly before building. Never build without confirmed root cause.
+
+---
+
+## App Store Configuration
+
+- **Bundle ID**: com.fluxcycle.app
+- **Apple Team ID**: 8L8G4P4Z9X
+- **ASC App ID**: 6761628489
+- **Apple ID**: awdianthony@gmail.com
+- **EAS Project ID**: 95419e85-708b-4512-98c0-a42043d82b34
+- **RevenueCat iOS Key**: appl_aRrosXyTcKfgVMkqfhxIFXLAlmW
+- **PostHog Key**: phc_wWUYUPyZ7XMBDrRGmn9gv5JKsKrDyejkGjQ8X6zoPvSi
+- **Legal**: flux-legal.vercel.app (terms + privacy)
+- **Contact**: contact@meara.fr
 
 ---
 
 ## Current Status
 
-- **Phase 0-2**: Complete (scaffolding, build, integration)
-- **Phase 3**: Complete (onboarding refonte, animations, haptics, visual polish)
-- **Phase 4**: Next (EAS Build + store submission)
-- **Known issues**: RevenueCat needs App Store Connect P8 key for real purchases. Currently using test key.
+- **Phase 0-4**: Complete
+- **Phase 5**: App Store submission — submitted for review (build 35, April 7 2026)
+- **iOS 26**: Working on physical devices. TurboModule SIGABRT patched via `patches/react-native+0.83.4.patch` + `postinstall` script.
+- **Navigation**: Fully migrated from expo-router to React Navigation (`@react-navigation/stack` + `bottom-tabs`). Root in `App.tsx`.
+- **Onboarding**: Works. `finishOnboarding()` sets `onboardingSeen = true` → conditional navigator swaps automatically. Downsell modal uses 350ms delay before swap.
+- **Reinstall detection**: AsyncStorage sentinel (`flux_installed`) resets `onboardingSeen` when Keychain persists after app deletion.
+- **ErrorBoundary**: Wraps root app in `App.tsx` — catches JS crashes gracefully.
+- **Supabase**: Env vars configured on EAS (`eas env:create`). Client is null-safe if vars missing.
+- **RevenueCat**: Products (`flux_premium_yearly`, `flux_premium_monthly`) created in ASC + RevenueCat. Offering `defaultv2` set as current. Entitlement: `premium`. Will activate after Apple approval.
+- **Legal compliance**: Auto-renewal disclaimers on paywall + trial screens. Terms/Privacy links. Privacy nutrition labels declared.
+- **SafeAreaView**: Applied to Cycle, Insights, Profile tabs (top edge).
+- **Circadian phases**: Aligned with hormonal profile `adjustedAcrophase` across dashboard, ActionPlanCard, and CircadianChart zones.
+- **Labels**: "Training Intensity" → "Physical Activity" / "Activity".
+
+---
+
+## Key Decisions & Gotchas
+
+- **DO NOT add `babel-plugin-module-resolver`** — `@/` imports work via tsconfig paths + Metro/Expo natively. Adding module-resolver breaks the build.
+- **DO NOT use Expo Go** — SDK 55 is incompatible. Use EAS builds or dev client.
+- **`supportsTablet: false`** — iPad not supported, avoids iPad screenshot requirement.
+- **`NSUserTrackingUsageDescription` removed** — no tracking. Will re-add with Facebook SDK in v1.1.
+- **Each EAS build costs ~$2** — analyze before building.
 
 ---
 
@@ -232,4 +258,4 @@ The app does not replace medical advice. It helps users observe their own patter
 
 **Cash (Anthony Awdi)**, entrepreneur based in Toulouse. Founder of Meara (e-commerce customer service automation via AI). Profile: digital marketing, e-commerce, Shopify, n8n automation, AI.
 
-FLUX is a parallel project in active development phase.
+FLUX is in App Store review.

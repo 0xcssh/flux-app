@@ -10,7 +10,7 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import { Link, router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +20,7 @@ import '@/i18n';
 
 export default function LoginScreen() {
   const { t } = useTranslation('common');
+  const navigation = useNavigation<any>();
   const { signIn, isLoading, error, clearError } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +37,11 @@ export default function LoginScreen() {
     }
     try {
       await signIn(email.trim(), password);
-      router.replace('/(tabs)');
+      try {
+        navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+      } catch (e) {
+        console.error('[Navigation] Reset failed:', e);
+      }
     } catch {
       Alert.alert(t('errors.generic'), error ?? t('errors.generic'));
     }
@@ -89,11 +94,9 @@ export default function LoginScreen() {
             />
           </View>
 
-          <Link href="/(auth)/forgot-password" asChild>
-            <TouchableOpacity style={styles.forgotLink}>
-              <Text style={styles.forgotText}>{t('auth.forgot_password')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity style={styles.forgotLink} onPress={() => navigation.navigate('ForgotPassword')}>
+            <Text style={styles.forgotText}>{t('auth.forgot_password')}</Text>
+          </TouchableOpacity>
 
           <Button
             title={t('auth.login')}
@@ -108,11 +111,9 @@ export default function LoginScreen() {
           <Body color={Colors.textSecondary} align="center">
             {t('auth.no_account')}{' '}
           </Body>
-          <Link href="/(auth)/signup" asChild>
-            <TouchableOpacity>
-              <Text style={styles.link}>{t('auth.signup')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={styles.link}>{t('auth.signup')}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

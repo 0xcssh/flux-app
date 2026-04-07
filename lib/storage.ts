@@ -9,20 +9,33 @@ export const zustandStorage: StateStorage = {
     if (Platform.OS === 'web') {
       return typeof window !== 'undefined' ? localStorage.getItem(name) : null;
     }
-    return SecureStore.getItemAsync(name);
+    try {
+      return await SecureStore.getItemAsync(name);
+    } catch (error) {
+      console.warn('[Storage] getItem error:', error);
+      return null;
+    }
   },
   setItem: async (name: string, value: string): Promise<void> => {
     if (Platform.OS === 'web') {
       if (typeof window !== 'undefined') localStorage.setItem(name, value);
       return;
     }
-    await SecureStore.setItemAsync(name, value);
+    try {
+      await SecureStore.setItemAsync(name, value);
+    } catch (error) {
+      console.warn('[Storage] setItem error:', error);
+    }
   },
   removeItem: async (name: string): Promise<void> => {
     if (Platform.OS === 'web') {
       if (typeof window !== 'undefined') localStorage.removeItem(name);
       return;
     }
-    await SecureStore.deleteItemAsync(name);
+    try {
+      await SecureStore.deleteItemAsync(name);
+    } catch (error) {
+      console.warn('[Storage] removeItem error:', error);
+    }
   },
 };

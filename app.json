@@ -7,27 +7,24 @@
     "icon": "./assets/images/icon.png",
     "scheme": "fluxapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F8FAFC"
+      "backgroundColor": "#0A0A0F"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.flux.app",
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fluxcycle.app",
       "infoPlist": {
-        "NSUserTrackingUsageDescription": "This allows Flux to provide personalized insights."
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#F8FAFC"
+        "backgroundColor": "#0A0A0F"
       },
-      "package": "com.flux.app",
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "package": "com.fluxcycle.app"
     },
     "web": {
       "bundler": "metro",
@@ -35,7 +32,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#0A0A0F"
+        }
+      ],
       "expo-localization",
       [
         "expo-notifications",
@@ -43,15 +47,15 @@
           "icon": "./assets/images/icon.png",
           "color": "#2563EB"
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-font"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "95419e85-708b-4512-98c0-a42043d82b34"
       }
-    }
+    },
+    "owner": "cashin31"
   }
 }

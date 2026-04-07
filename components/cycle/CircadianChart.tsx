@@ -64,14 +64,33 @@ export default function CircadianChart({ birthYear, currentHour }: CircadianChar
   const currentIdx = Math.min(Math.floor((hour / 24) * curveData.length), curveData.length - 1);
   const currentY = PADDING.top + (1 - (curveData[currentIdx]?.value ?? 0.5)) * plotH;
 
-  // Phase background zones — brighter for visibility
-  const phases = [
-    { start: 0, end: 4, color: '#312E81' },     // recovery - purple
-    { start: 4, end: 8, color: '#1E3A5F' },      // rise - blue
-    { start: 8, end: 12, color: '#14532D' },      // peak - green
-    { start: 12, end: 20, color: '#713F12' },     // decline - amber
-    { start: 20, end: 24, color: '#312E81' },     // recovery - purple
-  ];
+  // Phase background zones — shifted by hormonal profile acrophase
+  const acrophase = hormonalProfile?.adjustedAcrophase ?? 6.5;
+  const offset = acrophase - 6.5;
+  const riseStart = ((4 + offset) % 24 + 24) % 24;
+  const peakStart = ((8 + offset) % 24 + 24) % 24;
+  const declineStart = ((12 + offset) % 24 + 24) % 24;
+  const recoveryStart = ((20 + offset) % 24 + 24) % 24;
+
+  const phases = useMemo(() => {
+    const zones: { start: number; end: number; color: string }[] = [];
+    const defs = [
+      { s: riseStart, e: peakStart, color: '#1E3A5F' },         // rise - blue
+      { s: peakStart, e: declineStart, color: '#14532D' },      // peak - green
+      { s: declineStart, e: recoveryStart, color: '#713F12' },  // decline - amber
+      { s: recoveryStart, e: riseStart, color: '#312E81' },     // recovery - purple
+    ];
+    for (const d of defs) {
+      if (d.s < d.e) {
+        zones.push({ start: d.s, end: d.e, color: d.color });
+      } else {
+        // Wraps around midnight
+        zones.push({ start: d.s, end: 24, color: d.color });
+        zones.push({ start: 0, end: d.e, color: d.color });
+      }
+    }
+    return zones;
+  }, [riseStart, peakStart, declineStart, recoveryStart]);
 
   const phaseLabels = [
     { label: t('phase_labels.rise'), color: '#3B82F6', bg: '#1E3A5F' },

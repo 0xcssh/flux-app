@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSubscription } from '@/hooks/useSubscription';
 import PaywallOverlay from '@/components/shared/PaywallOverlay';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 interface PremiumGateProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ interface PremiumGateProps {
 
 export default function PremiumGate({ children, feature }: PremiumGateProps) {
   const { canAccess } = useSubscription();
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const hasAccess = canAccess(feature as any);
 
@@ -26,7 +26,7 @@ export default function PremiumGate({ children, feature }: PremiumGateProps) {
       </View>
       <PaywallOverlay
         feature={feature}
-        onUpgrade={() => router.push('/(modals)/paywall')}
+        onUpgrade={() => navigation.navigate('Paywall')}
       />
     </View>
   );

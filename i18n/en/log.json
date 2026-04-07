@@ -7,7 +7,7 @@
     "libido": "Libido",
     "sleep_quality": "Sleep Quality",
     "stress": "Stress Level",
-    "training": "Training Intensity"
+    "training": "Physical Activity"
   },
   "hints": {
     "energy": "1 = Exhausted, 10 = Unstoppable",

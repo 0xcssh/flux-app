@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
@@ -39,7 +39,7 @@ import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 function DashboardContent() {
   const { t } = useTranslation('dashboard');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const [refreshing, setRefreshing] = useState(false);
 
   const { selectedDate } = useSelectedDate();
@@ -285,7 +285,7 @@ function DashboardContent() {
       {isToday && !isLogged && (
         <Pressable
           style={styles.fab}
-          onPress={() => router.push('/(tabs)/log' as any)}
+          onPress={() => navigation.navigate('MainTabs', { screen: 'Log' })}
         >
           <Text style={styles.fabIcon}>+</Text>
           <Text style={styles.fabLabel}>{t('log_today_cta')}</Text>

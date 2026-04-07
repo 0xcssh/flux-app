@@ -6,6 +6,7 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
@@ -81,8 +82,9 @@ export default function InsightsScreen() {
   }, [tier, daysLogged]);
 
   return (
+    <SafeAreaView style={styles.container} edges={['top']}>
     <ScrollView
-      style={styles.container}
+      style={{ flex: 1 }}
       contentContainerStyle={styles.contentContainer}
       refreshControl={
         <RefreshControl
@@ -293,6 +295,7 @@ export default function InsightsScreen() {
         </PremiumGate>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

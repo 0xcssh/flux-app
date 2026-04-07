@@ -7,7 +7,7 @@ import { generateMonthlyReport } from '@/lib/pdfReport';
 import { useLogStore } from '@/store/logStore';
 import { useAuthStore } from '@/store/authStore';
 import { useSubscription } from '@/hooks/useSubscription';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { track, AnalyticsEvents } from '@/lib/analytics';
 import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
@@ -15,13 +15,13 @@ export default function ExportButton() {
   const { t } = useTranslation('profile');
   const [isLoading, setIsLoading] = useState(false);
   const { canAccess } = useSubscription();
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const logs = useLogStore((s) => s.logs);
   const profile = useAuthStore((s) => s.profile);
 
   const handleExport = async () => {
     if (!canAccess('pdf_export')) {
-      router.push('/(modals)/paywall');
+      navigation.navigate('Paywall');
       return;
     }
 

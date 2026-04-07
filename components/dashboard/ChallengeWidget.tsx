@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useChallengeStore } from '@/store/challengeStore';
@@ -38,7 +38,7 @@ function getSuggestedChallenge(logs: Record<string, any>): Challenge {
 
 export default function ChallengeWidget() {
   const { t } = useTranslation('dashboard');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { canAccess } = useSubscription();
   const isPremiumUnlocked = canAccess('challenges');
 
@@ -180,7 +180,7 @@ export default function ChallengeWidget() {
 
   const handleStart = () => {
     if (!isPremiumUnlocked) {
-      router.push('/(modals)/paywall' as any);
+      navigation.navigate('Paywall');
       return;
     }
     startChallenge(challenge.id);

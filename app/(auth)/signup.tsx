@@ -10,7 +10,7 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import { Link, router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +20,7 @@ import '@/i18n';
 
 export default function SignupScreen() {
   const { t } = useTranslation('common');
+  const navigation = useNavigation<any>();
   const { signUp, isLoading, error, clearError } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,7 +42,11 @@ export default function SignupScreen() {
     }
     try {
       await signUp(email.trim(), password);
-      router.replace('/(onboarding)/welcome');
+      try {
+        navigation.reset({ index: 0, routes: [{ name: 'Onboarding' }] });
+      } catch (e) {
+        console.error('[Navigation] Reset failed:', e);
+      }
     } catch {
       Alert.alert(t('errors.generic'), error ?? t('errors.generic'));
     }
@@ -120,11 +125,9 @@ export default function SignupScreen() {
           <Body color={Colors.textSecondary} align="center">
             {t('auth.have_account')}{' '}
           </Body>
-          <Link href="/(auth)/login" asChild>
-            <TouchableOpacity>
-              <Text style={styles.link}>{t('auth.login')}</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.link}>{t('auth.login')}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

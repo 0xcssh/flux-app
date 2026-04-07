@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 import { generateDailyPlan } from '@/lib/actionPlan';
@@ -30,7 +30,7 @@ const PHASE_ICONS: Record<string, string> = {
 };
 
 function ActionPlanContent() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const logs = useLogStore((s) => s.logs);
 
   const plan = useMemo(() => {
@@ -55,7 +55,7 @@ function ActionPlanContent() {
         </View>
         <Pressable
           style={styles.closeButton}
-          onPress={() => router.back()}
+          onPress={() => { if (navigation.canGoBack()) navigation.goBack(); }}
         >
           <Ionicons name="close" size={22} color={darkPalette.textSecondary} />
         </Pressable>

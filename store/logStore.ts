@@ -115,35 +115,40 @@ export const useLogStore = create<LogState>()(
         const state = get();
         if (state.pendingSync.length === 0) return;
 
-        const logsToSync = state.pendingSync
-          .map((date) => state.logs[date])
-          .filter(Boolean)
-          .map((log) => ({
-            id: log.id,
-            user_id: log.user_id,
-            log_date: log.log_date,
-            energy: log.energy,
-            mood: log.mood,
-            libido: log.libido,
-            sleep_quality: log.sleep_quality,
-            stress: log.stress,
-            training: log.training,
-            notes: log.notes ?? null,
-            nofap_checked: log.nofap_checked,
-            vitality_score: log.vitality_score,
-            log_time: log.log_time,
-            created_at: log.created_at,
-            updated_at: log.updated_at,
-          }));
+        try {
+          const logsToSync = state.pendingSync
+            .map((date) => state.logs[date])
+            .filter(Boolean)
+            .map((log) => ({
+              id: log.id,
+              user_id: log.user_id,
+              log_date: log.log_date,
+              energy: log.energy,
+              mood: log.mood,
+              libido: log.libido,
+              sleep_quality: log.sleep_quality,
+              stress: log.stress,
+              training: log.training,
+              notes: log.notes ?? null,
+              nofap_checked: log.nofap_checked,
+              vitality_score: log.vitality_score,
+              log_time: log.log_time,
+              created_at: log.created_at,
+              updated_at: log.updated_at,
+            }));
 
-        if (logsToSync.length === 0) return;
+          if (logsToSync.length === 0) return;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase as any)
-          .from('daily_logs')
-          .upsert(logsToSync, { onConflict: 'user_id,log_date' });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { error } = await (supabase as any)
+            .from('daily_logs')
+            .upsert(logsToSync, { onConflict: 'user_id,log_date' });
 
-        if (!error) {
+          if (error) {
+            console.error('[syncPendingLogs] Supabase upsert error:', error);
+            return;
+          }
+
           const syncedDates = logsToSync.map((l) => l.log_date);
           set((state) => {
             const updatedLogs = { ...state.logs };
@@ -159,6 +164,8 @@ export const useLogStore = create<LogState>()(
               ),
             };
           });
+        } catch (err) {
+          console.error('[syncPendingLogs] Unexpected error during log sync:', err);
         }
       },
 

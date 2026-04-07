@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
@@ -65,8 +66,9 @@ export default function CycleScreen() {
   ];
 
   return (
+    <SafeAreaView style={styles.screen} edges={['top']}>
     <ScrollView
-      style={styles.screen}
+      style={{ flex: 1 }}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
@@ -134,6 +136,7 @@ export default function CycleScreen() {
 
       <View style={{ height: 32 }} />
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

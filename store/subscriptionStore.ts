@@ -17,7 +17,7 @@ interface SubscriptionActions {
 
 export const useSubscriptionStore = create<SubscriptionState & SubscriptionActions>()(
   (set, get) => ({
-    tier: 'premium', // TODO: change back to 'free' before production
+    tier: 'free', // PRODUCTION: must be 'free'. Set to 'premium' only for local testing.
     isTrialActive: false,
     trialExpiresAt: null,
     isLoading: false,

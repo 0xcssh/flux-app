@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
@@ -70,8 +70,9 @@ const ARTICLES: Record<string, () => ArticleContent> = {
 };
 
 export default function ArticleScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
+  const route = useRoute<any>();
+  const { id } = route.params;
+  const navigation = useNavigation<any>();
   const { t, i18n } = useTranslation('dashboard');
   const [article, setArticle] = useState<ArticleContent | null>(null);
 
@@ -104,7 +105,7 @@ export default function ArticleScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
-      <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.closeButton} onPress={() => { if (navigation.canGoBack()) navigation.goBack(); }}>
         <FontAwesome name="times" size={20} color="#FFFFFF" />
       </TouchableOpacity>
 

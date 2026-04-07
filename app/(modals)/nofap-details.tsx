@@ -8,7 +8,7 @@ import {
   Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import NoFapTracker from '@/components/nofap/NoFapTracker';
 import MilestoneCard from '@/components/nofap/MilestoneCard';
@@ -18,14 +18,14 @@ import { useNoFapStreak } from '@/hooks/useNoFapStreak';
 
 export default function NoFapDetailsScreen() {
   const { t } = useTranslation('nofap');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { milestones } = useNoFapStreak();
   const [moduleEnabled, setModuleEnabled] = useState(true);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
+        <TouchableOpacity onPress={() => { if (navigation.canGoBack()) navigation.goBack(); }} activeOpacity={0.7}>
           <Text style={styles.backButton}>{'\u2190'} Back</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t('title')}</Text>

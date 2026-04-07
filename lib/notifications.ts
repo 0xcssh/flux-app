@@ -5,15 +5,21 @@ import { getCurrentPhase } from '@/lib/hormoneEngine';
 import type { PersonalNotificationData } from '@/lib/personalNotificationData';
 import type { SmartReminder } from '@/lib/smartReminders';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+export function initNotificationHandler(): void {
+  try {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+  } catch (e) {
+    console.warn('[Notifications] Failed to set notification handler:', e);
+  }
+}
 
 export async function registerForPushNotifications(): Promise<string | null> {
   if (!Device.isDevice) {

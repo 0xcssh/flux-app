@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import * as Sharing from 'expo-sharing';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { generateMonthlyReport } from '@/lib/pdfReport';
 import { useLogStore } from '@/store/logStore';
@@ -19,7 +19,7 @@ import { track, AnalyticsEvents } from '@/lib/analytics';
 import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 
 export default function PdfPreviewScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const logs = useLogStore((s) => s.logs);
   const profile = useAuthStore((s) => s.profile);
   const [fileUri, setFileUri] = useState<string | null>(null);
@@ -91,7 +91,7 @@ export default function PdfPreviewScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.closeButton}>
+        <TouchableOpacity onPress={() => { if (navigation.canGoBack()) navigation.goBack(); }} style={styles.closeButton}>
           <FontAwesome name="times" size={20} color="#8B8BA3" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>PDF Report Preview</Text>

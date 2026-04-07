@@ -8,8 +8,9 @@ import {
   StyleSheet,
   Linking,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useAuthStore } from '@/store/authStore';
 import { useLogStore } from '@/store/logStore';
@@ -23,7 +24,7 @@ import { formatLocalDate } from '@/lib/dateUtils';
 
 export default function ProfileScreen() {
   const { t } = useTranslation('profile');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const profile = useAuthStore((s) => s.profile);
   const user = useAuthStore((s) => s.user);
   const signOut = useAuthStore((s) => s.signOut);
@@ -79,8 +80,9 @@ export default function ProfileScreen() {
   const appVersion = Constants.expoConfig?.version ?? '1.0.0';
 
   return (
+    <SafeAreaView style={styles.container} edges={['top']}>
     <ScrollView
-      style={styles.container}
+      style={{ flex: 1 }}
       contentContainerStyle={styles.contentContainer}
     >
       {/* User Info */}
@@ -133,18 +135,19 @@ export default function ProfileScreen() {
       {/* Export Button */}
       <ExportButton />
 
-      {/* Replay Onboarding (dev) */}
-      <TouchableOpacity
-        style={styles.devButton}
-        onPress={() => {
-          useSettingsStore.getState().setOnboardingSeen(false);
-          router.replace('/(onboarding)/welcome');
-        }}
-        activeOpacity={0.7}
-      >
-        <FontAwesome name="refresh" size={16} color="#3B82F6" />
-        <Text style={styles.devButtonText}>Replay Onboarding</Text>
-      </TouchableOpacity>
+      {/* Replay Onboarding (dev only) */}
+      {__DEV__ && (
+        <TouchableOpacity
+          style={styles.devButton}
+          onPress={() => {
+            useSettingsStore.getState().setOnboardingSeen(false);
+          }}
+          activeOpacity={0.7}
+        >
+          <FontAwesome name="refresh" size={16} color="#3B82F6" />
+          <Text style={styles.devButtonText}>Replay Onboarding</Text>
+        </TouchableOpacity>
+      )}
 
       {/* Logout */}
       <TouchableOpacity
@@ -162,20 +165,22 @@ export default function ProfileScreen() {
           {t('version', { version: appVersion })}
         </Text>
         <View style={styles.legalLinks}>
+          {/* TODO: Replace with actual legal page URLs before submission */}
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://flux-app.com/terms')}
+            onPress={() => Linking.openURL('https://flux-legal.vercel.app/terms')}
           >
             <Text style={styles.legalLink}>Terms of Service</Text>
           </TouchableOpacity>
           <Text style={styles.legalSeparator}>|</Text>
           <TouchableOpacity
-            onPress={() => Linking.openURL('https://flux-app.com/privacy')}
+            onPress={() => Linking.openURL('https://flux-legal.vercel.app/privacy')}
           >
             <Text style={styles.legalLink}>Privacy Policy</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
@@ -9,7 +9,7 @@ import PaginationDots from '@/components/onboarding/PaginationDots';
 const BAR_HEIGHTS = [20, 45, 85, 95, 90, 75, 60, 50, 42, 38, 35, 30, 28, 25, 22, 20];
 
 export default function CircadianScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t } = useTranslation('onboarding');
 
   // Bar stagger animations
@@ -93,7 +93,7 @@ export default function CircadianScreen() {
         <PaginationDots total={5} current={1} />
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => router.push('/(onboarding)/infradian')}
+          onPress={() => navigation.navigate('Infradian')}
           activeOpacity={0.8}
         >
           <Text style={styles.ctaText}>Next</Text>

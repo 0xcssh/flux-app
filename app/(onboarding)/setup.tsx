@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   Animated,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -25,7 +25,7 @@ const TIME_OPTIONS = [
 ];
 
 export default function SetupScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t } = useTranslation('onboarding');
   const updateProfile = useAuthStore((s) => s.updateProfile);
 
@@ -71,7 +71,7 @@ export default function SetupScreen() {
     } catch {
       // Continue anyway
     }
-    router.push('/(onboarding)/trial');
+    navigation.navigate('Trial');
   };
 
   return (

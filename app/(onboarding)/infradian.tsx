@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
@@ -12,7 +12,7 @@ const CYCLE_BARS = [
 ];
 
 export default function InfradianScreen() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { t } = useTranslation('onboarding');
 
   // Bar stagger animations
@@ -98,7 +98,7 @@ export default function InfradianScreen() {
         <PaginationDots total={5} current={2} />
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => router.push('/(onboarding)/quiz')}
+          onPress={() => navigation.navigate('Quiz')}
           activeOpacity={0.8}
         >
           <Text style={styles.ctaText}>Next</Text>

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -24,17 +24,37 @@ const PHASE_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   recovery: 'moon',
 };
 
-function getCurrentPhaseIndex(): number {
+function getCurrentPhaseIndex(wakeUpHour?: number): number {
   const hour = new Date().getHours();
-  if (hour >= 4 && hour < 10) return 0;   // Morning/Rise
-  if (hour >= 10 && hour < 14) return 1;  // Midday/Peak
-  if (hour >= 14 && hour < 20) return 2;  // Afternoon/Decline
-  return 3;                                 // Evening/Recovery
+  const offset = (wakeUpHour ?? 6) - 6;
+  const riseStart = ((4 + offset) % 24 + 24) % 24;
+  const peakStart = ((8 + offset) % 24 + 24) % 24;
+  const declineStart = ((12 + offset) % 24 + 24) % 24;
+  const recoveryStart = ((20 + offset) % 24 + 24) % 24;
+
+  // Normalize hour for comparison when boundaries wrap around midnight
+  const h = hour;
+  if (riseStart <= peakStart) {
+    if (h >= riseStart && h < peakStart) return 0;
+  } else {
+    if (h >= riseStart || h < peakStart) return 0;
+  }
+  if (peakStart <= declineStart) {
+    if (h >= peakStart && h < declineStart) return 1;
+  } else {
+    if (h >= peakStart || h < declineStart) return 1;
+  }
+  if (declineStart <= recoveryStart) {
+    if (h >= declineStart && h < recoveryStart) return 2;
+  } else {
+    if (h >= declineStart || h < recoveryStart) return 2;
+  }
+  return 3;
 }
 
 export default function ActionPlanCard() {
   const { t } = useTranslation('dashboard');
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { canAccess } = useSubscription();
   const logs = useLogStore((s) => s.logs);
   const hasPremium = canAccess('action_plan');
@@ -46,7 +66,7 @@ export default function ActionPlanCard() {
     return generateDailyPlan(hour, allLogs, hormonalProfile?.wakeUpHour);
   }, [logs, hormonalProfile]);
 
-  const currentPhaseIndex = getCurrentPhaseIndex();
+  const currentPhaseIndex = getCurrentPhaseIndex(hormonalProfile?.wakeUpHour);
   const currentBlock = plan.timeBlocks[currentPhaseIndex];
   const logCount = Object.keys(logs).length;
   const isPersonalized = hasPremium && logCount >= 7 && plan.personalizedCount > 0;
@@ -74,7 +94,7 @@ export default function ActionPlanCard() {
         {/* See full plan CTA */}
         <Pressable
           style={styles.seeFullButton}
-          onPress={() => router.push('/(modals)/action-plan' as any)}
+          onPress={() => navigation.navigate('ActionPlan')}
         >
           <Text style={styles.seeFullText}>{t('action_plan_see_full')}</Text>
           <Ionicons name="chevron-forward" size={14} color={darkPalette.primary} />
@@ -113,7 +133,7 @@ export default function ActionPlanCard() {
       {/* CTA */}
       <Pressable
         style={styles.ctaButton}
-        onPress={() => router.push('/(modals)/paywall' as any)}
+        onPress={() => navigation.navigate('Paywall')}
       >
         <Ionicons name="lock-closed" size={14} color={darkPalette.primary} />
         <Text style={styles.ctaText}>{t('action_plan_morning_cta')}</Text>

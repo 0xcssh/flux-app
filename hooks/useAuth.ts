@@ -18,6 +18,8 @@ export function useAuth() {
   } = useAuthStore();
 
   useEffect(() => {
+    if (!supabase) return;
+
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       if (currentSession?.user) {

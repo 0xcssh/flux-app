@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import DailyLogForm from '@/components/log/DailyLogForm';
+import { useAuthStore } from '@/store/authStore';
 
 export default function LogScreen() {
   const { t } = useTranslation('log');
@@ -15,8 +16,8 @@ export default function LogScreen() {
     day: 'numeric',
   });
 
-  // TODO: replace with actual user ID from auth store
-  const userId = 'local-user';
+  const user = useAuthStore((s) => s.user);
+  const userId = user?.id ?? 'local-user';
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

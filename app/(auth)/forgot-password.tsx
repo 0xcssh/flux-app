@@ -10,7 +10,7 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import { Link } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +20,7 @@ import '@/i18n';
 
 export default function ForgotPasswordScreen() {
   const { t } = useTranslation('common');
+  const navigation = useNavigation<any>();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -65,11 +66,9 @@ export default function ForgotPasswordScreen() {
             <Body align="center" style={styles.sentMessage}>
               {t('auth.reset_sent')}
             </Body>
-            <Link href="/(auth)/login" asChild>
-              <TouchableOpacity style={styles.backButton}>
-                <Text style={styles.link}>{t('auth.login')}</Text>
-              </TouchableOpacity>
-            </Link>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.link}>{t('auth.login')}</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.form}>
@@ -96,11 +95,9 @@ export default function ForgotPasswordScreen() {
               style={styles.submitButton}
             />
 
-            <Link href="/(auth)/login" asChild>
-              <TouchableOpacity style={styles.backLink}>
-                <Text style={styles.link}>{t('buttons.back')} {t('auth.login')}</Text>
-              </TouchableOpacity>
-            </Link>
+            <TouchableOpacity style={styles.backLink} onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.link}>{t('buttons.back')} {t('auth.login')}</Text>
+            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
