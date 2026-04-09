@@ -63,7 +63,10 @@ export default function PaywallScreen() {
     try {
       const offering = offerings?.current;
       if (!offering) {
-        Alert.alert('Error', 'No offerings available. Please try again later.');
+        Alert.alert(
+          'Subscription Unavailable',
+          'Subscriptions are being set up. Please try again shortly.',
+        );
         return;
       }
 
