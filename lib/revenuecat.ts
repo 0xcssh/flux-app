@@ -1,6 +1,7 @@
 import Purchases, {
   PurchasesOfferings,
   PurchasesPackage,
+  PurchasesStoreProduct,
   CustomerInfo,
   LOG_LEVEL,
 } from 'react-native-purchases';
@@ -9,6 +10,8 @@ import type { PlanTier } from '@/types/subscription';
 
 const IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ?? '';
 const ANDROID_KEY = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ?? '';
+
+const PRODUCT_IDS = ['flux_premium_yearly', 'flux_premium_monthly'] as const;
 
 let initialized = false;
 
@@ -38,12 +41,48 @@ export async function identifyUser(userId: string): Promise<void> {
   }
 }
 
-export async function getOfferings(): Promise<PurchasesOfferings | null> {
+async function getOfferingsSafe(): Promise<PurchasesOfferings | null> {
   try {
-    return await Purchases.getOfferings();
+    const offerings = await Purchases.getOfferings();
+    if (offerings?.current) return offerings;
+    console.warn('[RevenueCat] Offerings empty (IAPs may be Waiting for Review)');
+    return null;
   } catch (error) {
     console.error('[RevenueCat] getOfferings error:', error);
     return null;
+  }
+}
+
+/**
+ * Fallback: fetch products directly from StoreKit.
+ * Works even when RevenueCat offerings are empty (e.g. first submission).
+ */
+export async function getFallbackProducts(): Promise<PurchasesStoreProduct[]> {
+  try {
+    const products = await Purchases.getProducts([...PRODUCT_IDS]);
+    console.log('[RevenueCat] Fallback products loaded:', products.length);
+    return products;
+  } catch (error) {
+    console.error('[RevenueCat] getFallbackProducts error:', error);
+    return [];
+  }
+}
+
+/**
+ * Purchase a StoreKit product directly (fallback when offerings are empty).
+ * RevenueCat still tracks the entitlement automatically.
+ */
+export async function purchaseStoreProduct(
+  product: PurchasesStoreProduct,
+): Promise<{ customerInfo: CustomerInfo; success: boolean }> {
+  try {
+    const { customerInfo } = await Purchases.purchaseStoreProduct(product);
+    return { customerInfo, success: true };
+  } catch (error: any) {
+    if (error.userCancelled) {
+      return { customerInfo: error.customerInfo, success: false };
+    }
+    throw error;
   }
 }
 
@@ -66,19 +105,22 @@ export async function restorePurchases(): Promise<CustomerInfo> {
 }
 
 /**
- * Single call to get tier + trial status + offerings.
- * Avoids multiple getCustomerInfo calls that cause 429 rate limits.
+ * Single call to get tier + trial status + offerings + fallback products.
+ * Fetches offerings and StoreKit products in parallel — no added latency.
+ * If offerings are populated, fallbackProducts is ignored by consumers.
  */
 export async function getSubscriptionState(): Promise<{
   tier: PlanTier;
   isTrialActive: boolean;
   trialExpiresAt: Date | null;
   offerings: PurchasesOfferings | null;
+  fallbackProducts: PurchasesStoreProduct[];
 }> {
   try {
-    const [customerInfo, offerings] = await Promise.all([
+    const [customerInfo, offerings, fallbackProducts] = await Promise.all([
       Purchases.getCustomerInfo(),
-      Purchases.getOfferings(),
+      getOfferingsSafe(),
+      getFallbackProducts(),
     ]);
 
     const tier = tierFromCustomerInfo(customerInfo);
@@ -88,10 +130,10 @@ export async function getSubscriptionState(): Promise<{
       ? new Date(premiumEntitlement.expirationDate)
       : null;
 
-    return { tier, isTrialActive, trialExpiresAt, offerings };
+    return { tier, isTrialActive, trialExpiresAt, offerings, fallbackProducts };
   } catch (error) {
     console.error('[RevenueCat] getSubscriptionState error:', error);
-    return { tier: 'free', isTrialActive: false, trialExpiresAt: null, offerings: null };
+    return { tier: 'free', isTrialActive: false, trialExpiresAt: null, offerings: null, fallbackProducts: [] };
   }
 }
 

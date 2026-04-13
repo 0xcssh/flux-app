@@ -90,14 +90,6 @@
   "paywall_cta_subscribe": "Subscribe Now",
   "paywall_then": "Then $19.99/month \u00b7 Cancel anytime",
   "paywall_restore": "Restore Purchases",
-  "downsell_title": "Wait!",
-  "downsell_subtitle": "Special offer \u2014 just for you",
-  "downsell_offer": "Get Premium for 40% less",
-  "downsell_price_monthly": "$14.99/month",
-  "downsell_price_annual": "$99.99/year",
-  "downsell_original": "$19.99/month",
-  "downsell_cta": "Claim My Discount",
-  "downsell_skip": "No thanks",
   "smart_reminders": "Smart Reminders",
   "smart_reminders_desc": "Contextual notifications based on your patterns"
 }

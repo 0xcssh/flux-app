@@ -226,21 +226,37 @@ The app.json that works on iOS 26 has NO plugins section. Only basic config:
 
 ---
 
-## Current Status
+## Current Status (April 13 2026)
 
 - **Phase 0-4**: Complete
-- **Phase 5**: App Store submission — submitted for review (build 35, April 7 2026)
+- **Phase 5**: App Store submission — rejected 2x, fixes implemented (retry + fallback + downsell removed), ready for resubmission
 - **iOS 26**: Working on physical devices. TurboModule SIGABRT patched via `patches/react-native+0.83.4.patch` + `postinstall` script.
 - **Navigation**: Fully migrated from expo-router to React Navigation (`@react-navigation/stack` + `bottom-tabs`). Root in `App.tsx`.
-- **Onboarding**: Works. `finishOnboarding()` sets `onboardingSeen = true` → conditional navigator swaps automatically. Downsell modal uses 350ms delay before swap.
+- **Onboarding**: Works. `finishOnboarding()` sets `onboardingSeen = true` → conditional navigator swaps automatically.
 - **Reinstall detection**: AsyncStorage sentinel (`flux_installed`) resets `onboardingSeen` when Keychain persists after app deletion.
 - **ErrorBoundary**: Wraps root app in `App.tsx` — catches JS crashes gracefully.
 - **Supabase**: Env vars configured on EAS (`eas env:create`). Client is null-safe if vars missing.
-- **RevenueCat**: Products (`flux_premium_yearly`, `flux_premium_monthly`) created in ASC + RevenueCat. Offering `defaultv2` set as current. Entitlement: `premium`. Will activate after Apple approval.
-- **Legal compliance**: Auto-renewal disclaimers on paywall + trial screens. Terms/Privacy links. Privacy nutrition labels declared.
+- **RevenueCat**: Products created in ASC + RevenueCat. Offering `default` is Current. Entitlement: `premium`. Purchase flow: `getOfferings()` + `getProducts()` fetched in parallel. Si offerings vide → fallback `purchaseStoreProduct()`. Entitlements tracked automatiquement dans les deux cas.
+- **Legal compliance**: Auto-renewal disclaimers on paywall + trial screens. Terms/Privacy/Support links live on flux-legal.vercel.app. Privacy nutrition labels declared.
 - **SafeAreaView**: Applied to Cycle, Insights, Profile tabs (top edge).
 - **Circadian phases**: Aligned with hormonal profile `adjustedAcrophase` across dashboard, ActionPlanCard, and CircadianChart zones.
 - **Labels**: "Training Intensity" → "Physical Activity" / "Activity".
+- **Paid Apps Agreement**: Active (signed, banking + tax forms complete).
+
+---
+
+## Apple Rejections (Resolved)
+
+**Rejection 1 (April 8)**: IAPs not submitted with version, missing Terms link, support URL invalid → fixed.
+
+**Rejection 2 (April 10)** — 3 issues, all resolved:
+1. **2.1(b) Purchase fails** → Fixed: `getOfferings()` + `getProducts()` fetched en parallèle. Si offerings vide, fallback `purchaseStoreProduct()`. Zero latence ajoutée. Entitlements tracked automatiquement.
+2. **5.6 DownsellModal** → Fixed: removed entirely (component deleted, references cleaned from paywall + trial + i18n).
+3. **2.1(b) "40% less"** → Fixed: no more downsell = no more phantom product issue.
+
+**Root cause**: RevenueCat filters offerings when IAPs are in "Waiting for Review" (first-submission chicken-and-egg). StoreKit `getProducts()` works fine. Fallback bypasses the offerings layer entirely.
+
+**Note for resubmission**: Add reviewer note explaining that IAP purchases work — subscriptions available on paywall screen. Offerings may need first Apple approval to populate (known RevenueCat first-submission issue).
 
 ---
 
@@ -248,9 +264,13 @@ The app.json that works on iOS 26 has NO plugins section. Only basic config:
 
 - **DO NOT add `babel-plugin-module-resolver`** — `@/` imports work via tsconfig paths + Metro/Expo natively. Adding module-resolver breaks the build.
 - **DO NOT use Expo Go** — SDK 55 is incompatible. Use EAS builds or dev client.
+- **DO NOT add DownsellModal** — Apple rejects it as manipulation (5.6 violation). Was removed April 13.
 - **`supportsTablet: false`** — iPad not supported, avoids iPad screenshot requirement.
 - **`NSUserTrackingUsageDescription` removed** — no tracking. Will re-add with Facebook SDK in v1.1.
 - **Each EAS build costs ~$2** — analyze before building.
+- **Debug overlay technique**: when JS console.log unavailable (TestFlight), add a visible debug `<Text>` block on the screen showing state values. Removed in clean builds.
+- **Xcode console filter**: must filter by "Flux" in Console.app search bar, not grep raw output. Default Errors-only view hides JS console.log.
+- **RevenueCat empty offerings**: First-submission issue — `getOfferings()` returns empty when IAPs are "Waiting for Review". Solution: fetch offerings + products en parallèle, fallback `purchaseStoreProduct()` si offerings vide. Zero latence ajoutée. Should auto-resolve after first Apple approval.
 
 ---
 
@@ -258,4 +278,4 @@ The app.json that works on iOS 26 has NO plugins section. Only basic config:
 
 **Cash (Anthony Awdi)**, entrepreneur based in Toulouse. Founder of Meara (e-commerce customer service automation via AI). Profile: digital marketing, e-commerce, Shopify, n8n automation, AI.
 
-FLUX is in App Store review.
+FLUX IAP issues resolved — ready for App Store resubmission.

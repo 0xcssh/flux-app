@@ -1,11 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { PurchasesPackage, PurchasesOfferings } from 'react-native-purchases';
+import {
+  PurchasesPackage,
+  PurchasesOfferings,
+  PurchasesStoreProduct,
+} from 'react-native-purchases';
 import type { PlanTier } from '@/types/subscription';
 import { useSubscriptionStore } from '@/store/subscriptionStore';
 import {
   initRevenueCat,
   getSubscriptionState,
   purchasePackage,
+  purchaseStoreProduct,
   restorePurchases,
   addCustomerInfoListener,
   tierFromCustomerInfo,
@@ -38,7 +43,9 @@ interface UseSubscriptionReturn {
   trialExpiresAt: Date | null;
   canAccess: (feature: FeatureKey) => boolean;
   offerings: PurchasesOfferings | null;
+  fallbackProducts: PurchasesStoreProduct[];
   purchase: (pkg: PurchasesPackage) => Promise<boolean>;
+  purchaseProduct: (product: PurchasesStoreProduct) => Promise<boolean>;
   restore: () => Promise<void>;
   isLoading: boolean;
 }
@@ -51,6 +58,7 @@ export function useSubscription(): UseSubscriptionReturn {
   const setSubscription = useSubscriptionStore((s) => s.setSubscription);
 
   const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
+  const [fallbackProducts, setFallbackProducts] = useState<PurchasesStoreProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
@@ -75,6 +83,7 @@ export function useSubscription(): UseSubscriptionReturn {
 
         setSubscription(state.tier, state.trialExpiresAt?.toISOString() ?? null);
         setOfferings(state.offerings);
+        setFallbackProducts(state.fallbackProducts);
 
         unsubscribeRef.current = addCustomerInfoListener((info) => {
           if (!mounted) return;
@@ -128,6 +137,24 @@ export function useSubscription(): UseSubscriptionReturn {
     }
   }, [setSubscription]);
 
+  const purchaseProductFn = useCallback(async (product: PurchasesStoreProduct): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+      const result = await purchaseStoreProduct(product);
+      if (result.success) {
+        const newTier = tierFromCustomerInfo(result.customerInfo);
+        const expiry = result.customerInfo.entitlements.active['premium']?.expirationDate ?? null;
+        setSubscription(newTier, expiry);
+      }
+      return result.success;
+    } catch (error) {
+      console.error('[useSubscription] purchaseProduct error:', error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [setSubscription]);
+
   const restore = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -149,7 +176,9 @@ export function useSubscription(): UseSubscriptionReturn {
     trialExpiresAt,
     canAccess,
     offerings,
+    fallbackProducts,
     purchase,
+    purchaseProduct: purchaseProductFn,
     restore,
     isLoading,
   };

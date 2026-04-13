@@ -12,7 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import { useSettingsStore } from '@/store/settingsStore';
 import { track, AnalyticsEvents } from '@/lib/analytics';
-import DownsellModal from '@/components/paywall/DownsellModal';
 
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; color: string; title: string; description: string }[] = [
   {
@@ -80,31 +79,9 @@ export default function TrialScreen() {
     finishOnboarding();
   };
 
-  const [showDownsell, setShowDownsell] = useState(false);
-  const [downsellShown, setDownsellShown] = useState(false);
-
   const handleSkip = () => {
-    if (!downsellShown) {
-      setDownsellShown(true);
-      setShowDownsell(true);
-      return;
-    }
     track(AnalyticsEvents.TRIAL_SKIPPED, { source: 'onboarding' });
     finishOnboarding();
-  };
-
-  const handleDownsellClaim = () => {
-    setShowDownsell(false);
-    track(AnalyticsEvents.TRIAL_STARTED, { source: 'downsell', plan: billingCycle });
-    // Delay to let Modal fade-out finish (~300ms) before unmounting the navigator
-    setTimeout(() => finishOnboarding(), 350);
-  };
-
-  const handleDownsellDismiss = () => {
-    setShowDownsell(false);
-    track(AnalyticsEvents.TRIAL_SKIPPED, { source: 'downsell' });
-    // Delay to let Modal fade-out finish (~300ms) before unmounting the navigator
-    setTimeout(() => finishOnboarding(), 350);
   };
 
   const priceLabel = billingCycle === 'annual'
@@ -231,12 +208,6 @@ export default function TrialScreen() {
       <View style={styles.footer}>
         <PaginationDots total={5} current={4} />
       </View>
-      <DownsellModal
-        visible={showDownsell}
-        billingCycle={billingCycle}
-        onClaim={handleDownsellClaim}
-        onDismiss={handleDownsellDismiss}
-      />
     </SafeAreaView>
   );
 }

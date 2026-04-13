@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSubscription } from '@/hooks/useSubscription';
 import { track, AnalyticsEvents } from '@/lib/analytics';
-import DownsellModal from '@/components/paywall/DownsellModal';
 
 type BillingCycle = 'monthly' | 'annual';
 
@@ -47,12 +46,18 @@ const FEATURES = [
 
 export default function PaywallScreen() {
   const navigation = useNavigation<any>();
-  const { offerings, purchase, restore, isLoading, tier, isTrialActive } =
-    useSubscription();
+  const {
+    offerings,
+    fallbackProducts,
+    purchase,
+    purchaseProduct,
+    restore,
+    isLoading,
+    tier,
+    isTrialActive,
+  } = useSubscription();
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
   const [purchasing, setPurchasing] = useState(false);
-  const [downsellVisible, setDownsellVisible] = useState(false);
-  const downsellShownRef = useRef(false);
 
   useEffect(() => {
     track(AnalyticsEvents.PAYWALL_VIEWED);
@@ -62,34 +67,57 @@ export default function PaywallScreen() {
     setPurchasing(true);
     try {
       const offering = offerings?.current;
-      if (!offering) {
+
+      if (offering) {
+        // Primary path: use RevenueCat offerings
+        const identifier =
+          billingCycle === 'monthly' ? '$rc_monthly' : '$rc_annual';
+        const pkg = offering.availablePackages.find(
+          (p) => p.identifier === identifier,
+        );
+
+        if (!pkg) {
+          Alert.alert('Error', 'Package not available. Please try again.');
+          return;
+        }
+
+        const success = await purchase(pkg);
+        if (success) {
+          track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
+            plan: 'premium',
+            cycle: billingCycle,
+          });
+          if (navigation.canGoBack()) navigation.goBack();
+        }
+      } else if (fallbackProducts.length > 0) {
+        // Fallback path: purchase StoreKit product directly
+        const productId =
+          billingCycle === 'monthly'
+            ? 'flux_premium_monthly'
+            : 'flux_premium_yearly';
+        const product = fallbackProducts.find(
+          (p) => p.identifier === productId,
+        );
+
+        if (!product) {
+          Alert.alert('Error', 'Product not available. Please try again.');
+          return;
+        }
+
+        const success = await purchaseProduct(product);
+        if (success) {
+          track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
+            plan: 'premium',
+            cycle: billingCycle,
+            method: 'storekit_fallback',
+          });
+          if (navigation.canGoBack()) navigation.goBack();
+        }
+      } else {
         Alert.alert(
           'Subscription Unavailable',
           'Subscriptions are being set up. Please try again shortly.',
         );
-        return;
-      }
-
-      const identifier =
-        billingCycle === 'monthly' ? '$rc_monthly' : '$rc_annual';
-      const pkg = offering.availablePackages.find(
-        (p) => p.identifier === identifier,
-      );
-
-      if (!pkg) {
-        Alert.alert('Error', 'Package not available. Please try again.');
-        return;
-      }
-
-      const success = await purchase(pkg);
-      if (success) {
-        track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
-          plan: 'premium',
-          cycle: billingCycle,
-        });
-        if (navigation.canGoBack()) {
-          navigation.goBack();
-        }
       }
     } catch (error) {
       console.error('[Paywall] Purchase error:', error);
@@ -109,30 +137,33 @@ export default function PaywallScreen() {
   };
 
   const handleClose = () => {
-    if (!downsellShownRef.current) {
-      downsellShownRef.current = true;
-      setDownsellVisible(true);
-      return;
-    }
     track(AnalyticsEvents.PAYWALL_DISMISSED);
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
   };
 
-  const handleDownsellClaim = () => {
-    setDownsellVisible(false);
-    // User wants the discount — trigger purchase flow
-    handlePurchase();
+  // Show real prices from StoreKit when available (fallback or offerings)
+  const getPrice = (cycle: BillingCycle): string | null => {
+    const productId =
+      cycle === 'monthly' ? 'flux_premium_monthly' : 'flux_premium_yearly';
+
+    // Try offerings first
+    const pkg = offerings?.current?.availablePackages.find(
+      (p) =>
+        p.identifier === (cycle === 'monthly' ? '$rc_monthly' : '$rc_annual'),
+    );
+    if (pkg) return pkg.product.priceString;
+
+    // Fallback to StoreKit products
+    const product = fallbackProducts.find((p) => p.identifier === productId);
+    if (product) return product.priceString;
+
+    return null;
   };
 
-  const handleDownsellDismiss = () => {
-    setDownsellVisible(false);
-    track(AnalyticsEvents.PAYWALL_DISMISSED);
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  };
+  const monthlyPrice = getPrice('monthly') ?? '$19.99';
+  const annualPrice = getPrice('annual') ?? '$119.99';
 
   const showTrial = !isTrialActive && tier === 'free';
 
@@ -243,7 +274,7 @@ export default function PaywallScreen() {
                 billingCycle === 'monthly' && styles.priceAmountActive,
               ]}
             >
-              $19.99/month
+              {monthlyPrice}/month
             </Text>
           </TouchableOpacity>
 
@@ -270,9 +301,9 @@ export default function PaywallScreen() {
                 billingCycle === 'annual' && styles.priceAmountActive,
               ]}
             >
-              $119.99/year
+              {annualPrice}/year
             </Text>
-            <Text style={styles.priceSubtext}>$9.99/month</Text>
+            <Text style={styles.priceSubtext}>Save 50%</Text>
           </TouchableOpacity>
         </View>
 
@@ -293,10 +324,10 @@ export default function PaywallScreen() {
         </TouchableOpacity>
         <Text style={styles.ctaSubtext}>
           {showTrial
-            ? 'Then $19.99/month \u00b7 Cancel anytime'
+            ? `Then ${billingCycle === 'monthly' ? `${monthlyPrice}/month` : `${annualPrice}/year`} \u00b7 Cancel anytime`
             : billingCycle === 'monthly'
-              ? '$19.99/month \u00b7 Cancel anytime'
-              : '$119.99/year \u00b7 Cancel anytime'}
+              ? `${monthlyPrice}/month \u00b7 Cancel anytime`
+              : `${annualPrice}/year \u00b7 Cancel anytime`}
         </Text>
 
         {/* Restore */}
@@ -326,14 +357,6 @@ export default function PaywallScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      {/* Downsell Modal */}
-      <DownsellModal
-        visible={downsellVisible}
-        billingCycle={billingCycle}
-        onClaim={handleDownsellClaim}
-        onDismiss={handleDownsellDismiss}
-      />
     </SafeAreaView>
   );
 }
