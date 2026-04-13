@@ -33,8 +33,10 @@ const PREMIUM_FEATURES: FeatureKey[] = [
   'challenges',
 ];
 
-// Module-level flag to prevent multiple RevenueCat inits
+// Module-level cache — shared across all hook instances
 let _rcInitialized = false;
+let _cachedOfferings: PurchasesOfferings | null = null;
+let _cachedFallbackProducts: PurchasesStoreProduct[] = [];
 
 interface UseSubscriptionReturn {
   tier: PlanTier;
@@ -57,19 +59,16 @@ export function useSubscription(): UseSubscriptionReturn {
   const storeTrialExpiry = useSubscriptionStore((s) => s.trialExpiresAt);
   const setSubscription = useSubscriptionStore((s) => s.setSubscription);
 
-  const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
-  const [fallbackProducts, setFallbackProducts] = useState<PurchasesStoreProduct[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [offerings, setOfferings] = useState<PurchasesOfferings | null>(_cachedOfferings);
+  const [fallbackProducts, setFallbackProducts] = useState<PurchasesStoreProduct[]>(_cachedFallbackProducts);
+  const [isLoading, setIsLoading] = useState(!_rcInitialized);
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
   const isTrialActive = storeTrial;
   const trialExpiresAt = storeTrialExpiry ? new Date(storeTrialExpiry) : null;
 
   useEffect(() => {
-    if (_rcInitialized) {
-      setIsLoading(false);
-      return;
-    }
+    if (_rcInitialized) return;
     _rcInitialized = true;
     let mounted = true;
 
@@ -82,6 +81,8 @@ export function useSubscription(): UseSubscriptionReturn {
         if (!mounted) return;
 
         setSubscription(state.tier, state.trialExpiresAt?.toISOString() ?? null);
+        _cachedOfferings = state.offerings;
+        _cachedFallbackProducts = state.fallbackProducts;
         setOfferings(state.offerings);
         setFallbackProducts(state.fallbackProducts);
 
