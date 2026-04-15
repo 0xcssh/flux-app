@@ -116,25 +116,29 @@ export async function getSubscriptionState(): Promise<{
   offerings: PurchasesOfferings | null;
   fallbackProducts: PurchasesStoreProduct[];
 }> {
-  try {
-    const [customerInfo, offerings, fallbackProducts] = await Promise.all([
-      Purchases.getCustomerInfo(),
-      getOfferingsSafe(),
-      getFallbackProducts(),
-    ]);
+  const [customerInfoResult, offeringsResult, fallbackProductsResult] = await Promise.allSettled([
+    Purchases.getCustomerInfo(),
+    getOfferingsSafe(),
+    getFallbackProducts(),
+  ]);
 
-    const tier = tierFromCustomerInfo(customerInfo);
-    const premiumEntitlement = customerInfo.entitlements.active['premium'];
-    const isTrialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
-    const trialExpiresAt = isTrialActive && premiumEntitlement?.expirationDate
-      ? new Date(premiumEntitlement.expirationDate)
-      : null;
+  const offerings = offeringsResult.status === 'fulfilled' ? offeringsResult.value : null;
+  const fallbackProducts = fallbackProductsResult.status === 'fulfilled' ? fallbackProductsResult.value : [];
 
-    return { tier, isTrialActive, trialExpiresAt, offerings, fallbackProducts };
-  } catch (error) {
-    console.error('[RevenueCat] getSubscriptionState error:', error);
-    return { tier: 'free', isTrialActive: false, trialExpiresAt: null, offerings: null, fallbackProducts: [] };
+  if (customerInfoResult.status !== 'fulfilled') {
+    console.error('[RevenueCat] getCustomerInfo error:', customerInfoResult.reason);
+    return { tier: 'free', isTrialActive: false, trialExpiresAt: null, offerings, fallbackProducts };
   }
+
+  const customerInfo = customerInfoResult.value;
+  const tier = tierFromCustomerInfo(customerInfo);
+  const premiumEntitlement = customerInfo.entitlements.active['premium'];
+  const isTrialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+  const trialExpiresAt = isTrialActive && premiumEntitlement?.expirationDate
+    ? new Date(premiumEntitlement.expirationDate)
+    : null;
+
+  return { tier, isTrialActive, trialExpiresAt, offerings, fallbackProducts };
 }
 
 // Keep these for backward compat but prefer getSubscriptionState
@@ -179,5 +183,7 @@ export function addCustomerInfoListener(
   callback: (info: CustomerInfo) => void,
 ): () => void {
   Purchases.addCustomerInfoUpdateListener(callback);
-  return () => {};
+  return () => {
+    Purchases.removeCustomerInfoUpdateListener(callback);
+  };
 }

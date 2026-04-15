@@ -23,6 +23,7 @@ export function computePersonalNotificationData(
   let lowestDay = 0;
   let lowestAvg = 10;
   Object.entries(dayEnergy).forEach(([day, values]) => {
+    if (values.length === 0) return;
     const avg = values.reduce((a, b) => a + b, 0) / values.length;
     if (avg < lowestAvg) { lowestAvg = avg; lowestDay = Number(day); }
   });
@@ -39,12 +40,14 @@ export function computePersonalNotificationData(
   let bestDay = 0;
   let bestAvg = 0;
   Object.entries(dayTraining).forEach(([day, values]) => {
+    if (values.length === 0) return;
     const avg = values.reduce((a, b) => a + b, 0) / values.length;
     if (avg > bestAvg) { bestAvg = avg; bestDay = Number(day); }
   });
 
   // Avg sleep quality from last 7 logs
   const recent = logs.slice(-7);
+  if (recent.length === 0) return undefined;
   const avgSleep = recent.reduce((s, l) => s + l.sleep_quality, 0) / recent.length;
 
   return {

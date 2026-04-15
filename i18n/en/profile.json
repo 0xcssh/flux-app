@@ -17,13 +17,11 @@
   },
   "plans": {
     "free": "Free",
-    "premium": "Premium",
-    "pro": "Pro"
+    "premium": "Premium"
   },
   "plan_descriptions": {
     "free": "7-day history, basic dashboard",
-    "premium": "Full history, insights, cycle analysis",
-    "pro": "Everything in Premium + PDF reports, priority support"
+    "premium": "Full history, insights, cycle analysis"
   },
   "current_plan": "Current Plan",
   "upgrade_cta": "Upgrade Plan",

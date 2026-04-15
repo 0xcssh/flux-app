@@ -4,7 +4,7 @@ import { zustandStorage } from '@/lib/storage';
 import { supabase } from '@/lib/supabase';
 import type { NoFapStreak, NoFapMilestone } from '@/types/nofap';
 import { MILESTONE_DAYS } from '@/types/nofap';
-import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
+import { getTodayDate, formatLocalDate, daysBetween } from '@/lib/dateUtils';
 
 function generateUUID(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -14,15 +14,9 @@ function generateUUID(): string {
   });
 }
 
-function daysBetween(startDate: string, endDate: string): number {
-  const start = new Date(startDate + 'T00:00:00');
-  const end = new Date(endDate + 'T00:00:00');
-  return Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-}
-
 interface CurrentStreak {
+  id: string;
   startDate: string;
-  days: number;
 }
 
 interface NoFapState {
@@ -51,7 +45,7 @@ export const useNoFapStore = create<NoFapState>()(
       startStreak: () => {
         const today = getTodayDate();
         set({
-          currentStreak: { startDate: today, days: 1 },
+          currentStreak: { id: generateUUID(), startDate: today },
         });
       },
 
@@ -60,14 +54,14 @@ export const useNoFapStore = create<NoFapState>()(
         if (!state.currentStreak) return;
 
         const today = getTodayDate();
-        const streakDays = daysBetween(state.currentStreak.startDate, today);
+        const streakDays = daysBetween(state.currentStreak.startDate, today) + 1;
 
         const streak: NoFapStreak = {
-          id: generateUUID(),
+          id: state.currentStreak.id,
           user_id: '',
           start_date: state.currentStreak.startDate,
           end_date: today,
-          streak_days: Math.max(streakDays, state.currentStreak.days),
+          streak_days: Math.max(streakDays, 1),
           is_active: false,
         };
 
@@ -87,10 +81,6 @@ export const useNoFapStore = create<NoFapState>()(
             const today = getTodayDate();
             const days = daysBetween(state.currentStreak.startDate, today) + 1;
             set((s) => ({
-              currentStreak: {
-                startDate: state.currentStreak!.startDate,
-                days: Math.max(days, 1),
-              },
               longestStreak: Math.max(s.longestStreak, days),
             }));
           }
@@ -131,6 +121,7 @@ export const useNoFapStore = create<NoFapState>()(
       },
 
       syncStreaks: async (userId: string) => {
+        if (!supabase) return;
         const state = get();
         const streaksToSync = state.history
           .filter((s) => !s.user_id || s.user_id === '' || s.user_id === userId)
@@ -143,14 +134,15 @@ export const useNoFapStore = create<NoFapState>()(
             is_active: s.is_active,
           }));
 
-        // Also sync current streak if active
         if (state.currentStreak) {
+          const activeDays =
+            daysBetween(state.currentStreak.startDate, getTodayDate()) + 1;
           streaksToSync.push({
-            id: generateUUID(),
+            id: state.currentStreak.id,
             user_id: userId,
             start_date: state.currentStreak.startDate,
             end_date: null,
-            streak_days: state.currentStreak.days,
+            streak_days: activeDays,
             is_active: true,
           });
         }
@@ -158,12 +150,26 @@ export const useNoFapStore = create<NoFapState>()(
         if (streaksToSync.length === 0) return;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any)
+        const { error } = await (supabase as any)
           .from('nofap_streaks')
           .upsert(streaksToSync, { onConflict: 'id' });
+
+        if (error) {
+          console.error('[syncStreaks] Supabase upsert error:', error);
+          return;
+        }
+
+        set((s) => ({
+          history: s.history.map((h) =>
+            streaksToSync.some((ts) => ts.id === h.id && !ts.is_active)
+              ? { ...h, user_id: userId }
+              : h
+          ),
+        }));
       },
 
       loadStreaks: async (userId: string) => {
+        if (!supabase) return;
         set({ isLoading: true });
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -171,13 +177,13 @@ export const useNoFapStore = create<NoFapState>()(
             .from('nofap_streaks')
             .select('*')
             .eq('user_id', userId)
-            .order('start_date', { ascending: false }) as { data: any[] | null; error: any };
+            .order('start_date', { ascending: false });
 
-          if (!error && data) {
-            const activeStreak = data.find((s) => s.is_active);
-            const completedStreaks = data.filter((s) => !s.is_active) as NoFapStreak[];
+          if (!error && Array.isArray(data)) {
+            const activeStreak = data.find((s: any) => s.is_active);
+            const completedStreaks = data.filter((s: any) => !s.is_active) as NoFapStreak[];
             const maxDays = data.reduce(
-              (max, s) => Math.max(max, s.streak_days ?? 0),
+              (max: number, s: any) => Math.max(max, s.streak_days ?? 0),
               0
             );
 
@@ -186,9 +192,8 @@ export const useNoFapStore = create<NoFapState>()(
               longestStreak: maxDays,
               currentStreak: activeStreak
                 ? {
+                    id: activeStreak.id,
                     startDate: activeStreak.start_date,
-                    days:
-                      daysBetween(activeStreak.start_date, getTodayDate()) + 1,
                   }
                 : get().currentStreak,
             });

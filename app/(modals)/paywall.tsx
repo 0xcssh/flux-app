@@ -63,6 +63,12 @@ export default function PaywallScreen() {
     track(AnalyticsEvents.PAYWALL_VIEWED);
   }, []);
 
+  useEffect(() => {
+    if (tier === 'premium' || isTrialActive) {
+      if (navigation.canGoBack()) navigation.goBack();
+    }
+  }, [tier, isTrialActive, navigation]);
+
   const handlePurchase = async () => {
     setPurchasing(true);
     try {
@@ -311,7 +317,7 @@ export default function PaywallScreen() {
         <TouchableOpacity
           style={styles.ctaButton}
           onPress={handlePurchase}
-          disabled={purchasing || tier === 'premium'}
+          disabled={purchasing || isLoading || tier === 'premium'}
           activeOpacity={0.8}
         >
           {purchasing ? (

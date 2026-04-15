@@ -1,6 +1,7 @@
 import { DailyLogEntry, MetricKey } from '@/types/log';
 import { Correlation, InsightData, Pattern, Recommendation, UniversalInsight, EarlyPattern } from '@/types/insight';
 import { NoFapStreak } from '@/types/nofap';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 // All 6 tracked metrics
 const ALL_METRICS: MetricKey[] = [
@@ -98,7 +99,7 @@ export function detectDayOfWeekPattern(
   const dayCounts: number[] = new Array(7).fill(0);
 
   for (const log of logs) {
-    const dow = new Date(log.log_date).getDay();
+    const dow = new Date(log.log_date + 'T00:00:00').getDay();
     daySums[dow] += log[metric];
     dayCounts[dow]++;
   }
@@ -179,7 +180,7 @@ export function computeNoFapCorrelation(
     let day = 1;
     const current = new Date(start);
     while (current <= end) {
-      const key = current.toISOString().slice(0, 10);
+      const key = formatLocalDate(current);
       streakDayMap.set(key, day);
       day++;
       current.setDate(current.getDate() + 1);
@@ -274,6 +275,7 @@ function generateRecommendations(
   if (logs.length === 0) return recs;
 
   const recent = logs.slice(-7);
+  if (recent.length === 0) return recs;
 
   // Average recent metrics
   const avgMetric = (key: MetricKey) =>
@@ -401,11 +403,15 @@ export function computeEarlyPatterns(logs: DailyLogEntry[]): EarlyPattern[] {
     const mid = Math.floor(values.length / 2);
     const firstHalf = values.slice(0, mid);
     const secondHalf = values.slice(mid);
-    const firstAvg = firstHalf.reduce((s, v) => s + v, 0) / firstHalf.length;
-    const secondAvg = secondHalf.reduce((s, v) => s + v, 0) / secondHalf.length;
+    const firstAvg = firstHalf.length > 0
+      ? firstHalf.reduce((s, v) => s + v, 0) / firstHalf.length
+      : 0;
+    const secondAvg = secondHalf.length > 0
+      ? secondHalf.reduce((s, v) => s + v, 0) / secondHalf.length
+      : 0;
 
     let trend: 'improving' | 'declining' | 'stable';
-    if (firstAvg === 0) {
+    if (firstAvg === 0 || firstHalf.length === 0 || secondHalf.length === 0) {
       trend = 'stable';
     } else {
       const pctChange = (secondAvg - firstAvg) / firstAvg;
@@ -475,6 +481,9 @@ export function generateWeeklyInsights(
   // Generate 1-2 basic recommendations from weekly data
   const recommendations: Recommendation[] = [];
   const recent = logs.slice(-7);
+  if (recent.length === 0) {
+    return { correlations, patterns, recommendations };
+  }
   const avgSleep = recent.reduce((s, l) => s + l.sleep_quality, 0) / recent.length;
   const avgStress = recent.reduce((s, l) => s + l.stress, 0) / recent.length;
 

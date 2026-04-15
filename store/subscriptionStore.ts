@@ -10,7 +10,7 @@ interface SubscriptionState {
 }
 
 interface SubscriptionActions {
-  setSubscription: (tier: PlanTier, trialExpiresAt?: string | null) => void;
+  setSubscription: (tier: PlanTier, trialExpiresAt: string | null, isTrialActive: boolean) => void;
   checkEntitlements: () => void;
   canAccess: (feature: PremiumFeature) => boolean;
 }
@@ -22,21 +22,16 @@ export const useSubscriptionStore = create<SubscriptionState & SubscriptionActio
     trialExpiresAt: null,
     isLoading: false,
 
-    setSubscription: (tier, trialExpiresAt = null) => {
-      const isTrialActive = trialExpiresAt
-        ? new Date(trialExpiresAt) > new Date()
-        : false;
+    setSubscription: (tier, trialExpiresAt, isTrialActive) => {
       set({ tier, trialExpiresAt, isTrialActive });
     },
 
     checkEntitlements: () => {
-      const { trialExpiresAt } = get();
-      if (trialExpiresAt) {
-        const isTrialActive = new Date(trialExpiresAt) > new Date();
-        if (!isTrialActive) {
+      const { trialExpiresAt, isTrialActive } = get();
+      if (isTrialActive && trialExpiresAt) {
+        const stillActive = new Date(trialExpiresAt) > new Date();
+        if (!stillActive) {
           set({ tier: 'free', isTrialActive: false, trialExpiresAt: null });
-        } else {
-          set({ isTrialActive: true });
         }
       }
     },

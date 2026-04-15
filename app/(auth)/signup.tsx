@@ -46,6 +46,7 @@ export default function SignupScreen() {
         navigation.reset({ index: 0, routes: [{ name: 'Onboarding' }] });
       } catch (e) {
         console.error('[Navigation] Reset failed:', e);
+        Alert.alert('Navigation Error', 'Please restart the app.');
       }
     } catch {
       Alert.alert(t('errors.generic'), error ?? t('errors.generic'));

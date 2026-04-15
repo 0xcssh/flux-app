@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  RefreshControl,
   Pressable,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,6 @@ import { getTodayDate, formatLocalDate } from '@/lib/dateUtils';
 function DashboardContent() {
   const { t } = useTranslation('dashboard');
   const navigation = useNavigation<any>();
-  const [refreshing, setRefreshing] = useState(false);
 
   const { selectedDate } = useSelectedDate();
   const logs = useLogStore((s) => s.logs);
@@ -91,12 +90,6 @@ function DashboardContent() {
     return labels[phase] ?? phase;
   }, [phase]);
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setRefreshing(false);
-  }, []);
-
   const now = new Date();
   const hour = now.getHours();
   const dayOfWeek = now.getDay(); // 0=Sun, 1=Mon, 2=Tue
@@ -115,18 +108,11 @@ function DashboardContent() {
   }, [selectedDate]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen} edges={['top']}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={darkPalette.primary}
-          />
-        }
       >
         {/* Header */}
         <View style={styles.header}>
@@ -291,7 +277,7 @@ function DashboardContent() {
           <Text style={styles.fabLabel}>{t('log_today_cta')}</Text>
         </Pressable>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 

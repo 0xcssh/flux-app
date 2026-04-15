@@ -1,9 +1,8 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
   ScrollView,
-  RefreshControl,
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,7 +32,6 @@ import { track, AnalyticsEvents } from '@/lib/analytics';
 
 export default function InsightsScreen() {
   const { t } = useTranslation('insights');
-  const [refreshing, setRefreshing] = useState(false);
 
   const logs = useLogStore((s) => s.logs);
   const todayLog = useLogStore((s) => s.getTodayLog());
@@ -68,12 +66,6 @@ export default function InsightsScreen() {
     nextTier,
   } = useInsights(sortedLogs, streaks);
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setRefreshing(false);
-  }, []);
-
   React.useEffect(() => {
     track(AnalyticsEvents.INSIGHT_VIEWED, {
       tier,
@@ -86,14 +78,6 @@ export default function InsightsScreen() {
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={styles.contentContainer}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={['#3B82F6']}
-          tintColor="#3B82F6"
-        />
-      }
     >
       {/* HEADER: Tier Progress — always visible */}
       <TierProgress currentTier={tier} />

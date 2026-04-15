@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { darkPalette } from '@/theme/colors';
 import { useLogStore } from '@/store/logStore';
 import { useCircadianPhase } from '@/hooks/useCircadianPhase';
+import { useSubscription } from '@/hooks/useSubscription';
 import { detectInfradianCycle } from '@/lib/hormoneEngine';
 import CircadianChart from '@/components/cycle/CircadianChart';
 import InfradianChart from '@/components/cycle/InfradianChart';
@@ -28,6 +29,7 @@ export default function CycleScreen() {
   const [activeTab, setActiveTab] = useState<TabKey>('circadian');
 
   const { phase, progress } = useCircadianPhase();
+  const { canAccess } = useSubscription();
   const logs = useLogStore((s) => s.logs);
 
   const todayLog = useLogStore((s) => s.getTodayLog());
@@ -100,7 +102,7 @@ export default function CycleScreen() {
           <InfradianChart
             logs={last30Logs}
             detectedCycle={detectedCycle}
-            isPremium={true}
+            isPremium={canAccess('infradian')}
           />
         )}
       </View>

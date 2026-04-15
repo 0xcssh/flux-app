@@ -165,7 +165,6 @@ export default function ProfileScreen() {
           {t('version', { version: appVersion })}
         </Text>
         <View style={styles.legalLinks}>
-          {/* TODO: Replace with actual legal page URLs before submission */}
           <TouchableOpacity
             onPress={() => Linking.openURL('https://flux-legal.vercel.app/terms')}
           >

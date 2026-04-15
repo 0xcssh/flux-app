@@ -13,6 +13,7 @@ import { computePersonalNotificationData } from '@/lib/personalNotificationData'
 import { generateSmartReminders } from '@/lib/smartReminders';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useSettingsStore } from '@/store/settingsStore';
+import { formatLocalDate } from '@/lib/dateUtils';
 
 export function useNotifications() {
   const [pushToken, setPushToken] = useState<string | null>(null);
@@ -140,7 +141,7 @@ export function useSmartReminders() {
     const today = new Date();
     const checkDate = new Date(today);
     for (let i = 0; i < 365; i++) {
-      const dateStr = checkDate.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(checkDate);
       if (logs[dateStr]) {
         streakDays++;
         checkDate.setDate(checkDate.getDate() - 1);

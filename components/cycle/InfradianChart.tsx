@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 import Svg, { Path, Line as SvgLine, Circle, Defs, LinearGradient, Stop, Text as SvgText } from 'react-native-svg';
 import { darkPalette } from '@/theme/colors';
 import type { DailyLogEntry } from '@/types/log';
@@ -28,6 +29,7 @@ function smoothPath(pts: { x: number; y: number }[]): string {
 
 export default function InfradianChart({ logs, detectedCycle, isPremium = true }: InfradianChartProps) {
   const { t } = useTranslation('cycle');
+  const navigation = useNavigation<any>();
 
   const sorted = useMemo(
     () => [...logs].sort((a, b) => a.log_date.localeCompare(b.log_date)).slice(-30),
@@ -80,7 +82,7 @@ export default function InfradianChart({ logs, detectedCycle, isPremium = true }
           <View style={styles.premiumOverlay}>
             <Ionicons name="lock-closed" size={36} color="#FFFFFF" />
             <Text style={styles.premiumText}>{t('premium_required')}</Text>
-            <Pressable style={styles.upgradeButton}>
+            <Pressable style={styles.upgradeButton} onPress={() => navigation.navigate('Paywall')}>
               <Text style={styles.upgradeButtonText}>Upgrade</Text>
             </Pressable>
           </View>

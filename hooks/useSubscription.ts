@@ -80,7 +80,11 @@ export function useSubscription(): UseSubscriptionReturn {
 
         if (!mounted) return;
 
-        setSubscription(state.tier, state.trialExpiresAt?.toISOString() ?? null);
+        setSubscription(
+          state.tier,
+          state.trialExpiresAt?.toISOString() ?? null,
+          state.isTrialActive,
+        );
         _cachedOfferings = state.offerings;
         _cachedFallbackProducts = state.fallbackProducts;
         setOfferings(state.offerings);
@@ -91,7 +95,8 @@ export function useSubscription(): UseSubscriptionReturn {
           const newTier = tierFromCustomerInfo(info);
           const premiumEntitlement = info.entitlements.active['premium'];
           const expiry = premiumEntitlement?.expirationDate ?? null;
-          setSubscription(newTier, expiry);
+          const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+          setSubscription(newTier, expiry, trialActive);
         });
       } catch (error) {
         console.error('[useSubscription] init error:', error);
@@ -113,11 +118,11 @@ export function useSubscription(): UseSubscriptionReturn {
   const canAccess = useCallback(
     (feature: FeatureKey): boolean => {
       if (PREMIUM_FEATURES.includes(feature)) {
-        return isPremium;
+        return isPremium || isTrialActive;
       }
       return true;
     },
-    [isPremium],
+    [isPremium, isTrialActive],
   );
 
   const purchase = useCallback(async (pkg: PurchasesPackage): Promise<boolean> => {
@@ -126,8 +131,10 @@ export function useSubscription(): UseSubscriptionReturn {
       const result = await purchasePackage(pkg);
       if (result.success) {
         const newTier = tierFromCustomerInfo(result.customerInfo);
-        const expiry = result.customerInfo.entitlements.active['premium']?.expirationDate ?? null;
-        setSubscription(newTier, expiry);
+        const premiumEntitlement = result.customerInfo.entitlements.active['premium'];
+        const expiry = premiumEntitlement?.expirationDate ?? null;
+        const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+        setSubscription(newTier, expiry, trialActive);
       }
       return result.success;
     } catch (error) {
@@ -144,8 +151,10 @@ export function useSubscription(): UseSubscriptionReturn {
       const result = await purchaseStoreProduct(product);
       if (result.success) {
         const newTier = tierFromCustomerInfo(result.customerInfo);
-        const expiry = result.customerInfo.entitlements.active['premium']?.expirationDate ?? null;
-        setSubscription(newTier, expiry);
+        const premiumEntitlement = result.customerInfo.entitlements.active['premium'];
+        const expiry = premiumEntitlement?.expirationDate ?? null;
+        const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+        setSubscription(newTier, expiry, trialActive);
       }
       return result.success;
     } catch (error) {
@@ -161,8 +170,10 @@ export function useSubscription(): UseSubscriptionReturn {
       setIsLoading(true);
       const info = await restorePurchases();
       const newTier = tierFromCustomerInfo(info);
-      const expiry = info.entitlements.active['premium']?.expirationDate ?? null;
-      setSubscription(newTier, expiry);
+      const premiumEntitlement = info.entitlements.active['premium'];
+      const expiry = premiumEntitlement?.expirationDate ?? null;
+      const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+      setSubscription(newTier, expiry, trialActive);
     } catch (error) {
       console.error('[useSubscription] restore error:', error);
     } finally {

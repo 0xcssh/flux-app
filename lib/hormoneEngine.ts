@@ -173,7 +173,9 @@ export function detectInfradianCycle(
     sumTV += i * scores[i];
     sumT2 += i * i;
   }
-  const slope = (n * sumTV - sumT * sumV) / (n * sumT2 - sumT * sumT);
+  const denom = n * sumT2 - sumT * sumT;
+  if (denom === 0) return null;
+  const slope = (n * sumTV - sumT * sumV) / denom;
   const intercept = (sumV - slope * sumT) / n;
   const detrended = scores.map((v, i) => v - (slope * i + intercept));
 

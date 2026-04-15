@@ -111,6 +111,7 @@ function getPatternReminders(logs: DailyLogEntry[]): SmartReminder[] {
   let lowestDay = 0;
   let lowestAvg = 10;
   Object.entries(dayEnergy).forEach(([day, values]) => {
+    if (values.length === 0) return;
     const avg = values.reduce((a, b) => a + b, 0) / values.length;
     if (avg < lowestAvg) {
       lowestAvg = avg;

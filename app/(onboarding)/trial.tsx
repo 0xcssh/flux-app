@@ -6,11 +6,14 @@ import {
   StyleSheet,
   Animated,
   Linking,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import PaginationDots from '@/components/onboarding/PaginationDots';
 import { useSettingsStore } from '@/store/settingsStore';
+import { useSubscription } from '@/hooks/useSubscription';
 import { track, AnalyticsEvents } from '@/lib/analytics';
 
 const FEATURES: { icon: keyof typeof Ionicons.glyphMap; color: string; title: string; description: string }[] = [
@@ -36,7 +39,9 @@ const FEATURES: { icon: keyof typeof Ionicons.glyphMap; color: string; title: st
 
 export default function TrialScreen() {
   const setOnboardingSeen = useSettingsStore((s) => s.setOnboardingSeen);
+  const { offerings, fallbackProducts, purchase, purchaseProduct } = useSubscription();
   const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('annual');
+  const [purchasing, setPurchasing] = useState(false);
 
   // Stagger animations: 3 feature cards + plan cards + CTA
   const featureAnims = useRef(FEATURES.map(() => new Animated.Value(0))).current;
@@ -74,9 +79,57 @@ export default function TrialScreen() {
     setOnboardingSeen(true);
   };
 
-  const handleStartTrial = () => {
-    track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding', plan: billingCycle });
-    finishOnboarding();
+  const handleStartTrial = async () => {
+    setPurchasing(true);
+    try {
+      track(AnalyticsEvents.TRIAL_STARTED, { source: 'onboarding', plan: billingCycle });
+      const offering = offerings?.current;
+
+      if (offering) {
+        const identifier = billingCycle === 'monthly' ? '$rc_monthly' : '$rc_annual';
+        const pkg = offering.availablePackages.find((p) => p.identifier === identifier);
+        if (!pkg) {
+          Alert.alert('Error', 'Package not available. Please try again.');
+          return;
+        }
+        const success = await purchase(pkg);
+        if (success) {
+          track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
+            plan: 'premium',
+            cycle: billingCycle,
+            source: 'onboarding',
+          });
+        }
+        finishOnboarding();
+      } else if (fallbackProducts.length > 0) {
+        const productId = billingCycle === 'monthly' ? 'flux_premium_monthly' : 'flux_premium_yearly';
+        const product = fallbackProducts.find((p) => p.identifier === productId);
+        if (!product) {
+          Alert.alert('Error', 'Product not available. Please try again.');
+          return;
+        }
+        const success = await purchaseProduct(product);
+        if (success) {
+          track(AnalyticsEvents.SUBSCRIPTION_PURCHASED, {
+            plan: 'premium',
+            cycle: billingCycle,
+            source: 'onboarding',
+            method: 'storekit_fallback',
+          });
+        }
+        finishOnboarding();
+      } else {
+        Alert.alert(
+          'Subscription Unavailable',
+          'Subscriptions are being set up. You can continue with the free plan and upgrade later.',
+        );
+      }
+    } catch (error) {
+      console.error('[Trial] Purchase error:', error);
+      Alert.alert('Error', 'Purchase failed. Please try again.');
+    } finally {
+      setPurchasing(false);
+    }
   };
 
   const handleSkip = () => {
@@ -178,9 +231,14 @@ export default function TrialScreen() {
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={handleStartTrial}
+            disabled={purchasing}
             activeOpacity={0.8}
           >
-            <Text style={styles.ctaText}>Start 7-Day Free Trial</Text>
+            {purchasing ? (
+              <ActivityIndicator color="#FFFFFF" size="small" />
+            ) : (
+              <Text style={styles.ctaText}>Start 7-Day Free Trial</Text>
+            )}
           </TouchableOpacity>
           <Text style={styles.priceText}>{priceLabel}</Text>
           <View style={styles.socialProof}>

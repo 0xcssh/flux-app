@@ -16,13 +16,11 @@
   },
   "plans": {
     "free": "Gratuit",
-    "premium": "Premium",
-    "pro": "Pro"
+    "premium": "Premium"
   },
   "plan_descriptions": {
     "free": "Historique de 7 jours, tableau de bord basique",
-    "premium": "Historique complet, analyses, analyse du cycle",
-    "pro": "Tout Premium + rapports PDF, support prioritaire"
+    "premium": "Historique complet, analyses, analyse du cycle"
   },
   "current_plan": "Plan actuel",
   "upgrade_cta": "Améliorer le plan",

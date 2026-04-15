@@ -8,7 +8,6 @@ import { useSubscription } from '@/hooks/useSubscription';
 const TIER_BADGES = {
   free: { color: '#8B8BA3', bg: '#252540', icon: 'user' },
   premium: { color: '#3B82F6', bg: '#252540', icon: 'star' },
-  pro: { color: '#22C55E', bg: '#252540', icon: 'diamond' },
 } as const;
 
 const PREMIUM_FEATURES = [

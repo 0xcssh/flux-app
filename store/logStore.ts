@@ -112,13 +112,33 @@ export const useLogStore = create<LogState>()(
       },
 
       syncPendingLogs: async () => {
+        if (!supabase) return;
         const state = get();
         if (state.pendingSync.length === 0) return;
 
         try {
-          const logsToSync = state.pendingSync
-            .map((date) => state.logs[date])
+          const { data: authData } = await (supabase as any).auth.getUser();
+          const currentUserId = authData?.user?.id;
+
+          if (currentUserId) {
+            const updatedLogs = { ...state.logs };
+            let hadLocalUpgrade = false;
+            for (const date of Object.keys(updatedLogs)) {
+              if (updatedLogs[date].user_id === 'local') {
+                updatedLogs[date] = { ...updatedLogs[date], user_id: currentUserId };
+                hadLocalUpgrade = true;
+              }
+            }
+            if (hadLocalUpgrade) {
+              set({ logs: updatedLogs });
+            }
+          }
+
+          const refreshed = get();
+          const logsToSync = refreshed.pendingSync
+            .map((date) => refreshed.logs[date])
             .filter(Boolean)
+            .filter((log) => log.user_id && log.user_id !== 'local')
             .map((log) => ({
               id: log.id,
               user_id: log.user_id,
@@ -170,6 +190,7 @@ export const useLogStore = create<LogState>()(
       },
 
       loadHistory: async (userId: string, days: number) => {
+        if (!supabase) return;
         set({ isLoading: true });
         try {
           const startDate = new Date();
@@ -182,9 +203,9 @@ export const useLogStore = create<LogState>()(
             .select('*')
             .eq('user_id', userId)
             .gte('log_date', startStr)
-            .order('log_date', { ascending: false }) as { data: any[] | null; error: any };
+            .order('log_date', { ascending: false });
 
-          if (!error && data) {
+          if (!error && Array.isArray(data)) {
             set((state) => {
               const merged = { ...state.logs };
               for (const row of data) {
@@ -231,6 +252,7 @@ export const useLogStore = create<LogState>()(
       partialize: (state) => ({
         logs: state.logs,
         pendingSync: state.pendingSync,
+        todayLogged: state.todayLogged,
       }),
     }
   )
