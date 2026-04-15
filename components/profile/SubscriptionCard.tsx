@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -78,10 +78,10 @@ export default function SubscriptionCard() {
           <Text style={styles.planDescription}>{t(`plan_descriptions.${tier}`)}</Text>
           <TouchableOpacity
             style={styles.manageButton}
-            onPress={() => navigation.navigate('Paywall')}
+            onPress={() => Linking.openURL('https://apps.apple.com/account/subscriptions')}
             activeOpacity={0.7}
           >
-            <Text style={styles.manageButtonText}>Manage Plan</Text>
+            <Text style={styles.manageButtonText}>Manage Subscription</Text>
           </TouchableOpacity>
         </View>
       )}
