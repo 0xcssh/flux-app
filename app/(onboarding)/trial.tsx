@@ -99,8 +99,8 @@ export default function TrialScreen() {
             cycle: billingCycle,
             source: 'onboarding',
           });
+          finishOnboarding();
         }
-        finishOnboarding();
       } else if (fallbackProducts.length > 0) {
         const productId = billingCycle === 'monthly' ? 'flux_premium_monthly' : 'flux_premium_yearly';
         const product = fallbackProducts.find((p) => p.identifier === productId);
@@ -116,8 +116,8 @@ export default function TrialScreen() {
             source: 'onboarding',
             method: 'storekit_fallback',
           });
+          finishOnboarding();
         }
-        finishOnboarding();
       } else {
         Alert.alert(
           'Subscription Unavailable',

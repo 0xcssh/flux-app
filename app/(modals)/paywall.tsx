@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -63,8 +63,9 @@ export default function PaywallScreen() {
     track(AnalyticsEvents.PAYWALL_VIEWED);
   }, []);
 
+  const initialTierRef = useRef(tier);
   useEffect(() => {
-    if (tier === 'premium' || isTrialActive) {
+    if (initialTierRef.current === 'free' && (tier === 'premium' || isTrialActive)) {
       if (navigation.canGoBack()) navigation.goBack();
     }
   }, [tier, isTrialActive, navigation]);

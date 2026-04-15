@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   PurchasesPackage,
   PurchasesOfferings,
@@ -33,10 +33,54 @@ const PREMIUM_FEATURES: FeatureKey[] = [
   'challenges',
 ];
 
-// Module-level cache — shared across all hook instances
-let _rcInitialized = false;
+// Module-level state — one init, one listener, shared across all hook instances
 let _cachedOfferings: PurchasesOfferings | null = null;
 let _cachedFallbackProducts: PurchasesStoreProduct[] = [];
+let _initPromise: Promise<void> | null = null;
+let _listenerRegistered = false;
+const _stateListeners = new Set<() => void>();
+
+function notifyStateListeners() {
+  _stateListeners.forEach((fn) => fn());
+}
+
+async function ensureInit(): Promise<void> {
+  if (_initPromise) return _initPromise;
+
+  _initPromise = (async () => {
+    try {
+      await initRevenueCat();
+      const state = await getSubscriptionState();
+
+      _cachedOfferings = state.offerings;
+      _cachedFallbackProducts = state.fallbackProducts;
+
+      useSubscriptionStore.getState().setSubscription(
+        state.tier,
+        state.trialExpiresAt?.toISOString() ?? null,
+        state.isTrialActive,
+      );
+
+      if (!_listenerRegistered) {
+        _listenerRegistered = true;
+        addCustomerInfoListener((info) => {
+          const newTier = tierFromCustomerInfo(info);
+          const premiumEntitlement = info.entitlements.active['premium'];
+          const expiry = premiumEntitlement?.expirationDate ?? null;
+          const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
+          useSubscriptionStore.getState().setSubscription(newTier, expiry, trialActive);
+        });
+      }
+
+      notifyStateListeners();
+    } catch (error) {
+      console.error('[useSubscription] init error:', error);
+      _initPromise = null;
+    }
+  })();
+
+  return _initPromise;
+}
 
 interface UseSubscriptionReturn {
   tier: PlanTier;
@@ -53,7 +97,6 @@ interface UseSubscriptionReturn {
 }
 
 export function useSubscription(): UseSubscriptionReturn {
-  // Read from Zustand store (source of truth)
   const tier = useSubscriptionStore((s) => s.tier);
   const storeTrial = useSubscriptionStore((s) => s.isTrialActive);
   const storeTrialExpiry = useSubscriptionStore((s) => s.trialExpiresAt);
@@ -61,55 +104,30 @@ export function useSubscription(): UseSubscriptionReturn {
 
   const [offerings, setOfferings] = useState<PurchasesOfferings | null>(_cachedOfferings);
   const [fallbackProducts, setFallbackProducts] = useState<PurchasesStoreProduct[]>(_cachedFallbackProducts);
-  const [isLoading, setIsLoading] = useState(!_rcInitialized);
-  const unsubscribeRef = useRef<(() => void) | null>(null);
+  const [isLoading, setIsLoading] = useState(_cachedOfferings === null && _cachedFallbackProducts.length === 0);
 
   const isTrialActive = storeTrial;
   const trialExpiresAt = storeTrialExpiry ? new Date(storeTrialExpiry) : null;
 
   useEffect(() => {
-    if (_rcInitialized) return;
-    _rcInitialized = true;
     let mounted = true;
 
-    async function init() {
-      try {
-        await initRevenueCat();
+    const syncFromCache = () => {
+      if (!mounted) return;
+      setOfferings(_cachedOfferings);
+      setFallbackProducts(_cachedFallbackProducts);
+      setIsLoading(false);
+    };
 
-        const state = await getSubscriptionState();
+    _stateListeners.add(syncFromCache);
 
-        if (!mounted) return;
-
-        setSubscription(
-          state.tier,
-          state.trialExpiresAt?.toISOString() ?? null,
-          state.isTrialActive,
-        );
-        _cachedOfferings = state.offerings;
-        _cachedFallbackProducts = state.fallbackProducts;
-        setOfferings(state.offerings);
-        setFallbackProducts(state.fallbackProducts);
-
-        unsubscribeRef.current = addCustomerInfoListener((info) => {
-          if (!mounted) return;
-          const newTier = tierFromCustomerInfo(info);
-          const premiumEntitlement = info.entitlements.active['premium'];
-          const expiry = premiumEntitlement?.expirationDate ?? null;
-          const trialActive = premiumEntitlement?.periodType === 'TRIAL' || false;
-          setSubscription(newTier, expiry, trialActive);
-        });
-      } catch (error) {
-        console.error('[useSubscription] init error:', error);
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    }
-
-    init();
+    ensureInit().then(() => {
+      if (mounted) syncFromCache();
+    });
 
     return () => {
       mounted = false;
-      unsubscribeRef.current?.();
+      _stateListeners.delete(syncFromCache);
     };
   }, []);
 
