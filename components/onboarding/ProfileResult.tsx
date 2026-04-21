@@ -51,11 +51,17 @@ const GOAL_LABELS: Record<GoalType, string> = {
   sleep: 'Better Sleep',
 };
 
-const SLEEP_TARGETS: Record<ProfileType, string> = {
-  early_riser: '10:30 PM',
-  balanced: '11:30 PM',
-  night_owl: '12:30 AM',
-};
+function computeSleepTarget(wakeUpHour: number): string {
+  let bedHour = wakeUpHour - 8;
+  if (bedHour < 0) bedHour += 24;
+  const hour = Math.floor(bedHour);
+  const min = Math.round((bedHour - hour) * 60);
+  const suffix = hour < 12 ? 'AM' : 'PM';
+  const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  return min === 0
+    ? `${displayHour}:00 ${suffix}`
+    : `${displayHour}:${min.toString().padStart(2, '0')} ${suffix}`;
+}
 
 function formatHour(h: number): string {
   const hour = Math.floor(h);
@@ -220,8 +226,8 @@ export default function ProfileResult({ profile }: ProfileResultProps) {
     }).start();
   }, []);
 
-  const bestTrainingStart = profile.adjustedAcrophase + 1.5;
-  const bestTrainingEnd = profile.adjustedAcrophase + 3.5;
+  const bestTrainingStart = profile.wakeUpHour + 4;
+  const bestTrainingEnd = profile.wakeUpHour + 6;
 
   const dataRows = [
     {
@@ -239,7 +245,7 @@ export default function ProfileResult({ profile }: ProfileResultProps) {
     {
       icon: 'moon-outline' as keyof typeof Ionicons.glyphMap,
       label: 'Sleep Target',
-      value: SLEEP_TARGETS[profile.profileType],
+      value: computeSleepTarget(profile.wakeUpHour),
       color: '#A78BFA',
     },
     {

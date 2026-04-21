@@ -130,10 +130,10 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const onboardingSeen = useSettingsStore((s) => s.onboardingSeen);
+  const hydrated = useSettingsStore((s) => s._hydrated);
 
   useEffect(() => {
-    // Detect reinstall: AsyncStorage is cleared on uninstall, Keychain is not.
-    // If sentinel is missing but onboardingSeen is true, user reinstalled — reset onboarding.
+    if (!hydrated) return;
     AsyncStorage.getItem('flux_installed').then((value) => {
       if (!value) {
         useSettingsStore.getState().setOnboardingSeen(false);
@@ -143,12 +143,16 @@ export default function App() {
     }).catch(() => {
       SplashScreen.hideAsync();
     });
-  }, []);
+  }, [hydrated]);
 
   useEffect(() => {
     try { initAnalytics(); } catch (e) { console.error('[Analytics] init failed:', e); }
     try { initNotificationHandler(); } catch (e) { console.error('[Notifications] init failed:', e); }
   }, []);
+
+  if (!hydrated) {
+    return <View style={{ flex: 1, backgroundColor: '#0A0A0F' }} />;
+  }
 
   return (
     <ErrorBoundary>

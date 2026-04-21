@@ -38,21 +38,18 @@ export const PROFILE_DESCRIPTIONS: Record<ProfileType, string> = {
 
 export function computeProfile(answers: QuizAnswers): HormonalProfile {
   let profileType: ProfileType;
-  let adjustedAcrophase: number;
 
   if (answers.wakeUpHour < 7) {
     profileType = 'early_riser';
-    adjustedAcrophase = answers.wakeUpHour + 0.5;
   } else if (answers.wakeUpHour > 9) {
     profileType = 'night_owl';
-    adjustedAcrophase = answers.wakeUpHour + 1;
   } else {
     profileType = 'balanced';
-    adjustedAcrophase = 6.5; // default
   }
 
-  const peakWindowStart = adjustedAcrophase + 1.5;
-  const peakWindowEnd = adjustedAcrophase + 5.5;
+  const adjustedAcrophase = answers.wakeUpHour + 0.5;
+  const peakWindowStart = answers.wakeUpHour + 4;
+  const peakWindowEnd = answers.wakeUpHour + 8;
 
   return {
     profileType,

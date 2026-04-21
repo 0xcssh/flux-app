@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Switch, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Switch, StyleSheet, Alert, TextInput, Modal, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ export default function SettingsForm() {
   const initialNotificationTime = '08:00';
   const { t } = useTranslation(['profile', 'common']);
   const updateProfile = useAuthStore((s) => s.updateProfile);
+  const profile = useAuthStore((s) => s.profile);
   const { isPremium } = useSubscription();
   const smartRemindersEnabled = useSettingsStore((s) => s.smartRemindersEnabled);
   const setSmartRemindersEnabled = useSettingsStore((s) => s.setSmartRemindersEnabled);
@@ -27,6 +28,23 @@ export default function SettingsForm() {
     return parseInt(parts[1], 10) || 0;
   });
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [nameModalVisible, setNameModalVisible] = useState(false);
+  const [nameDraft, setNameDraft] = useState('');
+
+  const openNameEditor = useCallback(() => {
+    setNameDraft(profile?.display_name ?? '');
+    setNameModalVisible(true);
+  }, [profile?.display_name]);
+
+  const saveName = useCallback(async () => {
+    const trimmed = nameDraft.trim();
+    try {
+      await updateProfile({ display_name: trimmed.length === 0 ? null : trimmed });
+      setNameModalVisible(false);
+    } catch (e) {
+      Alert.alert('Error', 'Could not save your name. Please try again.');
+    }
+  }, [nameDraft, updateProfile]);
 
   const formatTime = (h: number, m: number) => {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
@@ -44,6 +62,69 @@ export default function SettingsForm() {
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>{t('sections.settings')}</Text>
+
+      {/* Display Name */}
+      <TouchableOpacity
+        style={styles.settingRow}
+        onPress={openNameEditor}
+        activeOpacity={0.7}
+      >
+        <View style={styles.settingLeft}>
+          <View style={styles.iconContainer}>
+            <FontAwesome name="user" size={16} color="#3B82F6" />
+          </View>
+          <Text style={styles.settingLabel}>Name</Text>
+        </View>
+        <View style={styles.settingRight}>
+          <Text style={styles.settingValue}>
+            {profile?.display_name && profile.display_name.length > 0
+              ? profile.display_name
+              : 'Add name'}
+          </Text>
+          <FontAwesome name="chevron-right" size={12} color="#94A3B8" />
+        </View>
+      </TouchableOpacity>
+
+      <Modal
+        visible={nameModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setNameModalVisible(false)}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Your Name</Text>
+            <Text style={styles.modalSubtitle}>How should we call you?</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={nameDraft}
+              onChangeText={setNameDraft}
+              placeholder="Enter your name"
+              placeholderTextColor="#5A5A7A"
+              autoFocus
+              maxLength={40}
+              returnKeyType="done"
+              onSubmitEditing={saveName}
+              autoCapitalize="words"
+              keyboardAppearance={Platform.OS === 'ios' ? 'dark' : undefined}
+            />
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonCancel]}
+                onPress={() => setNameModalVisible(false)}
+              >
+                <Text style={styles.modalButtonCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonSave]}
+                onPress={saveName}
+              >
+                <Text style={styles.modalButtonSaveText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Notification Time */}
       <TouchableOpacity
@@ -250,5 +331,70 @@ const styles = StyleSheet.create({
   },
   timeChipTextActive: {
     color: '#FFFFFF',
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#1A1A2E',
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#2A2A45',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  modalSubtitle: {
+    fontSize: 13,
+    color: '#8B8BA3',
+    marginBottom: 16,
+  },
+  modalInput: {
+    backgroundColor: '#0A0A0F',
+    borderWidth: 1,
+    borderColor: '#2A2A45',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: '#FFFFFF',
+    marginBottom: 16,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalButtonCancel: {
+    backgroundColor: '#252540',
+  },
+  modalButtonCancelText: {
+    color: '#8B8BA3',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  modalButtonSave: {
+    backgroundColor: '#3B82F6',
+  },
+  modalButtonSaveText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
   },
 });

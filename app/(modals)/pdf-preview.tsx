@@ -25,6 +25,7 @@ export default function PdfPreviewScreen() {
   const [fileUri, setFileUri] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
 
   const allLogs = Object.values(logs).sort((a, b) =>
     a.log_date.localeCompare(b.log_date),
@@ -36,6 +37,7 @@ export default function PdfPreviewScreen() {
 
   const generateReport = async () => {
     setIsGenerating(true);
+    setGenerationError(null);
     try {
       const endDate = getTodayDate();
       const startDate = new Date();
@@ -50,7 +52,7 @@ export default function PdfPreviewScreen() {
       setFileUri(uri);
     } catch (error) {
       console.error('[PdfPreview] Error:', error);
-      Alert.alert('Error', 'Failed to generate report.');
+      setGenerationError('Failed to generate report. Please try again.');
     } finally {
       setIsGenerating(false);
     }
@@ -103,6 +105,18 @@ export default function PdfPreviewScreen() {
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#3B82F6" />
             <Text style={styles.loadingText}>Generating your report...</Text>
+          </View>
+        ) : generationError ? (
+          <View style={styles.loadingContainer}>
+            <FontAwesome name="exclamation-circle" size={48} color="#EF4444" />
+            <Text style={styles.errorText}>{generationError}</Text>
+            <TouchableOpacity
+              style={styles.retryButton}
+              onPress={generateReport}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.retryButtonText}>Retry</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <>
@@ -222,6 +236,25 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#8B8BA3',
     marginTop: 16,
+  },
+  errorText: {
+    fontSize: 15,
+    color: '#8B8BA3',
+    marginTop: 16,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+  },
+  retryButton: {
+    marginTop: 20,
+    backgroundColor: '#3B82F6',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  retryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
   },
   summaryCard: {
     backgroundColor: '#1A1A2E',

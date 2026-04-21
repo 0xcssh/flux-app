@@ -101,6 +101,7 @@ export default function DailyLogForm({
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [lastScore, setLastScore] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const liveScore = useMemo(() => computeScore(formData), [formData]);
   const scoreColor = useMemo(() => getScoreColor(liveScore), [liveScore]);
@@ -122,15 +123,19 @@ export default function DailyLogForm({
   );
 
   const handleSubmit = useCallback(async () => {
-    submitLog(formData);
-    // Sync NoFap streak with the checkbox
-    recordNoFapDay(formData.nofap_checked);
-    const score = computeScore(formData);
-    setLastScore(score);
-
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setShowConfirmation(true);
-  }, [formData, submitLog, recordNoFapDay]);
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      submitLog(formData);
+      recordNoFapDay(formData.nofap_checked);
+      const score = computeScore(formData);
+      setLastScore(score);
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      setShowConfirmation(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [formData, submitLog, recordNoFapDay, isSubmitting]);
 
   return (
     <View style={styles.wrapper}>
@@ -181,9 +186,10 @@ export default function DailyLogForm({
 
         {/* Submit */}
         <TouchableOpacity
-          style={styles.submitButton}
+          style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
           onPress={handleSubmit}
           activeOpacity={0.8}
+          disabled={isSubmitting}
         >
           <Text style={styles.submitButtonText}>
             {isLogged ? t('update') : t('submit')}
@@ -265,6 +271,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
+  },
+  submitButtonDisabled: {
+    opacity: 0.6,
   },
   submitButtonText: {
     color: '#FFFFFF',

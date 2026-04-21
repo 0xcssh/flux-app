@@ -110,9 +110,6 @@ export default function ArticleSuggestion() {
           <Text style={styles.sectionTitle}>{tDash('learn')}</Text>
           <Text style={styles.sectionSubtitle}>{tDash('daily_articles')}</Text>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.seeAll}>{tDash('see_all')}</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Horizontal Scrollable Cards */}

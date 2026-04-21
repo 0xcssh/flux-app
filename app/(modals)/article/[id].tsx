@@ -71,10 +71,12 @@ const ARTICLES: Record<string, () => ArticleContent> = {
 
 export default function ArticleScreen() {
   const route = useRoute<any>();
-  const { id } = route.params;
+  const { id } = route.params ?? {};
   const navigation = useNavigation<any>();
   const { t, i18n } = useTranslation('dashboard');
   const [article, setArticle] = useState<ArticleContent | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
 
   const lang = i18n.language === 'fr' ? 'fr' : 'en';
   const catStyle = (id ? CATEGORY_STYLES[id] : null) ?? DEFAULT_STYLE;
@@ -85,9 +87,42 @@ export default function ArticleScreen() {
         setArticle(ARTICLES[id]());
       } catch (error) {
         console.error('[Article] Load error:', error);
+        setLoadError(true);
       }
+    } else {
+      setLoadError(true);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (article || loadError) return;
+    const timer = setTimeout(() => setTimedOut(true), 3000);
+    return () => clearTimeout(timer);
+  }, [article, loadError]);
+
+  const handleClose = () => {
+    if (navigation.canGoBack()) navigation.goBack();
+  };
+
+  if (loadError || timedOut) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+          <FontAwesome name="times" size={20} color="#FFFFFF" />
+        </TouchableOpacity>
+        <View style={styles.loadingContainer}>
+          <FontAwesome name="exclamation-circle" size={48} color={darkPalette.textTertiary} />
+          <Text style={styles.errorTitle}>Article not found</Text>
+          <Text style={styles.errorText}>
+            This article could not be loaded. It may have been moved or removed.
+          </Text>
+          <TouchableOpacity style={styles.errorButton} onPress={handleClose} activeOpacity={0.8}>
+            <Text style={styles.errorButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   if (!article) {
     return (
@@ -173,6 +208,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 32,
+    gap: 12,
+  },
+  errorTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginTop: 8,
+  },
+  errorText: {
+    fontSize: 14,
+    color: darkPalette.textTertiary,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  errorButton: {
+    backgroundColor: darkPalette.primary,
+    borderRadius: 12,
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+  },
+  errorButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
   },
   closeButton: {
     position: 'absolute',

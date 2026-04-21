@@ -12,6 +12,7 @@ interface SettingsState {
   onboardingSeen: boolean;
   hormonalProfile: HormonalProfile | null;
   smartRemindersEnabled: boolean;
+  _hydrated: boolean;
 }
 
 interface SettingsActions {
@@ -23,6 +24,7 @@ interface SettingsActions {
   setOnboardingSeen: (seen: boolean) => void;
   setHormonalProfile: (profile: HormonalProfile) => void;
   setSmartRemindersEnabled: (enabled: boolean) => void;
+  _setHydrated: (v: boolean) => void;
 }
 
 export const useSettingsStore = create<SettingsState & SettingsActions>()(
@@ -36,6 +38,7 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       onboardingSeen: false,
       hormonalProfile: null,
       smartRemindersEnabled: true,
+      _hydrated: false,
 
       setNotificationTime: (time) => set({ notificationTime: time }),
       setNotificationMode: (mode) => set({ notificationMode: mode }),
@@ -45,10 +48,24 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       setOnboardingSeen: (seen) => set({ onboardingSeen: seen }),
       setHormonalProfile: (profile) => set({ hormonalProfile: profile }),
       setSmartRemindersEnabled: (enabled) => set({ smartRemindersEnabled: enabled }),
+      _setHydrated: (v) => set({ _hydrated: v }),
     }),
     {
       name: 'flux-settings',
       storage: createJSONStorage(() => zustandStorage),
+      partialize: (state) => ({
+        notificationTime: state.notificationTime,
+        notificationMode: state.notificationMode,
+        language: state.language,
+        nofapEnabled: state.nofapEnabled,
+        darkMode: state.darkMode,
+        onboardingSeen: state.onboardingSeen,
+        hormonalProfile: state.hormonalProfile,
+        smartRemindersEnabled: state.smartRemindersEnabled,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?._setHydrated(true);
+      },
     }
   )
 );
