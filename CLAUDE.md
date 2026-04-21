@@ -226,10 +226,11 @@ The app.json that works on iOS 26 has NO plugins section. Only basic config:
 
 ---
 
-## Current Status (April 13 2026)
+## Current Status (April 21 2026)
 
-- **Phase 0-4**: Complete
-- **Phase 5**: App Store submission — rejected 2x, fixes implemented (retry + fallback + downsell removed), ready for resubmission
+- **Phase 0-5**: Complete ✅ — App live on App Store, IAPs approved, paywalls functional
+- **App binary**: Approved April 16 (build 44)
+- **IAPs**: Approved after standalone resubmission with shorter/specific descriptions (<55 chars)
 - **iOS 26**: Working on physical devices. TurboModule SIGABRT patched via `patches/react-native+0.83.4.patch` + `postinstall` script.
 - **Navigation**: Fully migrated from expo-router to React Navigation (`@react-navigation/stack` + `bottom-tabs`). Root in `App.tsx`.
 - **Onboarding**: Works. `finishOnboarding()` sets `onboardingSeen = true` → conditional navigator swaps automatically.
