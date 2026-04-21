@@ -32,7 +32,7 @@ interface LogState {
   todayLogged: boolean;
   isLoading: boolean;
 
-  submitLog: (formData: LogFormData, userId?: string) => void;
+  submitLog: (formData: LogFormData, userId?: string, logDate?: string) => void;
   updateLog: (logDate: string, formData: LogFormData, userId?: string) => void;
   syncPendingLogs: () => Promise<void>;
   loadHistory: (userId: string, days: number) => Promise<void>;
@@ -49,15 +49,16 @@ export const useLogStore = create<LogState>()(
       todayLogged: false,
       isLoading: false,
 
-      submitLog: (formData: LogFormData, userId?: string) => {
+      submitLog: (formData: LogFormData, userId?: string, logDate?: string) => {
         const today = getTodayDate();
+        const targetDate = logDate ?? today;
         const now = new Date().toISOString();
         const vitalityScore = computeVitalityScore(formData);
 
         const entry: DailyLogEntry = {
           id: generateUUID(),
           user_id: userId || 'local',
-          log_date: today,
+          log_date: targetDate,
           energy: formData.energy,
           mood: formData.mood,
           libido: formData.libido,
@@ -74,9 +75,11 @@ export const useLogStore = create<LogState>()(
         };
 
         set((state) => ({
-          logs: { ...state.logs, [today]: entry },
-          pendingSync: [...state.pendingSync, today],
-          todayLogged: true,
+          logs: { ...state.logs, [targetDate]: entry },
+          pendingSync: state.pendingSync.includes(targetDate)
+            ? state.pendingSync
+            : [...state.pendingSync, targetDate],
+          todayLogged: targetDate === today ? true : state.todayLogged,
         }));
       },
 

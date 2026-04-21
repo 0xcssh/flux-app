@@ -3,25 +3,24 @@ import { useLogStore } from '@/store/logStore';
 import { getTodayDate } from '@/lib/dateUtils';
 import type { LogFormData } from '@/types/log';
 
-export function useDailyLog(userId?: string) {
+export function useDailyLog(userId?: string, targetDate?: string) {
   const store = useLogStore();
 
-  const todayLog = store.getTodayLog();
-  const isLogged = !!todayLog;
+  const date = targetDate ?? getTodayDate();
+  const targetLog = store.logs[date] ?? null;
+  const isLogged = !!targetLog;
 
   const submitLog = useCallback(
     (data: LogFormData) => {
       if (isLogged) {
-        const today = getTodayDate();
-        store.updateLog(today, data, userId);
+        store.updateLog(date, data, userId);
       } else {
-        store.submitLog(data, userId);
+        store.submitLog(data, userId, date);
       }
     },
-    [userId, isLogged, store]
+    [userId, isLogged, store, date]
   );
 
-  // Auto-sync pending logs
   useEffect(() => {
     if (store.pendingSync.length > 0) {
       store.syncPendingLogs();
@@ -29,7 +28,7 @@ export function useDailyLog(userId?: string) {
   }, [store.pendingSync.length]);
 
   return {
-    todayLog,
+    todayLog: targetLog,
     isLogged,
     submitLog,
     logs: store.logs,

@@ -21,6 +21,7 @@ import type { LogFormData } from '@/types/log';
 interface DailyLogFormProps {
   userId: string;
   showNofap?: boolean;
+  targetDate?: string;
 }
 
 const SLIDER_CONFIG = [
@@ -83,9 +84,10 @@ function getScoreColor(score: number): string {
 export default function DailyLogForm({
   userId,
   showNofap = true,
+  targetDate,
 }: DailyLogFormProps) {
   const { t } = useTranslation('log');
-  const { todayLog, isLogged, submitLog } = useDailyLog(userId);
+  const { todayLog, isLogged, submitLog } = useDailyLog(userId, targetDate);
   const recordNoFapDay = useNoFapStore((s) => s.recordDay);
 
   const [formData, setFormData] = useState<LogFormData>({
@@ -127,7 +129,9 @@ export default function DailyLogForm({
     setIsSubmitting(true);
     try {
       submitLog(formData);
-      recordNoFapDay(formData.nofap_checked);
+      if (!targetDate) {
+        recordNoFapDay(formData.nofap_checked);
+      }
       const score = computeScore(formData);
       setLastScore(score);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -135,7 +139,7 @@ export default function DailyLogForm({
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, submitLog, recordNoFapDay, isSubmitting]);
+  }, [formData, submitLog, recordNoFapDay, isSubmitting, targetDate]);
 
   return (
     <View style={styles.wrapper}>
