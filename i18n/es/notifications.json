@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Pico de energía en {{hours}} h",
+      "body": "Energía en subida. Guarda las tareas duras para tu ventana."
+    },
+    "peak": {
+      "title": "Ventana de concentración abierta",
+      "body": "Los mejores 90 minutos de tu día. Decisiones duras, trabajo profundo, llamadas difíciles: ahora."
+    },
+    "dip": {
+      "title": "Bajón de la tarde",
+      "body": "La energía suele bajar ahora. Evita conversaciones duras. Camina, hidrátate, respira."
+    },
+    "recovery": {
+      "title": "Ventana de desconexión",
+      "body": "Dormir bien esta noche = más energía mañana. Pantallas fuera al ir a la cama."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Atento: los {{dayName}} van bajos",
+      "body": "Tus {{dayName}} están de media por debajo de tu base. Agenda ligera, sin reuniones críticas antes de las 10 h."
+    },
+    "poor_sleep": {
+      "title": "La concentración puede bajar hoy",
+      "body": "Dormiste {{quality}}/10. La concentración suele caer tras dormir mal. Delega tareas complejas."
+    },
+    "high_stress_3d": {
+      "title": "El estrés se acumula",
+      "body": "3 días seguidos de estrés alto. 5 min de respiración en caja ahora valen más que 30 min esta noche."
+    },
+    "no_training_3d": {
+      "title": "Mueve el cuerpo",
+      "body": "3 días sin entrenar. Tu puntuación baja de forma medible al día 4. Hoy, 20 min mínimo."
+    },
+    "improving_trend": {
+      "title": "Vas en racha",
+      "body": "Puntuación subiendo {{days}} días seguidos. No rompas el impulso: registra esta noche."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Día {{days}} — energía alta",
+      "body": "Impulso fuerte hoy. Canalízalo en entrenamiento o trabajo, no en ruido."
+    },
+    "day_9_fog": {
+      "title": "Día {{days}} — ventana de paciencia",
+      "body": "Típico de los días 7-10: decidir puede costar más. Pospón decisiones grandes 48 h."
+    },
+    "day_14_focus": {
+      "title": "Día {{days}} — ventana de concentración",
+      "body": "Cabeza más clara hoy. Saca el proyecto que llevas esquivando."
+    },
+    "milestone": {
+      "title": "{{days}} días firmes",
+      "body": "Nuevo récord de racha. Revisa tus estadísticas: verás el patrón."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "Racha de {{days}} días",
+      "body": "Llevas {{days}} días seguidos registrando. No la rompas: 60 segundos esta noche."
+    },
+    "broken": {
+      "title": "Reinicia tu racha",
+      "body": "Te saltaste ayer. Registra rápido para reconstruir: los patrones aparecen antes de lo que crees."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Check-in diario",
+      "body": "60 segundos para registrar tu día. Tu yo del futuro te lo agradece."
+    }
+  },
+  "days": {
+    "0": "domingo",
+    "1": "lunes",
+    "2": "martes",
+    "3": "miércoles",
+    "4": "jueves",
+    "5": "viernes",
+    "6": "sábado"
+  }
+}

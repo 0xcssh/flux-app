@@ -1,0 +1,50 @@
+{
+  "welcome": {
+    "title": "Willkommen bei Flux",
+    "subtitle": "Dein Tracker für hormonelle Rhythmen",
+    "description": "Flux hilft dir zu verstehen und zu verfolgen, wie natürliche hormonelle Zyklen deine Energie, Stimmung und Performance jeden Tag beeinflussen."
+  },
+  "circadian": {
+    "title": "Dein 24-Stunden-Zyklus",
+    "description": "Testosteron folgt einem täglichen Rhythmus — Peak am Morgen, Tief am Abend. Dieses Muster zu verstehen hilft dir, deinen Tag für Peak-Performance zu optimieren."
+  },
+  "infradian": {
+    "title": "Dein Monatsrhythmus",
+    "description": "Jenseits des Tageszyklus erleben Männer längere hormonelle Schwankungen über etwa 20-30 Tage. Diese Muster zu verfolgen zeigt dir, warum sich manche Wochen besser anfühlen als andere."
+  },
+  "setup": {
+    "title": "Personalisiere deine Erfahrung",
+    "notification_prompt": "Tägliche Erinnerungen aktivieren, um eine konstante Log-Routine aufzubauen?",
+    "nofap_prompt": "Möchtest du das NoFap-Tracking-Modul aktivieren?",
+    "nofap_description": "Verfolge Retention-Streaks und sieh, wie sie mit deinen Vitalitätswerten zusammenhängen."
+  },
+  "quiz_age": "Wie alt bist du?",
+  "quiz_wake": "Wann stehst du normalerweise auf?",
+  "quiz_activity": "Wie aktiv bist du?",
+  "quiz_sleep": "Wie ist deine Schlafqualität in letzter Zeit?",
+  "quiz_goal": "Was ist dein Hauptziel?",
+  "quiz_result_title": "Dein hormonelles Profil",
+  "quiz_peak_window": "Dein Peak-Fenster",
+  "profile_early_riser": "Frühaufsteher",
+  "profile_night_owl": "Nachteule",
+  "profile_balanced": "Ausgeglichen",
+  "profile_early_riser_desc": "Deine Hormone erreichen früh ihren Peak. Du bist für Morgenproduktivität und Abendruhe gebaut.",
+  "profile_night_owl_desc": "Dein Zyklus ist nach hinten verschoben. Dein Peak liegt zwischen spätem Vormittag und frühem Nachmittag.",
+  "profile_balanced_desc": "Du folgst dem klassischen hormonellen Rhythmus. Der Morgen ist deine Power-Zone.",
+  "goal_energy": "Mehr Energie",
+  "goal_performance": "Peak-Performance",
+  "goal_mood": "Bessere Stimmung",
+  "goal_sleep": "Besserer Schlaf",
+  "trial": {
+    "title": "Teste Premium 7 Tage kostenlos",
+    "features": [
+      "Vollständige Zyklusanalyse und Vorhersagen",
+      "Erweiterte Insights und Korrelationen",
+      "Unbegrenzter Zugriff auf den Verlauf",
+      "PDF-Berichte exportieren",
+      "Priority-Support"
+    ],
+    "cta": "Kostenlose Testphase starten",
+    "skip": "Mit kostenlosem Plan weitermachen"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Profilo",
+  "sections": {
+    "history": "Cronologia",
+    "settings": "Impostazioni",
+    "subscription": "Abbonamento",
+    "about": "Informazioni"
+  },
+  "settings": {
+    "notifications": "Promemoria Giornaliero",
+    "notification_time": "Ora del Promemoria",
+    "language": "Lingua",
+    "nofap_module": "Modulo NoFap",
+    "dark_mode": "Modalità Scura",
+    "data_export": "Esporta i Miei Dati",
+    "smart_reminders": "Promemoria Intelligenti"
+  },
+  "plans": {
+    "free": "Gratuito",
+    "premium": "Premium"
+  },
+  "plan_descriptions": {
+    "free": "Cronologia di 7 giorni, dashboard base",
+    "premium": "Cronologia completa, insight, analisi del ciclo"
+  },
+  "current_plan": "Piano Attuale",
+  "upgrade_cta": "Passa a Premium",
+  "trial_active": "Prova attiva — {{days}} giorni rimanenti",
+  "export_button": "Esporta come CSV",
+  "export_pdf": "Esporta come PDF",
+  "logout": "Esci",
+  "logout_confirm": "Sei sicuro di voler uscire?",
+  "delete_account": "Elimina Account",
+  "delete_confirm": "Questa azione è permanente e non può essere annullata. Tutti i tuoi dati verranno eliminati.",
+  "version": "Versione {{version}}",
+  "languages": {
+    "en": "Inglese",
+    "fr": "Francese"
+  }
+}

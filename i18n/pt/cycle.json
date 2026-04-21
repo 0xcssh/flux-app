@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "circadian": "24h",
+    "infradian": "30 Dias"
+  },
+  "circadian": {
+    "title": "Ritmo Circadiano",
+    "description": "Seu ciclo hormonal de 24 horas. A testosterona atinge o pico pela manhã e diminui gradualmente ao longo do dia.",
+    "morning_peak": "Pico Matinal",
+    "afternoon_dip": "Queda da Tarde",
+    "evening_low": "Baixa da Noite",
+    "optimal_window": "Janela Ideal"
+  },
+  "infradian": {
+    "title": "Ritmo Infradiano",
+    "description": "Seu ciclo hormonal mais longo, que dura aproximadamente 20-30 dias. Assim como as mulheres têm ciclos mensais, os homens passam por variações de testosterona e outros hormônios.",
+    "cycle_length": "Duração do Ciclo",
+    "current_day": "Dia {{day}} de {{total}}",
+    "estimated": "Estimado a partir dos seus dados"
+  },
+  "phase_labels": {
+    "rise": "Fase de Subida",
+    "peak": "Fase de Pico",
+    "decline": "Fase de Queda",
+    "recovery": "Fase de Recuperação"
+  },
+  "comparison": {
+    "vs_yesterday": "vs. Ontem",
+    "vs_last_week": "vs. Semana Passada",
+    "vs_cycle_avg": "vs. Média do Ciclo"
+  },
+  "premium_required": "Faça upgrade para o Premium para ver a análise completa do ciclo e as tendências históricas.",
+  "not_enough_data": "Continue registrando diariamente para ver seus padrões de ciclo. Precisamos de pelo menos 14 dias de dados.",
+  "day_at_glance": "Seu Dia em Resumo",
+  "phase_calendar": "Visão Mensal",
+  "cycle_calendar": "Calendário do Ciclo",
+  "days_logged": "dias registrados",
+  "days_logged_month": "{{logged}}/{{total}} dias",
+  "avg_score": "Pontuação média",
+  "avg_score_month": "Média: {{score}}",
+  "best_day_month": "Melhor: {{day}}",
+  "predicted_best": "Melhor previsto: {{day}}",
+  "legend_actual": "Real",
+  "legend_predicted": "Previsto",
+  "rise_time": "4h-8h",
+  "peak_time": "8h-12h",
+  "decline_time": "12h-20h",
+  "recovery_time": "20h-4h"
+}

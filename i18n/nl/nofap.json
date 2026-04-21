@@ -1,0 +1,45 @@
+{
+  "title": "NoFap Tracker",
+  "current_streak": "Huidige reeks",
+  "longest_streak": "Langste reeks",
+  "total_days": "Totaal aantal dagen",
+  "streak_label": "{{count}} dagen",
+  "milestones": {
+    "7d": {
+      "name": "Eén week",
+      "message": "Eerste week voltooid! Gevoeligheid van testosteronreceptoren begint toe te nemen."
+    },
+    "14d": {
+      "name": "Twee weken",
+      "message": "Twee weken sterk! Velen melden verbeterde focus en energie rond dit punt."
+    },
+    "30d": {
+      "name": "Eén maand",
+      "message": "Een volle maand! Hormonale balans stabiliseert. Je merkt misschien verbeterd zelfvertrouwen."
+    },
+    "60d": {
+      "name": "Twee maanden",
+      "message": "60 dagen discipline! Diepe hormonale en neurologische voordelen krijgen vat."
+    },
+    "90d": {
+      "name": "Negentig dagen",
+      "message": "De legendarische 90 dagen! Volledige reboot-mijlpaal bereikt. Uitstekende toewijding."
+    }
+  },
+  "reset_button": "Reeks resetten",
+  "reset_confirm": "Weet je het zeker? Dit reset je huidige reeks naar 0.",
+  "reset_done": "Reeks gereset. Elke reis begint met dag één.",
+  "correlations": {
+    "title": "NoFap impact",
+    "energy_boost": "Energie op reeksdagen",
+    "mood_boost": "Stemming op reeksdagen",
+    "libido_change": "Libidotrend",
+    "sleep_impact": "Impact op slaapkwaliteit"
+  },
+  "community": {
+    "title": "Communityvergelijking",
+    "average_streak": "Gemiddelde reeks in community",
+    "your_percentile": "Jouw percentiel",
+    "top_percent": "Top {{percent}}%"
+  }
+}

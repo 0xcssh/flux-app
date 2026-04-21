@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "circadian": "24h",
+    "infradian": "30 Giorni"
+  },
+  "circadian": {
+    "title": "Ritmo Circadiano",
+    "description": "Il tuo ciclo ormonale di 24 ore. Il testosterone raggiunge il picco al mattino e cala gradualmente durante la giornata.",
+    "morning_peak": "Picco Mattutino",
+    "afternoon_dip": "Calo Pomeridiano",
+    "evening_low": "Minimo Serale",
+    "optimal_window": "Finestra Ottimale"
+  },
+  "infradian": {
+    "title": "Ritmo Infradiano",
+    "description": "Il tuo ciclo ormonale più lungo, che dura circa 20-30 giorni. Come le donne hanno cicli mensili, anche gli uomini sperimentano fluttuazioni di testosterone e altri ormoni.",
+    "cycle_length": "Durata del Ciclo",
+    "current_day": "Giorno {{day}} di {{total}}",
+    "estimated": "Stimato dai tuoi dati"
+  },
+  "phase_labels": {
+    "rise": "Fase di Salita",
+    "peak": "Fase di Picco",
+    "decline": "Fase di Calo",
+    "recovery": "Fase di Recupero"
+  },
+  "comparison": {
+    "vs_yesterday": "vs. Ieri",
+    "vs_last_week": "vs. Scorsa Settimana",
+    "vs_cycle_avg": "vs. Media del Ciclo"
+  },
+  "premium_required": "Passa a Premium per vedere l'analisi completa del ciclo e le tendenze storiche.",
+  "not_enough_data": "Continua a registrare ogni giorno per vedere i pattern del tuo ciclo. Servono almeno 14 giorni di dati.",
+  "day_at_glance": "La Tua Giornata in Sintesi",
+  "phase_calendar": "Panoramica Mensile",
+  "cycle_calendar": "Calendario del Ciclo",
+  "days_logged": "giorni registrati",
+  "days_logged_month": "{{logged}}/{{total}} giorni",
+  "avg_score": "Punteggio medio",
+  "avg_score_month": "Media: {{score}}",
+  "best_day_month": "Migliore: {{day}}",
+  "predicted_best": "Migliore previsto: {{day}}",
+  "legend_actual": "Effettivo",
+  "legend_predicted": "Previsto",
+  "rise_time": "4-8",
+  "peak_time": "8-12",
+  "decline_time": "12-20",
+  "recovery_time": "20-4"
+}

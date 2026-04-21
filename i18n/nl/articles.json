@@ -1,0 +1,45 @@
+{
+  "title": "Leren",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Testosteron begrijpen: de basis",
+      "description": "Leer wat testosteron doet, hoe het wordt aangemaakt en waarom het belangrijk is voor je dagelijkse energie en prestaties."
+    },
+    "circadian_rhythm": {
+      "title": "Je 24-uurs hormonale klok",
+      "description": "Ontdek hoe testosteron en cortisol gedurende de dag schommelen en hoe je kunt samenwerken met het natuurlijke ritme van je lichaam."
+    },
+    "infradian_cycles": {
+      "title": "Mannen hebben ook maandelijkse cycli",
+      "description": "De wetenschap achter mannelijke infradiane ritmes en waarom je je week na week anders voelt."
+    },
+    "sleep_hormones": {
+      "title": "Slaap: de #1 hormoonoptimalisator",
+      "description": "Hoe slaapkwaliteit direct invloed heeft op testosteronproductie en wat je kunt doen om het te verbeteren."
+    },
+    "exercise_testosterone": {
+      "title": "Beweging en hormonale gezondheid",
+      "description": "Welke soorten beweging testosteron boosten, hoeveel optimaal is, en wanneer overtraining schadelijk is."
+    },
+    "stress_cortisol": {
+      "title": "Stress, cortisol en je vitaliteit",
+      "description": "Inzicht in de testosteron-cortisolrelatie en praktische stressmanagementtechnieken."
+    },
+    "nutrition_hormones": {
+      "title": "Voeding voor hormonale balans",
+      "description": "Belangrijke voedingsstoffen, voedingsmiddelen en eetpatronen die gezonde testosteronniveaus ondersteunen."
+    },
+    "nofap_science": {
+      "title": "De wetenschap van retentie",
+      "description": "Wat onderzoek zegt over ejaculatiefrequentie, testosteronniveaus en gevoeligheid van androgeenreceptoren."
+    },
+    "mood_energy_connection": {
+      "title": "De verbinding stemming-energie",
+      "description": "Hoe hormonen je emotionele staat aansturen en wat je stemmingspatronen onthullen over je hormonale gezondheid."
+    },
+    "building_habits": {
+      "title": "Een trackinggewoonte opbouwen",
+      "description": "Tips voor consistent dagelijks loggen en hoe data over tijd krachtige inzichten over je lichaam ontgrendelt."
+    }
+  }
+}

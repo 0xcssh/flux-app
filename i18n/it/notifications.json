@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Picco di energia tra {{hours}}h",
+      "body": "Energia in salita. Tieni i compiti duri per la tua finestra."
+    },
+    "peak": {
+      "title": "Finestra di focus aperta",
+      "body": "I migliori 90 minuti della tua giornata. Decisioni difficili, lavoro profondo, chiamate impegnative — adesso."
+    },
+    "dip": {
+      "title": "Calo pomeridiano",
+      "body": "L'energia tende a calare ora. Evita conversazioni difficili. Cammina, idratati, respira."
+    },
+    "recovery": {
+      "title": "Finestra di rilassamento",
+      "body": "Sonno di qualità stanotte = energia migliore domani. Schermi spenti prima di dormire."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Attenzione — i {{dayName}} sono bassi",
+      "body": "I tuoi {{dayName}} sono in media sotto la baseline. Pianifica leggero, niente riunioni critiche prima delle 10."
+    },
+    "poor_sleep": {
+      "title": "Il focus potrebbe calare oggi",
+      "body": "Hai dormito {{quality}}/10. Il focus tende a calare dopo un sonno scarso. Delega i compiti complessi."
+    },
+    "high_stress_3d": {
+      "title": "Stress che si accumula",
+      "body": "Stress alto da 3 giorni. 5 min di respirazione quadrata ora valgono più di 30 min stasera."
+    },
+    "no_training_3d": {
+      "title": "Muovi il corpo",
+      "body": "3 giorni senza allenamento. Il tuo punteggio cala in modo misurabile al quarto giorno. Minimo 20 min oggi."
+    },
+    "improving_trend": {
+      "title": "Stai andando alla grande",
+      "body": "Punteggio in salita da {{days}} giorni. Non rompere lo slancio — registra stasera."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Giorno {{days}} — energia alta",
+      "body": "Spinta forte oggi. Canalizzala nell'allenamento o nel lavoro, non nel rumore."
+    },
+    "day_9_fog": {
+      "title": "Giorno {{days}} — finestra di pazienza",
+      "body": "Giorni tipici 7-10: le decisioni possono sembrare più difficili. Rimanda le decisioni importanti di 48h."
+    },
+    "day_14_focus": {
+      "title": "Giorno {{days}} — finestra di focus",
+      "body": "Mente più chiara oggi. Porta a termine il progetto che stavi evitando."
+    },
+    "milestone": {
+      "title": "{{days}} giorni forti",
+      "body": "Nuovo record di serie. Controlla le tue statistiche — vedrai il pattern."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "Serie di {{days}} giorni",
+      "body": "Hai registrato {{days}} giorni di fila. Non rompere la serie — 60 secondi stasera."
+    },
+    "broken": {
+      "title": "Riavvia la tua serie",
+      "body": "Hai saltato ieri. Registrazione veloce per ricostruire — i pattern si rivelano più velocemente di quanto pensi."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Check-in giornaliero",
+      "body": "60 secondi per registrare la tua giornata. Il tuo io futuro ti ringrazia."
+    }
+  },
+  "days": {
+    "0": "Domenica",
+    "1": "Lunedì",
+    "2": "Martedì",
+    "3": "Mercoledì",
+    "4": "Giovedì",
+    "5": "Venerdì",
+    "6": "Sabato"
+  }
+}

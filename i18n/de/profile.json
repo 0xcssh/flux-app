@@ -1,0 +1,40 @@
+{
+  "title": "Profil",
+  "sections": {
+    "history": "Verlauf",
+    "settings": "Einstellungen",
+    "subscription": "Abonnement",
+    "about": "Über"
+  },
+  "settings": {
+    "notifications": "Tägliche Erinnerung",
+    "notification_time": "Erinnerungszeit",
+    "language": "Sprache",
+    "nofap_module": "NoFap-Modul",
+    "dark_mode": "Dark Mode",
+    "data_export": "Meine Daten exportieren",
+    "smart_reminders": "Smart Reminders"
+  },
+  "plans": {
+    "free": "Kostenlos",
+    "premium": "Premium"
+  },
+  "plan_descriptions": {
+    "free": "7-Tage-Verlauf, Basis-Dashboard",
+    "premium": "Voller Verlauf, Insights, Zyklusanalyse"
+  },
+  "current_plan": "Aktueller Plan",
+  "upgrade_cta": "Plan upgraden",
+  "trial_active": "Testphase aktiv — noch {{days}} Tage",
+  "export_button": "Als CSV exportieren",
+  "export_pdf": "Als PDF exportieren",
+  "logout": "Abmelden",
+  "logout_confirm": "Möchtest du dich wirklich abmelden?",
+  "delete_account": "Konto löschen",
+  "delete_confirm": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle deine Daten werden gelöscht.",
+  "version": "Version {{version}}",
+  "languages": {
+    "en": "Englisch",
+    "fr": "Französisch"
+  }
+}

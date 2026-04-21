@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "circadian": "24u",
+    "infradian": "30 dagen"
+  },
+  "circadian": {
+    "title": "Circadiaans ritme",
+    "description": "Je 24-uurs hormonale cyclus. Testosteron piekt in de ochtend en daalt geleidelijk gedurende de dag.",
+    "morning_peak": "Ochtendpiek",
+    "afternoon_dip": "Namiddag dip",
+    "evening_low": "Avonddal",
+    "optimal_window": "Optimaal venster"
+  },
+  "infradian": {
+    "title": "Infradiaans ritme",
+    "description": "Je langere hormonale cyclus van ongeveer 20-30 dagen. Net zoals vrouwen maandelijkse cycli hebben, ervaren mannen schommelingen in testosteron en andere hormonen.",
+    "cycle_length": "Cycluslengte",
+    "current_day": "Dag {{day}} van {{total}}",
+    "estimated": "Geschat op basis van je data"
+  },
+  "phase_labels": {
+    "rise": "Opkomstfase",
+    "peak": "Piekfase",
+    "decline": "Afnamefase",
+    "recovery": "Herstelfase"
+  },
+  "comparison": {
+    "vs_yesterday": "t.o.v. gisteren",
+    "vs_last_week": "t.o.v. vorige week",
+    "vs_cycle_avg": "t.o.v. cyclusgemiddelde"
+  },
+  "premium_required": "Upgrade naar Premium om je volledige cyclusanalyse en historische trends te zien.",
+  "not_enough_data": "Blijf dagelijks loggen om je cycluspatronen te zien. We hebben minstens 14 dagen data nodig.",
+  "day_at_glance": "Jouw dag in een oogopslag",
+  "phase_calendar": "Maandoverzicht",
+  "cycle_calendar": "Cycluskalender",
+  "days_logged": "dagen gelogd",
+  "days_logged_month": "{{logged}}/{{total}} dagen",
+  "avg_score": "Gem. score",
+  "avg_score_month": "Gem.: {{score}}",
+  "best_day_month": "Beste: {{day}}",
+  "predicted_best": "Voorspelde beste: {{day}}",
+  "legend_actual": "Werkelijk",
+  "legend_predicted": "Voorspeld",
+  "rise_time": "4-8 uur",
+  "peak_time": "8-12 uur",
+  "decline_time": "12-20 uur",
+  "recovery_time": "20-4 uur"
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Perfil",
+  "sections": {
+    "history": "Historial",
+    "settings": "Ajustes",
+    "subscription": "Suscripción",
+    "about": "Acerca de"
+  },
+  "settings": {
+    "notifications": "Recordatorio diario",
+    "notification_time": "Hora del recordatorio",
+    "language": "Idioma",
+    "nofap_module": "Módulo NoFap",
+    "dark_mode": "Modo oscuro",
+    "data_export": "Exportar mis datos",
+    "smart_reminders": "Recordatorios inteligentes"
+  },
+  "plans": {
+    "free": "Gratuito",
+    "premium": "Premium"
+  },
+  "plan_descriptions": {
+    "free": "Historial de 7 días, panel básico",
+    "premium": "Historial completo, análisis, análisis de ciclo"
+  },
+  "current_plan": "Plan actual",
+  "upgrade_cta": "Mejorar plan",
+  "trial_active": "Prueba activa — quedan {{days}} días",
+  "export_button": "Exportar como CSV",
+  "export_pdf": "Exportar como PDF",
+  "logout": "Cerrar sesión",
+  "logout_confirm": "¿Seguro que quieres cerrar sesión?",
+  "delete_account": "Eliminar cuenta",
+  "delete_confirm": "Esta acción es permanente y no se puede deshacer. Se eliminarán todos tus datos.",
+  "version": "Versión {{version}}",
+  "languages": {
+    "en": "Inglés",
+    "fr": "Francés"
+  }
+}

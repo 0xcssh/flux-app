@@ -1,0 +1,45 @@
+{
+  "title": "Rastreador NoFap",
+  "current_streak": "Racha actual",
+  "longest_streak": "Racha más larga",
+  "total_days": "Días totales",
+  "streak_label": "{{count}} días",
+  "milestones": {
+    "7d": {
+      "name": "Una semana",
+      "message": "¡Primera semana completada! La sensibilidad de los receptores de testosterona empieza a aumentar."
+    },
+    "14d": {
+      "name": "Dos semanas",
+      "message": "¡Dos semanas firmes! Muchos reportan mejor concentración y energía a estas alturas."
+    },
+    "30d": {
+      "name": "Un mes",
+      "message": "¡Un mes entero! El equilibrio hormonal se está estabilizando. Puede que notes más confianza."
+    },
+    "60d": {
+      "name": "Dos meses",
+      "message": "¡60 días de disciplina! Los beneficios hormonales y neurológicos profundos se están consolidando."
+    },
+    "90d": {
+      "name": "Noventa días",
+      "message": "¡Los legendarios 90 días! Hito de reinicio completo alcanzado. Un compromiso excepcional."
+    }
+  },
+  "reset_button": "Reiniciar racha",
+  "reset_confirm": "¿Estás seguro? Esto pondrá tu racha actual a 0.",
+  "reset_done": "Racha reiniciada. Todo viaje empieza con el primer día.",
+  "correlations": {
+    "title": "Impacto NoFap",
+    "energy_boost": "Energía en días de racha",
+    "mood_boost": "Ánimo en días de racha",
+    "libido_change": "Tendencia de libido",
+    "sleep_impact": "Impacto en la calidad del sueño"
+  },
+  "community": {
+    "title": "Comparativa con la comunidad",
+    "average_streak": "Racha media de la comunidad",
+    "your_percentile": "Tu percentil",
+    "top_percent": "Top {{percent}} %"
+  }
+}

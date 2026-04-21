@@ -1,0 +1,34 @@
+{
+  "title": "Registro Giornaliero",
+  "subtitle": "Come ti senti oggi?",
+  "labels": {
+    "energy": "Livello di Energia",
+    "mood": "Umore",
+    "libido": "Libido",
+    "sleep_quality": "Qualità del Sonno",
+    "stress": "Livello di Stress",
+    "training": "Attività Fisica"
+  },
+  "hints": {
+    "energy": "1 = Esausto, 10 = Inarrestabile",
+    "mood": "1 = Molto basso, 10 = Eccellente",
+    "libido": "1 = Molto bassa, 10 = Molto alta",
+    "sleep_quality": "1 = Pessimo, 10 = Perfetto",
+    "stress": "1 = Nessuno stress, 10 = Estremamente stressato",
+    "training": "1 = Giorno di riposo, 10 = Sforzo massimo"
+  },
+  "notes_placeholder": "Aggiungi note sulla tua giornata (opzionale)...",
+  "nofap_checkbox": "Giorno NoFap (nessun PMO)",
+  "checkin_title": "Check-in Giornaliero",
+  "time_badge": "60 sec",
+  "live_score": "Il tuo punteggio",
+  "nofap_label": "Astinenza mantenuta oggi",
+  "submit": "Salva il Registro di Oggi",
+  "success": "Registro salvato! Mantieni la serie.",
+  "already_logged": "Hai già registrato oggi. Vuoi aggiornare?",
+  "update": "Aggiorna Registro",
+  "reminder": {
+    "title": "È ora di registrare!",
+    "body": "Prenditi 30 secondi per monitorare come ti senti oggi."
+  }
+}

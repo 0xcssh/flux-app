@@ -24,7 +24,62 @@ import frNofap from './fr/nofap.json';
 import frArticles from './fr/articles.json';
 import frNotifications from './fr/notifications.json';
 
-const SUPPORTED_LANGUAGES = ['en', 'fr'] as const;
+import esCommon from './es/common.json';
+import esDashboard from './es/dashboard.json';
+import esCycle from './es/cycle.json';
+import esLog from './es/log.json';
+import esInsights from './es/insights.json';
+import esProfile from './es/profile.json';
+import esOnboarding from './es/onboarding.json';
+import esNofap from './es/nofap.json';
+import esArticles from './es/articles.json';
+import esNotifications from './es/notifications.json';
+
+import itCommon from './it/common.json';
+import itDashboard from './it/dashboard.json';
+import itCycle from './it/cycle.json';
+import itLog from './it/log.json';
+import itInsights from './it/insights.json';
+import itProfile from './it/profile.json';
+import itOnboarding from './it/onboarding.json';
+import itNofap from './it/nofap.json';
+import itArticles from './it/articles.json';
+import itNotifications from './it/notifications.json';
+
+import deCommon from './de/common.json';
+import deDashboard from './de/dashboard.json';
+import deCycle from './de/cycle.json';
+import deLog from './de/log.json';
+import deInsights from './de/insights.json';
+import deProfile from './de/profile.json';
+import deOnboarding from './de/onboarding.json';
+import deNofap from './de/nofap.json';
+import deArticles from './de/articles.json';
+import deNotifications from './de/notifications.json';
+
+import ptCommon from './pt/common.json';
+import ptDashboard from './pt/dashboard.json';
+import ptCycle from './pt/cycle.json';
+import ptLog from './pt/log.json';
+import ptInsights from './pt/insights.json';
+import ptProfile from './pt/profile.json';
+import ptOnboarding from './pt/onboarding.json';
+import ptNofap from './pt/nofap.json';
+import ptArticles from './pt/articles.json';
+import ptNotifications from './pt/notifications.json';
+
+import nlCommon from './nl/common.json';
+import nlDashboard from './nl/dashboard.json';
+import nlCycle from './nl/cycle.json';
+import nlLog from './nl/log.json';
+import nlInsights from './nl/insights.json';
+import nlProfile from './nl/profile.json';
+import nlOnboarding from './nl/onboarding.json';
+import nlNofap from './nl/nofap.json';
+import nlArticles from './nl/articles.json';
+import nlNotifications from './nl/notifications.json';
+
+const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'it', 'de', 'pt', 'nl'] as const;
 type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
 
 function detectDeviceLanguage(): SupportedLanguage {
@@ -89,6 +144,66 @@ i18n.use(initReactI18next).init({
       nofap: frNofap,
       articles: frArticles,
       notifications: frNotifications,
+    },
+    es: {
+      common: esCommon,
+      dashboard: esDashboard,
+      cycle: esCycle,
+      log: esLog,
+      insights: esInsights,
+      profile: esProfile,
+      onboarding: esOnboarding,
+      nofap: esNofap,
+      articles: esArticles,
+      notifications: esNotifications,
+    },
+    it: {
+      common: itCommon,
+      dashboard: itDashboard,
+      cycle: itCycle,
+      log: itLog,
+      insights: itInsights,
+      profile: itProfile,
+      onboarding: itOnboarding,
+      nofap: itNofap,
+      articles: itArticles,
+      notifications: itNotifications,
+    },
+    de: {
+      common: deCommon,
+      dashboard: deDashboard,
+      cycle: deCycle,
+      log: deLog,
+      insights: deInsights,
+      profile: deProfile,
+      onboarding: deOnboarding,
+      nofap: deNofap,
+      articles: deArticles,
+      notifications: deNotifications,
+    },
+    pt: {
+      common: ptCommon,
+      dashboard: ptDashboard,
+      cycle: ptCycle,
+      log: ptLog,
+      insights: ptInsights,
+      profile: ptProfile,
+      onboarding: ptOnboarding,
+      nofap: ptNofap,
+      articles: ptArticles,
+      notifications: ptNotifications,
+    },
+    nl: {
+      common: nlCommon,
+      dashboard: nlDashboard,
+      cycle: nlCycle,
+      log: nlLog,
+      insights: nlInsights,
+      profile: nlProfile,
+      onboarding: nlOnboarding,
+      nofap: nlNofap,
+      articles: nlArticles,
+      notifications: nlNotifications,
     },
   },
 });

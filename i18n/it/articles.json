@@ -1,0 +1,45 @@
+{
+  "title": "Impara",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Capire il Testosterone: Le Basi",
+      "description": "Scopri cosa fa il testosterone, come viene prodotto e perché è importante per la tua energia e performance quotidiane."
+    },
+    "circadian_rhythm": {
+      "title": "Il Tuo Orologio Ormonale di 24 Ore",
+      "description": "Scopri come testosterone e cortisolo fluttuano durante la giornata e come lavorare con il ritmo naturale del tuo corpo."
+    },
+    "infradian_cycles": {
+      "title": "Anche gli Uomini Hanno Cicli Mensili",
+      "description": "La scienza dietro i ritmi infradiani maschili e perché ti senti diverso di settimana in settimana."
+    },
+    "sleep_hormones": {
+      "title": "Sonno: L'Ottimizzatore Ormonale N°1",
+      "description": "Come la qualità del sonno impatta direttamente la produzione di testosterone e cosa puoi fare per migliorarla."
+    },
+    "exercise_testosterone": {
+      "title": "Esercizio e Salute Ormonale",
+      "description": "Quali tipi di esercizio aumentano il testosterone, quanto è ottimale e quando il sovrallenamento fa male."
+    },
+    "stress_cortisol": {
+      "title": "Stress, Cortisolo e la Tua Vitalità",
+      "description": "Capire la relazione tra testosterone e cortisolo e le tecniche pratiche di gestione dello stress."
+    },
+    "nutrition_hormones": {
+      "title": "Nutrizione per l'Equilibrio Ormonale",
+      "description": "Nutrienti chiave, alimenti e pattern alimentari che supportano livelli sani di testosterone."
+    },
+    "nofap_science": {
+      "title": "La Scienza della Ritenzione",
+      "description": "Cosa dice la ricerca sulla frequenza dell'eiaculazione, i livelli di testosterone e la sensibilità dei recettori degli androgeni."
+    },
+    "mood_energy_connection": {
+      "title": "Il Legame Umore-Energia",
+      "description": "Come gli ormoni guidano il tuo stato emotivo e cosa rivelano i pattern del tuo umore sulla tua salute ormonale."
+    },
+    "building_habits": {
+      "title": "Costruire un'Abitudine di Tracciamento",
+      "description": "Consigli per una registrazione giornaliera costante e come i dati nel tempo sbloccano potenti insight sul tuo corpo."
+    }
+  }
+}

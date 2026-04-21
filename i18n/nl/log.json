@@ -1,0 +1,34 @@
+{
+  "title": "Dagelijkse log",
+  "subtitle": "Hoe voel je je vandaag?",
+  "labels": {
+    "energy": "Energieniveau",
+    "mood": "Stemming",
+    "libido": "Libido",
+    "sleep_quality": "Slaapkwaliteit",
+    "stress": "Stressniveau",
+    "training": "Fysieke activiteit"
+  },
+  "hints": {
+    "energy": "1 = Uitgeput, 10 = Onstuitbaar",
+    "mood": "1 = Zeer laag, 10 = Uitstekend",
+    "libido": "1 = Zeer laag, 10 = Zeer hoog",
+    "sleep_quality": "1 = Verschrikkelijk, 10 = Perfect",
+    "stress": "1 = Geen stress, 10 = Extreem gestrest",
+    "training": "1 = Rustdag, 10 = Maximale inspanning"
+  },
+  "notes_placeholder": "Voeg notities toe over je dag (optioneel)...",
+  "nofap_checkbox": "NoFap dag (geen PMO)",
+  "checkin_title": "Dagelijkse check-in",
+  "time_badge": "60 sec",
+  "live_score": "Jouw score",
+  "nofap_label": "Onthouding vandaag behouden",
+  "submit": "Log van vandaag opslaan",
+  "success": "Log opgeslagen! Houd de reeks gaande.",
+  "already_logged": "Je hebt vandaag al gelogd. Wil je bijwerken?",
+  "update": "Log bijwerken",
+  "reminder": {
+    "title": "Tijd om te loggen!",
+    "body": "Neem 30 seconden om bij te houden hoe je je vandaag voelt."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "welcome": {
+    "title": "Bem-vindo ao Flux",
+    "subtitle": "Seu rastreador de ritmo hormonal",
+    "description": "O Flux ajuda você a entender e acompanhar os ciclos hormonais naturais que afetam sua energia, humor e desempenho todos os dias."
+  },
+  "circadian": {
+    "title": "Seu Ciclo de 24 Horas",
+    "description": "A testosterona segue um ritmo diário — atingindo o pico pela manhã e caindo à noite. Entender esse padrão ajuda você a otimizar sua rotina para o máximo desempenho."
+  },
+  "infradian": {
+    "title": "Seu Ritmo Mensal",
+    "description": "Além do ciclo diário, os homens passam por variações hormonais mais longas, de aproximadamente 20-30 dias. Acompanhar esses padrões revela por que algumas semanas parecem melhores que outras."
+  },
+  "setup": {
+    "title": "Personalize Sua Experiência",
+    "notification_prompt": "Ativar lembretes diários para criar o hábito de registrar consistentemente?",
+    "nofap_prompt": "Deseja ativar o módulo de rastreamento NoFap?",
+    "nofap_description": "Acompanhe sequências de retenção e veja como elas se correlacionam com suas métricas de vitalidade."
+  },
+  "quiz_age": "Qual é a sua idade?",
+  "quiz_wake": "A que horas você costuma acordar?",
+  "quiz_activity": "Quão ativo você é?",
+  "quiz_sleep": "Como está a qualidade do seu sono ultimamente?",
+  "quiz_goal": "Qual é o seu objetivo principal?",
+  "quiz_result_title": "Seu Perfil Hormonal",
+  "quiz_peak_window": "Sua Janela de Pico",
+  "profile_early_riser": "Madrugador",
+  "profile_night_owl": "Notívago",
+  "profile_balanced": "Equilibrado",
+  "profile_early_riser_desc": "Seus hormônios atingem o pico cedo. Você é feito para produtividade matinal e descanso noturno.",
+  "profile_night_owl_desc": "Seu ciclo é mais deslocado. Seu pico de desempenho vem do meio da manhã ao início da tarde.",
+  "profile_balanced_desc": "Você segue o ritmo hormonal clássico. As manhãs são sua zona de poder.",
+  "goal_energy": "Mais Energia",
+  "goal_performance": "Desempenho Máximo",
+  "goal_mood": "Melhor Humor",
+  "goal_sleep": "Melhor Sono",
+  "trial": {
+    "title": "Experimente o Premium Grátis por 7 Dias",
+    "features": [
+      "Análise completa do ciclo e previsões",
+      "Insights avançados e correlações",
+      "Acesso ilimitado ao histórico",
+      "Exportação de relatórios em PDF",
+      "Suporte prioritário"
+    ],
+    "cta": "Iniciar Teste Grátis",
+    "skip": "Continuar com o Plano Gratuito"
+  }
+}

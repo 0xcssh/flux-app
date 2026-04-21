@@ -1,0 +1,50 @@
+{
+  "welcome": {
+    "title": "Welkom bij Flux",
+    "subtitle": "Je hormonale ritmetracker",
+    "description": "Flux helpt je de natuurlijke hormonale cycli te begrijpen en te volgen die elke dag je energie, stemming en prestaties beïnvloeden."
+  },
+  "circadian": {
+    "title": "Je 24-uurs cyclus",
+    "description": "Testosteron volgt een dagelijks ritme — piekend in de ochtend en zakkend in de avond. Dit patroon begrijpen helpt je schema optimaliseren voor piekprestaties."
+  },
+  "infradian": {
+    "title": "Je maandritme",
+    "description": "Naast de dagelijkse cyclus ervaren mannen langere hormonale schommelingen van ongeveer 20-30 dagen. Deze patronen volgen onthult waarom sommige weken beter voelen dan andere."
+  },
+  "setup": {
+    "title": "Personaliseer je ervaring",
+    "notification_prompt": "Dagelijkse herinneringen inschakelen om een consistente loggewoonte op te bouwen?",
+    "nofap_prompt": "Wil je de NoFap-trackingmodule inschakelen?",
+    "nofap_description": "Volg retentiereeksen en zie hoe ze correleren met je vitaliteitsmetrics."
+  },
+  "quiz_age": "Hoe oud ben je?",
+  "quiz_wake": "Hoe laat word je meestal wakker?",
+  "quiz_activity": "Hoe actief ben je?",
+  "quiz_sleep": "Hoe is je slaapkwaliteit de laatste tijd?",
+  "quiz_goal": "Wat is je hoofddoel?",
+  "quiz_result_title": "Jouw hormonale profiel",
+  "quiz_peak_window": "Jouw piekvenster",
+  "profile_early_riser": "Vroege vogel",
+  "profile_night_owl": "Nachtbraker",
+  "profile_balanced": "In balans",
+  "profile_early_riser_desc": "Je hormonen piekken vroeg. Je bent gebouwd voor ochtendproductiviteit en avondrust.",
+  "profile_night_owl_desc": "Je cyclus verschuift naar later. Je piekprestaties komen midden ochtend tot vroege middag.",
+  "profile_balanced_desc": "Je volgt het klassieke hormonale ritme. Ochtenden zijn jouw powermoment.",
+  "goal_energy": "Meer energie",
+  "goal_performance": "Piekprestatie",
+  "goal_mood": "Betere stemming",
+  "goal_sleep": "Betere slaap",
+  "trial": {
+    "title": "Probeer Premium 7 dagen gratis",
+    "features": [
+      "Volledige cyclusanalyse en voorspellingen",
+      "Geavanceerde inzichten en correlaties",
+      "Onbeperkte toegang tot geschiedenis",
+      "PDF-rapport exports",
+      "Prioriteitsondersteuning"
+    ],
+    "cta": "Start gratis proefperiode",
+    "skip": "Doorgaan met gratis plan"
+  }
+}

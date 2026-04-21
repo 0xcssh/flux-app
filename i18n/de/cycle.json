@@ -1,0 +1,49 @@
+{
+  "tabs": {
+    "circadian": "24h",
+    "infradian": "30 Tage"
+  },
+  "circadian": {
+    "title": "Zirkadianer Rhythmus",
+    "description": "Dein 24-Stunden-Hormonzyklus. Testosteron erreicht seinen Höhepunkt am Morgen und sinkt im Laufe des Tages.",
+    "morning_peak": "Morgendlicher Peak",
+    "afternoon_dip": "Nachmittagstief",
+    "evening_low": "Abendtief",
+    "optimal_window": "Optimales Fenster"
+  },
+  "infradian": {
+    "title": "Infradischer Rhythmus",
+    "description": "Dein längerer Hormonzyklus von etwa 20-30 Tagen. Ähnlich wie Frauen monatliche Zyklen haben, erleben auch Männer Schwankungen bei Testosteron und anderen Hormonen.",
+    "cycle_length": "Zykluslänge",
+    "current_day": "Tag {{day}} von {{total}}",
+    "estimated": "Geschätzt aus deinen Daten"
+  },
+  "phase_labels": {
+    "rise": "Anstiegsphase",
+    "peak": "Peak-Phase",
+    "decline": "Abfallphase",
+    "recovery": "Erholungsphase"
+  },
+  "comparison": {
+    "vs_yesterday": "vs. gestern",
+    "vs_last_week": "vs. letzte Woche",
+    "vs_cycle_avg": "vs. Zyklus-Durchschnitt"
+  },
+  "premium_required": "Upgrade auf Premium, um deine vollständige Zyklusanalyse und historische Trends zu sehen.",
+  "not_enough_data": "Logge weiterhin täglich, um deine Zyklusmuster zu sehen. Wir brauchen mindestens 14 Tage Daten.",
+  "day_at_glance": "Dein Tag auf einen Blick",
+  "phase_calendar": "Monatsübersicht",
+  "cycle_calendar": "Zykluskalender",
+  "days_logged": "Tage geloggt",
+  "days_logged_month": "{{logged}}/{{total}} Tage",
+  "avg_score": "Durchschn. Score",
+  "avg_score_month": "Ø: {{score}}",
+  "best_day_month": "Bester Tag: {{day}}",
+  "predicted_best": "Prognostiziert bester Tag: {{day}}",
+  "legend_actual": "Tatsächlich",
+  "legend_predicted": "Prognose",
+  "rise_time": "4-8 Uhr",
+  "peak_time": "8-12 Uhr",
+  "decline_time": "12-20 Uhr",
+  "recovery_time": "20-4 Uhr"
+}

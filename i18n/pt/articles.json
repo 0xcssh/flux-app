@@ -1,0 +1,45 @@
+{
+  "title": "Aprenda",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Entendendo a Testosterona: O Básico",
+      "description": "Aprenda o que a testosterona faz, como é produzida e por que importa para sua energia e desempenho diários."
+    },
+    "circadian_rhythm": {
+      "title": "Seu Relógio Hormonal de 24 Horas",
+      "description": "Descubra como testosterona e cortisol oscilam ao longo do dia e como trabalhar com o ritmo natural do seu corpo."
+    },
+    "infradian_cycles": {
+      "title": "Homens Também Têm Ciclos Mensais",
+      "description": "A ciência por trás dos ritmos infradianos masculinos e por que você se sente diferente de uma semana para outra."
+    },
+    "sleep_hormones": {
+      "title": "Sono: O Otimizador Hormonal #1",
+      "description": "Como a qualidade do sono impacta diretamente a produção de testosterona e o que você pode fazer para melhorá-la."
+    },
+    "exercise_testosterone": {
+      "title": "Exercício e Saúde Hormonal",
+      "description": "Quais tipos de exercício elevam a testosterona, quanto é o ideal e quando o excesso de treino prejudica."
+    },
+    "stress_cortisol": {
+      "title": "Estresse, Cortisol e Sua Vitalidade",
+      "description": "Entendendo a relação testosterona-cortisol e técnicas práticas de gerenciamento do estresse."
+    },
+    "nutrition_hormones": {
+      "title": "Nutrição para o Equilíbrio Hormonal",
+      "description": "Nutrientes, alimentos e padrões alimentares essenciais que sustentam níveis saudáveis de testosterona."
+    },
+    "nofap_science": {
+      "title": "A Ciência da Retenção",
+      "description": "O que a pesquisa diz sobre frequência de ejaculação, níveis de testosterona e sensibilidade dos receptores androgênicos."
+    },
+    "mood_energy_connection": {
+      "title": "A Conexão Humor-Energia",
+      "description": "Como os hormônios guiam seu estado emocional e o que seus padrões de humor revelam sobre sua saúde hormonal."
+    },
+    "building_habits": {
+      "title": "Criando o Hábito de Registrar",
+      "description": "Dicas para registrar consistentemente todos os dias e como os dados ao longo do tempo revelam insights poderosos sobre seu corpo."
+    }
+  }
+}

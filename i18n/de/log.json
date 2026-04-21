@@ -1,0 +1,34 @@
+{
+  "title": "Tägliches Log",
+  "subtitle": "Wie fühlst du dich heute?",
+  "labels": {
+    "energy": "Energielevel",
+    "mood": "Stimmung",
+    "libido": "Libido",
+    "sleep_quality": "Schlafqualität",
+    "stress": "Stresslevel",
+    "training": "Körperliche Aktivität"
+  },
+  "hints": {
+    "energy": "1 = Erschöpft, 10 = Unaufhaltsam",
+    "mood": "1 = Sehr schlecht, 10 = Exzellent",
+    "libido": "1 = Sehr niedrig, 10 = Sehr hoch",
+    "sleep_quality": "1 = Furchtbar, 10 = Perfekt",
+    "stress": "1 = Kein Stress, 10 = Extrem gestresst",
+    "training": "1 = Ruhetag, 10 = Maximaler Einsatz"
+  },
+  "notes_placeholder": "Füge Notizen zu deinem Tag hinzu (optional)...",
+  "nofap_checkbox": "NoFap-Tag (kein PMO)",
+  "checkin_title": "Tägliches Check-in",
+  "time_badge": "60 Sek.",
+  "live_score": "Dein Score",
+  "nofap_label": "Abstinenz heute eingehalten",
+  "submit": "Heutiges Log speichern",
+  "success": "Log gespeichert! Halte den Streak am Laufen.",
+  "already_logged": "Du hast heute schon geloggt. Aktualisieren?",
+  "update": "Log aktualisieren",
+  "reminder": {
+    "title": "Zeit zu loggen!",
+    "body": "Nimm dir 30 Sekunden, um festzuhalten, wie du dich heute fühlst."
+  }
+}

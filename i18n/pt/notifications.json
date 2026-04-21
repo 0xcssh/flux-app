@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Pico de energia em {{hours}}h",
+      "body": "Energia subindo. Guarde as tarefas difíceis para sua janela."
+    },
+    "peak": {
+      "title": "Janela de foco aberta",
+      "body": "Os melhores 90 minutos do seu dia. Decisões difíceis, trabalho profundo, chamadas duras — agora."
+    },
+    "dip": {
+      "title": "Queda da tarde",
+      "body": "A energia tende a cair agora. Evite conversas difíceis. Caminhe, hidrate-se, respire."
+    },
+    "recovery": {
+      "title": "Janela de desaceleração",
+      "body": "Sono de qualidade hoje = mais energia amanhã. Telas desligadas antes de dormir."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Atenção — {{dayName}}s ficam baixos",
+      "body": "Suas {{dayName}}s ficam em média abaixo do seu nível. Agenda leve, nenhuma reunião crítica antes das 10h."
+    },
+    "poor_sleep": {
+      "title": "Foco pode cair hoje",
+      "body": "Você dormiu {{quality}}/10. O foco tende a cair após sono ruim. Delegue tarefas complexas."
+    },
+    "high_stress_3d": {
+      "title": "Estresse acumulando",
+      "body": "3 dias seguidos com estresse alto. 5 min de respiração quadrada agora valem mais que 30 min à noite."
+    },
+    "no_training_3d": {
+      "title": "Mexa o corpo",
+      "body": "3 dias sem treinar. Sua pontuação cai visivelmente a partir do 4º dia. 20 min mínimo hoje."
+    },
+    "improving_trend": {
+      "title": "Você está embalado",
+      "body": "Pontuação subindo há {{days}} dias. Não quebre o embalo — registre hoje à noite."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Dia {{days}} — energia alta",
+      "body": "Ímpeto forte hoje. Canalize para o treino ou o trabalho, não para o ruído."
+    },
+    "day_9_fog": {
+      "title": "Dia {{days}} — janela de paciência",
+      "body": "Típico dos dias 7-10: decisões podem parecer mais difíceis. Adie escolhas grandes por 48h."
+    },
+    "day_14_focus": {
+      "title": "Dia {{days}} — janela de foco",
+      "body": "Cabeça mais clara hoje. Entregue o projeto que você vem evitando."
+    },
+    "milestone": {
+      "title": "{{days}} dias firmes",
+      "body": "Novo recorde de sequência. Confira suas estatísticas — o padrão aparece."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "Sequência de {{days}} dias",
+      "body": "Você registrou {{days}} dias seguidos. Não quebre — 60 segundos hoje à noite."
+    },
+    "broken": {
+      "title": "Reinicie sua sequência",
+      "body": "Você perdeu ontem. Registro rápido para reconstruir — os padrões aparecem mais rápido do que você imagina."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Check-in diário",
+      "body": "60 segundos para registrar seu dia. Seu eu do futuro agradece."
+    }
+  },
+  "days": {
+    "0": "Domingo",
+    "1": "Segunda-feira",
+    "2": "Terça-feira",
+    "3": "Quarta-feira",
+    "4": "Quinta-feira",
+    "5": "Sexta-feira",
+    "6": "Sábado"
+  }
+}

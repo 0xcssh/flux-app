@@ -1,0 +1,45 @@
+{
+  "title": "Rastreador NoFap",
+  "current_streak": "Sequência Atual",
+  "longest_streak": "Maior Sequência",
+  "total_days": "Total de Dias",
+  "streak_label": "{{count}} dias",
+  "milestones": {
+    "7d": {
+      "name": "Uma Semana",
+      "message": "Primeira semana concluída! A sensibilidade dos receptores de testosterona começa a aumentar."
+    },
+    "14d": {
+      "name": "Duas Semanas",
+      "message": "Duas semanas firmes! Muitos relatam mais foco e energia a esta altura."
+    },
+    "30d": {
+      "name": "Um Mês",
+      "message": "Um mês inteiro! O equilíbrio hormonal está se estabilizando. Você pode notar mais confiança."
+    },
+    "60d": {
+      "name": "Dois Meses",
+      "message": "60 dias de disciplina! Benefícios hormonais e neurológicos profundos estão se consolidando."
+    },
+    "90d": {
+      "name": "Noventa Dias",
+      "message": "Os lendários 90 dias! Marco de reboot completo alcançado. Comprometimento excepcional."
+    }
+  },
+  "reset_button": "Resetar Sequência",
+  "reset_confirm": "Tem certeza? Isso zerará sua sequência atual.",
+  "reset_done": "Sequência resetada. Toda jornada começa no dia um.",
+  "correlations": {
+    "title": "Impacto do NoFap",
+    "energy_boost": "Energia nos dias da sequência",
+    "mood_boost": "Humor nos dias da sequência",
+    "libido_change": "Tendência da libido",
+    "sleep_impact": "Impacto na qualidade do sono"
+  },
+  "community": {
+    "title": "Comparação com a Comunidade",
+    "average_streak": "Sequência Média da Comunidade",
+    "your_percentile": "Seu Percentil",
+    "top_percent": "Top {{percent}}%"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Profiel",
+  "sections": {
+    "history": "Geschiedenis",
+    "settings": "Instellingen",
+    "subscription": "Abonnement",
+    "about": "Over"
+  },
+  "settings": {
+    "notifications": "Dagelijkse herinnering",
+    "notification_time": "Tijd van herinnering",
+    "language": "Taal",
+    "nofap_module": "NoFap module",
+    "dark_mode": "Donkere modus",
+    "data_export": "Mijn data exporteren",
+    "smart_reminders": "Slimme herinneringen"
+  },
+  "plans": {
+    "free": "Gratis",
+    "premium": "Premium"
+  },
+  "plan_descriptions": {
+    "free": "7 dagen geschiedenis, basisdashboard",
+    "premium": "Volledige geschiedenis, inzichten, cyclusanalyse"
+  },
+  "current_plan": "Huidig plan",
+  "upgrade_cta": "Plan upgraden",
+  "trial_active": "Proefperiode actief — nog {{days}} dagen",
+  "export_button": "Exporteer als CSV",
+  "export_pdf": "Exporteer als PDF",
+  "logout": "Uitloggen",
+  "logout_confirm": "Weet je zeker dat je wilt uitloggen?",
+  "delete_account": "Account verwijderen",
+  "delete_confirm": "Deze actie is permanent en kan niet ongedaan worden gemaakt. Al je data wordt verwijderd.",
+  "version": "Versie {{version}}",
+  "languages": {
+    "en": "Engels",
+    "fr": "Frans"
+  }
+}

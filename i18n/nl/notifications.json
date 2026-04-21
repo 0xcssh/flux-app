@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Piekenergie over {{hours}}u",
+      "body": "Energie stijgt. Bewaar zware taken voor je venster."
+    },
+    "peak": {
+      "title": "Focusvenster open",
+      "body": "De beste 90 minuten van je dag. Zware beslissingen, diep werk, moeilijke gesprekken — nu."
+    },
+    "dip": {
+      "title": "Middagdip",
+      "body": "Energie zakt meestal nu. Vermijd moeilijke gesprekken. Wandelen, hydrateren, ademhalen."
+    },
+    "recovery": {
+      "title": "Afbouwvenster",
+      "body": "Kwaliteitsslaap vannacht = betere energie morgen. Schermen uit voor bedtijd."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Let op — {{dayName}} ligt laag",
+      "body": "Je {{dayName}} ligt gemiddeld onder je baseline. Plan licht, geen cruciale meetings voor 10u."
+    },
+    "poor_sleep": {
+      "title": "Focus kan vandaag zakken",
+      "body": "Je sliep {{quality}}/10. Focus zakt meestal na slechte slaap. Delegeer complexe taken."
+    },
+    "high_stress_3d": {
+      "title": "Stress stapelt op",
+      "body": "3 dagen op rij hoge stress. 5 min boxademhaling nu verslaat 30 min vanavond."
+    },
+    "no_training_3d": {
+      "title": "Beweeg je lichaam",
+      "body": "3 dagen zonder training. Je score zakt merkbaar tegen dag 4. Vandaag minimaal 20 min."
+    },
+    "improving_trend": {
+      "title": "Je zit in een flow",
+      "body": "Score stijgt {{days}} dagen op rij. Breek het momentum niet — log vanavond."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Dag {{days}} — hoge energie",
+      "body": "Sterke drive vandaag. Kanaliseer het in training of werk, niet in ruis."
+    },
+    "day_9_fog": {
+      "title": "Dag {{days}} — geduldsvenster",
+      "body": "Typisch dag 7-10: beslissingen kunnen zwaarder voelen. Stel grote keuzes 48u uit."
+    },
+    "day_14_focus": {
+      "title": "Dag {{days}} — focusvenster",
+      "body": "Helderder hoofd vandaag. Lever het project op dat je ontwijkt."
+    },
+    "milestone": {
+      "title": "{{days}} dagen sterk",
+      "body": "Nieuw reeksrecord. Bekijk je stats — je ziet het patroon."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "Reeks van {{days}} dagen",
+      "body": "Je hebt {{days}} dagen op rij gelogd. Breek het niet — 60 seconden vanavond."
+    },
+    "broken": {
+      "title": "Herstart je reeks",
+      "body": "Je hebt gisteren gemist. Snelle log om weer op te bouwen — patronen verschijnen sneller dan je denkt."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Dagelijkse check-in",
+      "body": "60 seconden om je dag te loggen. Je toekomstige zelf bedankt je."
+    }
+  },
+  "days": {
+    "0": "Zondag",
+    "1": "Maandag",
+    "2": "Dinsdag",
+    "3": "Woensdag",
+    "4": "Donderdag",
+    "5": "Vrijdag",
+    "6": "Zaterdag"
+  }
+}

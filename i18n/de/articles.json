@@ -1,0 +1,45 @@
+{
+  "title": "Lernen",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Testosteron verstehen: Die Grundlagen",
+      "description": "Erfahre, was Testosteron bewirkt, wie es produziert wird und warum es für deine tägliche Energie und Performance entscheidend ist."
+    },
+    "circadian_rhythm": {
+      "title": "Deine 24-Stunden-Hormonuhr",
+      "description": "Entdecke, wie Testosteron und Cortisol im Tagesverlauf schwanken und wie du mit deinem natürlichen Rhythmus arbeiten kannst."
+    },
+    "infradian_cycles": {
+      "title": "Auch Männer haben monatliche Zyklen",
+      "description": "Die Wissenschaft hinter männlichen infradischen Rhythmen und warum du dich von Woche zu Woche anders fühlst."
+    },
+    "sleep_hormones": {
+      "title": "Schlaf: Der Hormon-Optimierer Nummer 1",
+      "description": "Wie Schlafqualität direkt die Testosteronproduktion beeinflusst und was du tun kannst, um sie zu verbessern."
+    },
+    "exercise_testosterone": {
+      "title": "Training und hormonelle Gesundheit",
+      "description": "Welche Trainingsarten Testosteron pushen, wie viel optimal ist und wann Übertraining schadet."
+    },
+    "stress_cortisol": {
+      "title": "Stress, Cortisol und deine Vitalität",
+      "description": "Das Verhältnis zwischen Testosteron und Cortisol verstehen und praktische Techniken zum Stressmanagement."
+    },
+    "nutrition_hormones": {
+      "title": "Ernährung für hormonelle Balance",
+      "description": "Wichtige Nährstoffe, Lebensmittel und Ernährungsmuster, die gesunde Testosteronwerte unterstützen."
+    },
+    "nofap_science": {
+      "title": "Die Wissenschaft der Retention",
+      "description": "Was die Forschung zu Ejakulationsfrequenz, Testosteronwerten und Androgenrezeptor-Sensitivität sagt."
+    },
+    "mood_energy_connection": {
+      "title": "Die Verbindung zwischen Stimmung und Energie",
+      "description": "Wie Hormone deinen emotionalen Zustand steuern und was deine Stimmungsmuster über deine hormonelle Gesundheit verraten."
+    },
+    "building_habits": {
+      "title": "Eine Tracking-Routine aufbauen",
+      "description": "Tipps für konstantes tägliches Loggen und wie Daten über Zeit starke Insights über deinen Körper freischalten."
+    }
+  }
+}

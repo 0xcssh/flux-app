@@ -1,0 +1,45 @@
+{
+  "title": "NoFap-Tracker",
+  "current_streak": "Aktueller Streak",
+  "longest_streak": "Längster Streak",
+  "total_days": "Tage gesamt",
+  "streak_label": "{{count}} Tage",
+  "milestones": {
+    "7d": {
+      "name": "Eine Woche",
+      "message": "Erste Woche geschafft! Die Sensitivität der Testosteron-Rezeptoren beginnt zu steigen."
+    },
+    "14d": {
+      "name": "Zwei Wochen",
+      "message": "Zwei starke Wochen! Viele berichten jetzt von verbessertem Fokus und mehr Energie."
+    },
+    "30d": {
+      "name": "Ein Monat",
+      "message": "Ein ganzer Monat! Die hormonelle Balance stabilisiert sich. Du spürst vielleicht mehr Selbstvertrauen."
+    },
+    "60d": {
+      "name": "Zwei Monate",
+      "message": "60 Tage Disziplin! Tiefgreifende hormonelle und neurologische Effekte setzen ein."
+    },
+    "90d": {
+      "name": "Neunzig Tage",
+      "message": "Die legendären 90 Tage! Voller Reboot-Meilenstein erreicht. Herausragende Disziplin."
+    }
+  },
+  "reset_button": "Streak zurücksetzen",
+  "reset_confirm": "Bist du sicher? Das setzt deinen aktuellen Streak auf 0 zurück.",
+  "reset_done": "Streak zurückgesetzt. Jede Reise beginnt mit Tag eins.",
+  "correlations": {
+    "title": "NoFap-Einfluss",
+    "energy_boost": "Energie an Streak-Tagen",
+    "mood_boost": "Stimmung an Streak-Tagen",
+    "libido_change": "Libido-Trend",
+    "sleep_impact": "Einfluss auf Schlafqualität"
+  },
+  "community": {
+    "title": "Community-Vergleich",
+    "average_streak": "Community-Durchschnittsstreak",
+    "your_percentile": "Dein Perzentil",
+    "top_percent": "Top {{percent}}%"
+  }
+}

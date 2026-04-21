@@ -1,0 +1,34 @@
+{
+  "title": "Registro Diário",
+  "subtitle": "Como você está se sentindo hoje?",
+  "labels": {
+    "energy": "Nível de Energia",
+    "mood": "Humor",
+    "libido": "Libido",
+    "sleep_quality": "Qualidade do Sono",
+    "stress": "Nível de Estresse",
+    "training": "Atividade Física"
+  },
+  "hints": {
+    "energy": "1 = Exausto, 10 = Imparável",
+    "mood": "1 = Muito baixo, 10 = Excelente",
+    "libido": "1 = Muito baixa, 10 = Muito alta",
+    "sleep_quality": "1 = Péssimo, 10 = Perfeito",
+    "stress": "1 = Sem estresse, 10 = Extremamente estressado",
+    "training": "1 = Dia de descanso, 10 = Esforço máximo"
+  },
+  "notes_placeholder": "Adicione notas sobre seu dia (opcional)...",
+  "nofap_checkbox": "Dia NoFap (sem PMO)",
+  "checkin_title": "Check-in Diário",
+  "time_badge": "60 seg",
+  "live_score": "Sua pontuação",
+  "nofap_label": "Abstinência mantida hoje",
+  "submit": "Salvar Registro de Hoje",
+  "success": "Registro salvo! Mantenha a sequência.",
+  "already_logged": "Você já registrou hoje. Deseja atualizar?",
+  "update": "Atualizar Registro",
+  "reminder": {
+    "title": "Hora de registrar!",
+    "body": "Leve 30 segundos para acompanhar como você está se sentindo hoje."
+  }
+}

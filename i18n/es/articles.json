@@ -1,0 +1,45 @@
+{
+  "title": "Aprende",
+  "articles": {
+    "testosterone_basics": {
+      "title": "Entender la testosterona: lo básico",
+      "description": "Aprende qué hace la testosterona, cómo se produce y por qué importa para tu energía y rendimiento diarios."
+    },
+    "circadian_rhythm": {
+      "title": "Tu reloj hormonal de 24 horas",
+      "description": "Descubre cómo la testosterona y el cortisol fluctúan a lo largo del día y cómo aprovechar el ritmo natural de tu cuerpo."
+    },
+    "infradian_cycles": {
+      "title": "Los hombres también tienen ciclos mensuales",
+      "description": "La ciencia detrás de los ritmos infradianos masculinos y por qué te sientes distinto de una semana a otra."
+    },
+    "sleep_hormones": {
+      "title": "Sueño: el optimizador hormonal n.º 1",
+      "description": "Cómo la calidad del sueño impacta directamente en la producción de testosterona y qué puedes hacer para mejorarla."
+    },
+    "exercise_testosterone": {
+      "title": "Ejercicio y salud hormonal",
+      "description": "Qué tipos de ejercicio aumentan la testosterona, cuánto es óptimo y cuándo el sobreentrenamiento perjudica."
+    },
+    "stress_cortisol": {
+      "title": "Estrés, cortisol y tu vitalidad",
+      "description": "Entender la relación testosterona-cortisol y técnicas prácticas para gestionar el estrés."
+    },
+    "nutrition_hormones": {
+      "title": "Nutrición para el equilibrio hormonal",
+      "description": "Nutrientes clave, alimentos y patrones de dieta que favorecen niveles saludables de testosterona."
+    },
+    "nofap_science": {
+      "title": "La ciencia de la retención",
+      "description": "Qué dice la investigación sobre la frecuencia de eyaculación, los niveles de testosterona y la sensibilidad de los receptores de andrógenos."
+    },
+    "mood_energy_connection": {
+      "title": "La conexión ánimo-energía",
+      "description": "Cómo las hormonas mueven tu estado emocional y qué revelan tus patrones de ánimo sobre tu salud hormonal."
+    },
+    "building_habits": {
+      "title": "Construir el hábito de registrar",
+      "description": "Consejos para registrar a diario de forma constante y cómo los datos a lo largo del tiempo desbloquean análisis potentes sobre tu cuerpo."
+    }
+  }
+}

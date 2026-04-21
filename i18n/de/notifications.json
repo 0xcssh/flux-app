@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Energie-Peak in {{hours}}h",
+      "body": "Energie steigt. Spar schwere Aufgaben für dein Fenster."
+    },
+    "peak": {
+      "title": "Fokus-Fenster offen",
+      "body": "Die besten 90 Minuten deines Tages. Harte Entscheidungen, Deep Work, schwierige Gespräche — jetzt."
+    },
+    "dip": {
+      "title": "Nachmittagstief",
+      "body": "Die Energie fällt jetzt meist ab. Vermeide schwierige Gespräche. Geh laufen, trink Wasser, atme."
+    },
+    "recovery": {
+      "title": "Wind-down-Fenster",
+      "body": "Guter Schlaf heute Nacht = mehr Energie morgen. Bildschirme aus vor dem Bett."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Achtung — {{dayName}}e laufen schwach",
+      "body": "Deine {{dayName}}e liegen im Schnitt unter deiner Baseline. Plan leicht, keine kritischen Meetings vor 10 Uhr."
+    },
+    "poor_sleep": {
+      "title": "Fokus könnte heute absacken",
+      "body": "Du hast {{quality}}/10 geschlafen. Fokus fällt nach schlechtem Schlaf meist ab. Delegiere komplexe Aufgaben."
+    },
+    "high_stress_3d": {
+      "title": "Stress summiert sich",
+      "body": "3 Tage in Folge hoher Stress. 5 Min Box Breathing jetzt schlagen 30 Min heute Abend."
+    },
+    "no_training_3d": {
+      "title": "Beweg deinen Körper",
+      "body": "3 Tage ohne Training. Dein Score fällt messbar ab Tag 4. Mindestens 20 Min heute."
+    },
+    "improving_trend": {
+      "title": "Du bist im Flow",
+      "body": "Score steigt seit {{days}} Tagen. Brich den Momentum nicht — logge heute Abend."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Tag {{days}} — Energie hoch",
+      "body": "Starker Drive heute. Kanalisiere ihn ins Training oder die Arbeit, nicht in Ablenkung."
+    },
+    "day_9_fog": {
+      "title": "Tag {{days}} — Geduldsfenster",
+      "body": "Typisch Tag 7-10: Entscheidungen fallen schwerer. Verschiebe große Entscheidungen 48h."
+    },
+    "day_14_focus": {
+      "title": "Tag {{days}} — Fokus-Fenster",
+      "body": "Klarer Kopf heute. Zieh das Projekt durch, vor dem du dich gedrückt hast."
+    },
+    "milestone": {
+      "title": "{{days}} Tage stark",
+      "body": "Neuer Streak-Rekord. Check deine Stats — du siehst das Muster."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "{{days}}-Tage-Streak",
+      "body": "Du hast {{days}} Tage in Folge geloggt. Brich ihn nicht — 60 Sekunden heute Abend."
+    },
+    "broken": {
+      "title": "Starte deinen Streak neu",
+      "body": "Du hast gestern ausgelassen. Schnell loggen, um wieder reinzukommen — Muster zeigen sich schneller, als du denkst."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Tägliches Check-in",
+      "body": "60 Sekunden, um deinen Tag zu loggen. Dein zukünftiges Ich dankt dir."
+    }
+  },
+  "days": {
+    "0": "Sonntag",
+    "1": "Montag",
+    "2": "Dienstag",
+    "3": "Mittwoch",
+    "4": "Donnerstag",
+    "5": "Freitag",
+    "6": "Samstag"
+  }
+}

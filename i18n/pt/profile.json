@@ -1,0 +1,40 @@
+{
+  "title": "Perfil",
+  "sections": {
+    "history": "Histórico",
+    "settings": "Configurações",
+    "subscription": "Assinatura",
+    "about": "Sobre"
+  },
+  "settings": {
+    "notifications": "Lembrete Diário",
+    "notification_time": "Horário do Lembrete",
+    "language": "Idioma",
+    "nofap_module": "Módulo NoFap",
+    "dark_mode": "Modo Escuro",
+    "data_export": "Exportar Meus Dados",
+    "smart_reminders": "Lembretes Inteligentes"
+  },
+  "plans": {
+    "free": "Gratuito",
+    "premium": "Premium"
+  },
+  "plan_descriptions": {
+    "free": "Histórico de 7 dias, painel básico",
+    "premium": "Histórico completo, insights, análise de ciclo"
+  },
+  "current_plan": "Plano Atual",
+  "upgrade_cta": "Fazer Upgrade",
+  "trial_active": "Teste ativo — {{days}} dias restantes",
+  "export_button": "Exportar como CSV",
+  "export_pdf": "Exportar como PDF",
+  "logout": "Sair",
+  "logout_confirm": "Tem certeza de que deseja sair?",
+  "delete_account": "Excluir Conta",
+  "delete_confirm": "Esta ação é permanente e não pode ser desfeita. Todos os seus dados serão excluídos.",
+  "version": "Versão {{version}}",
+  "languages": {
+    "en": "Inglês",
+    "fr": "Francês"
+  }
+}

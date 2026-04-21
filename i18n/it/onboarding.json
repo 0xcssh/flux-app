@@ -1,0 +1,50 @@
+{
+  "welcome": {
+    "title": "Benvenuto in Flux",
+    "subtitle": "Il tuo tracker del ritmo ormonale",
+    "description": "Flux ti aiuta a comprendere e monitorare i cicli ormonali naturali che influenzano la tua energia, umore e performance ogni giorno."
+  },
+  "circadian": {
+    "title": "Il Tuo Ciclo di 24 Ore",
+    "description": "Il testosterone segue un ritmo giornaliero — raggiunge il picco al mattino e cala la sera. Comprendere questo pattern ti aiuta a ottimizzare la tua giornata per la massima performance."
+  },
+  "infradian": {
+    "title": "Il Tuo Ritmo Mensile",
+    "description": "Oltre al ciclo giornaliero, gli uomini sperimentano fluttuazioni ormonali più lunghe di circa 20-30 giorni. Monitorare questi pattern rivela perché alcune settimane vanno meglio di altre."
+  },
+  "setup": {
+    "title": "Personalizza la Tua Esperienza",
+    "notification_prompt": "Abilitare i promemoria giornalieri per costruire un'abitudine di registrazione costante?",
+    "nofap_prompt": "Vuoi abilitare il modulo di tracciamento NoFap?",
+    "nofap_description": "Monitora le serie di ritenzione e scopri come si correlano ai tuoi parametri di vitalità."
+  },
+  "quiz_age": "Quanti anni hai?",
+  "quiz_wake": "A che ora ti svegli di solito?",
+  "quiz_activity": "Quanto sei attivo?",
+  "quiz_sleep": "Com'è la qualità del tuo sonno ultimamente?",
+  "quiz_goal": "Qual è il tuo obiettivo principale?",
+  "quiz_result_title": "Il Tuo Profilo Ormonale",
+  "quiz_peak_window": "La Tua Finestra di Picco",
+  "profile_early_riser": "Mattiniero",
+  "profile_night_owl": "Nottambulo",
+  "profile_balanced": "Equilibrato",
+  "profile_early_riser_desc": "I tuoi ormoni raggiungono il picco presto. Sei fatto per la produttività mattutina e il riposo serale.",
+  "profile_night_owl_desc": "Il tuo ciclo è spostato in avanti. Il tuo picco di performance arriva tra metà mattina e primo pomeriggio.",
+  "profile_balanced_desc": "Segui il classico ritmo ormonale. Le mattine sono la tua zona di potenza.",
+  "goal_energy": "Più Energia",
+  "goal_performance": "Performance al Picco",
+  "goal_mood": "Umore Migliore",
+  "goal_sleep": "Sonno Migliore",
+  "trial": {
+    "title": "Prova Premium Gratis per 7 Giorni",
+    "features": [
+      "Analisi e previsioni complete del ciclo",
+      "Insight avanzati e correlazioni",
+      "Accesso illimitato alla cronologia",
+      "Esportazione di report PDF",
+      "Supporto prioritario"
+    ],
+    "cta": "Inizia la Prova Gratuita",
+    "skip": "Continua con il Piano Gratuito"
+  }
+}
