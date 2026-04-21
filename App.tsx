@@ -12,8 +12,9 @@ import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 
 import './i18n';
-import { initAnalytics } from './lib/analytics';
+import { initAnalytics, track, AnalyticsEvents } from './lib/analytics';
 import { initNotificationHandler } from './lib/notifications';
+import { requestTrackingPermission, hasAskedForTrackingPermission } from './lib/tracking';
 import { useSettingsStore } from './store/settingsStore';
 import { useSmartReminders } from './hooks/useNotifications';
 import { darkPalette } from './theme/colors';
@@ -152,9 +153,22 @@ export default function App() {
   }, [hydrated]);
 
   useEffect(() => {
-    try { initAnalytics(); } catch (e) { console.error('[Analytics] init failed:', e); }
+    try {
+      initAnalytics();
+      track(AnalyticsEvents.APP_OPENED);
+    } catch (e) { console.error('[Analytics] init failed:', e); }
     try { initNotificationHandler(); } catch (e) { console.error('[Notifications] init failed:', e); }
   }, []);
+
+  useEffect(() => {
+    if (!hydrated || !onboardingSeen) return;
+    (async () => {
+      const asked = await hasAskedForTrackingPermission();
+      if (asked) return;
+      await new Promise((r) => setTimeout(r, 1500));
+      await requestTrackingPermission();
+    })();
+  }, [hydrated, onboardingSeen]);
 
   if (!hydrated) {
     return <View style={{ flex: 1, backgroundColor: '#0A0A0F' }} />;

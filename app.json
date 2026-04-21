@@ -16,7 +16,8 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.fluxcycle.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserTrackingUsageDescription": "This allows Flux to deliver more relevant content and measure the effectiveness of the features you use. Your data is never sold."
       }
     },
     "android": {
@@ -49,7 +50,13 @@
         }
       ],
       "expo-secure-store",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "This allows Flux to deliver more relevant content and measure the effectiveness of the features you use. Your data is never sold."
+        }
+      ]
     ],
     "extra": {
       "eas": {
