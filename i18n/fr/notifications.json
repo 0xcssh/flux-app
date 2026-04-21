@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Pic d'énergie dans {{hours}}h",
+      "body": "Testostérone en hausse. Garde tes tâches dures pour ta fenêtre."
+    },
+    "peak": {
+      "title": "Fenêtre de focus ouverte",
+      "body": "Les meilleures 90 minutes de ta journée. Décisions dures, deep work, appels tendus — maintenant."
+    },
+    "dip": {
+      "title": "Chute de cortisol",
+      "body": "Irritabilité probable les 90 prochaines minutes. Évite les conversations tendues. Marche, hydrate-toi, respire."
+    },
+    "recovery": {
+      "title": "Fenêtre de décompression",
+      "body": "Sommeil de qualité ce soir = testostérone demain. Écrans coupés avant le lit."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Attention — les {{dayName}} sont faibles",
+      "body": "Tes {{dayName}} sont sous ta moyenne. Prévois léger, pas de réunions critiques avant 10h."
+    },
+    "poor_sleep": {
+      "title": "Baisse de focus à prévoir",
+      "body": "Tu as dormi {{quality}}/10. Attends-toi à ~25% de focus en moins cet après-midi. Délègue les tâches complexes."
+    },
+    "high_stress_3d": {
+      "title": "Le stress s'accumule",
+      "body": "Stress élevé 3 jours de suite. 5 min de respiration carrée maintenant valent mieux que 30 min ce soir."
+    },
+    "no_training_3d": {
+      "title": "Bouge-toi",
+      "body": "3 jours sans entraînement. Ton score chute visiblement dès le 4ème. 20 min minimum aujourd'hui."
+    },
+    "improving_trend": {
+      "title": "Tu es en feu",
+      "body": "Score en hausse depuis {{days}} jours. Casse pas l'élan — log ce soir."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Jour {{days}} — pic de libido",
+      "body": "Sensibilité à la dopamine en hausse. Canalise-la dans le sport ou le boulot, pas dans le bruit."
+    },
+    "day_9_fog": {
+      "title": "Jour {{days}} — phase de brouillard",
+      "body": "Classique j7-j10 : les décisions semblent plus dures qu'elles ne le sont. Patience, reporte les gros choix de 48h."
+    },
+    "day_14_focus": {
+      "title": "Jour {{days}} — pic de focus",
+      "body": "Tu es dans la fenêtre la plus claire de ton cycle. Lance le projet que tu repousses."
+    },
+    "milestone": {
+      "title": "{{days}} jours au compteur",
+      "body": "Nouveau record de série. Regarde tes stats — tu verras le pattern."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "Série de {{days}} jours",
+      "body": "Tu as logué {{days}} jours d'affilée. Casse pas la série — 60 secondes ce soir."
+    },
+    "broken": {
+      "title": "Relance ta série",
+      "body": "Tu as raté hier. Un log rapide pour repartir — les patterns se révèlent plus vite que tu crois."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Check-in quotidien",
+      "body": "60 secondes pour loguer ta journée. Ton toi du futur te remercie."
+    }
+  },
+  "days": {
+    "0": "dimanche",
+    "1": "lundi",
+    "2": "mardi",
+    "3": "mercredi",
+    "4": "jeudi",
+    "5": "vendredi",
+    "6": "samedi"
+  }
+}

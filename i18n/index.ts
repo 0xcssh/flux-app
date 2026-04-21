@@ -11,6 +11,7 @@ import enProfile from './en/profile.json';
 import enOnboarding from './en/onboarding.json';
 import enNofap from './en/nofap.json';
 import enArticles from './en/articles.json';
+import enNotifications from './en/notifications.json';
 
 import frCommon from './fr/common.json';
 import frDashboard from './fr/dashboard.json';
@@ -21,6 +22,7 @@ import frProfile from './fr/profile.json';
 import frOnboarding from './fr/onboarding.json';
 import frNofap from './fr/nofap.json';
 import frArticles from './fr/articles.json';
+import frNotifications from './fr/notifications.json';
 
 // Force English for now — French will be re-enabled later
 const deviceLanguage = 'en';
@@ -36,6 +38,7 @@ export const namespaces = [
   'onboarding',
   'nofap',
   'articles',
+  'notifications',
 ] as const;
 
 i18n.use(initReactI18next).init({
@@ -58,6 +61,7 @@ i18n.use(initReactI18next).init({
       onboarding: enOnboarding,
       nofap: enNofap,
       articles: enArticles,
+      notifications: enNotifications,
     },
     fr: {
       common: frCommon,
@@ -69,6 +73,7 @@ i18n.use(initReactI18next).init({
       onboarding: frOnboarding,
       nofap: frNofap,
       articles: frArticles,
+      notifications: frNotifications,
     },
   },
 });

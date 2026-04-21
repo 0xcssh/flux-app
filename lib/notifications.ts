@@ -3,7 +3,8 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import { getCurrentPhase } from '@/lib/hormoneEngine';
 import type { PersonalNotificationData } from '@/lib/personalNotificationData';
-import type { SmartReminder } from '@/lib/smartReminders';
+import type { ReminderTemplate } from '@/lib/smartReminders';
+import i18n from '@/i18n';
 
 export function initNotificationHandler(): void {
   try {
@@ -229,17 +230,26 @@ export async function schedulePhaseNotifications(
 }
 
 export async function scheduleSmartReminders(
-  reminders: SmartReminder[],
+  reminders: ReminderTemplate[],
 ): Promise<string[]> {
   await cancelAllScheduled();
 
   const ids: string[] = [];
   for (const reminder of reminders) {
     try {
+      const title = i18n.t(
+        `notifications:${reminder.templateKey}.title`,
+        reminder.params,
+      );
+      const body = i18n.t(
+        `notifications:${reminder.templateKey}.body`,
+        reminder.params,
+      );
+
       const id = await Notifications.scheduleNotificationAsync({
         content: {
-          title: reminder.title,
-          body: reminder.body,
+          title,
+          body,
           sound: 'default',
         },
         trigger: {

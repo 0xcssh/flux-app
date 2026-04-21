@@ -1,0 +1,85 @@
+{
+  "phase": {
+    "rise": {
+      "title": "Peak energy in {{hours}}h",
+      "body": "Testosterone climbing. Save hard tasks for your window."
+    },
+    "peak": {
+      "title": "Focus window open",
+      "body": "Best 90 minutes of your day. Hard decisions, deep work, tough calls — now."
+    },
+    "dip": {
+      "title": "Cortisol dipping",
+      "body": "Irritability likely next 90 min. Avoid tough conversations. Walk, hydrate, breathe."
+    },
+    "recovery": {
+      "title": "Wind-down window",
+      "body": "Quality sleep tonight = testosterone tomorrow. Screens off by bed."
+    }
+  },
+  "pattern": {
+    "low_day_of_week": {
+      "title": "Heads up — {{dayName}}s run low",
+      "body": "Your {{dayName}}s average below baseline. Schedule light, no critical meetings before 10am."
+    },
+    "poor_sleep": {
+      "title": "Focus hit incoming",
+      "body": "You slept {{quality}}/10. Expect ~25% focus drop this afternoon. Delegate complex tasks."
+    },
+    "high_stress_3d": {
+      "title": "Stress compounding",
+      "body": "High stress 3 days running. 5 min of box breathing now beats 30 min tonight."
+    },
+    "no_training_3d": {
+      "title": "Move your body",
+      "body": "3 days without training. Your score drops measurably by day 4. 20 min minimum today."
+    },
+    "improving_trend": {
+      "title": "You're on a roll",
+      "body": "Score rising {{days}} days straight. Don't break the momentum — log tonight."
+    }
+  },
+  "nofap": {
+    "day_7_libido": {
+      "title": "Day {{days}} — libido peak",
+      "body": "Dopamine sensitivity climbing. Channel it into training or work, not noise."
+    },
+    "day_9_fog": {
+      "title": "Day {{days}} — mental fog phase",
+      "body": "Typical j7-j10: decisions feel harder than they are. Be patient, defer big calls 48h."
+    },
+    "day_14_focus": {
+      "title": "Day {{days}} — focus peak",
+      "body": "You're in the clearest window of your cycle. Ship the project you've been dodging."
+    },
+    "milestone": {
+      "title": "{{days}} days strong",
+      "body": "New streak PR. Check your stats — you'll see the pattern."
+    }
+  },
+  "streak": {
+    "active": {
+      "title": "{{days}}-day streak",
+      "body": "You've logged {{days}} days in a row. Don't break it — 60 seconds tonight."
+    },
+    "broken": {
+      "title": "Restart your streak",
+      "body": "You missed yesterday. Quick log to rebuild — patterns reveal faster than you think."
+    }
+  },
+  "logging": {
+    "daily_reminder": {
+      "title": "Daily check-in",
+      "body": "60 seconds to log your day. Your future self thanks you."
+    }
+  },
+  "days": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
+  }
+}

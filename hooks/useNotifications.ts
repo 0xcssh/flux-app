@@ -13,7 +13,9 @@ import { computePersonalNotificationData } from '@/lib/personalNotificationData'
 import { generateSmartReminders } from '@/lib/smartReminders';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useSettingsStore } from '@/store/settingsStore';
+import { useNoFapStore } from '@/store/nofapStore';
 import { formatLocalDate } from '@/lib/dateUtils';
+import i18n from '@/i18n';
 
 export function useNotifications() {
   const [pushToken, setPushToken] = useState<string | null>(null);
@@ -115,11 +117,29 @@ export function useSmartReminders() {
   const logs = useLogStore((s) => s.logs);
   const { isPremium } = useSubscription();
   const smartRemindersEnabled = useSettingsStore((s) => s.smartRemindersEnabled);
+  const hormonalProfile = useSettingsStore((s) => s.hormonalProfile);
+  const nofapStreakDays = useNoFapStore((s) => s.getStreakDays());
   const prevLogCountRef = useRef(0);
   const prevIsPremiumRef = useRef(isPremium);
+  const prevNofapStreakRef = useRef(nofapStreakDays);
+  const prevWakeUpHourRef = useRef<number | null>(null);
+  const prevLanguageTickRef = useRef(0);
+  const [languageTick, setLanguageTick] = useState(0);
+
+  useEffect(() => {
+    const onLanguageChanged = () => {
+      setLanguageTick((t) => t + 1);
+    };
+    i18n.on('languageChanged', onLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', onLanguageChanged);
+    };
+  }, []);
 
   useEffect(() => {
     if (!smartRemindersEnabled) return;
+
+    const wakeUpHour = hormonalProfile?.wakeUpHour ?? 7;
 
     const allLogs = Object.values(logs).sort((a, b) =>
       a.log_date.localeCompare(b.log_date)
@@ -129,14 +149,28 @@ export function useSmartReminders() {
     const premiumChanged = prevIsPremiumRef.current !== isPremium;
     const crossedThreshold =
       prevLogCountRef.current < 7 && logCount >= 7;
-    const isFirstRun = prevLogCountRef.current === 0;
+    const nofapChanged = prevNofapStreakRef.current !== nofapStreakDays;
+    const wakeUpChanged = prevWakeUpHourRef.current !== wakeUpHour;
+    const languageChanged = prevLanguageTickRef.current !== languageTick;
+    const isFirstRun = prevLogCountRef.current === 0 && prevWakeUpHourRef.current === null;
 
     prevLogCountRef.current = logCount;
     prevIsPremiumRef.current = isPremium;
+    prevNofapStreakRef.current = nofapStreakDays;
+    prevWakeUpHourRef.current = wakeUpHour;
+    prevLanguageTickRef.current = languageTick;
 
-    if (!isFirstRun && !crossedThreshold && !premiumChanged && isScheduled) return;
+    const shouldReschedule =
+      isFirstRun ||
+      crossedThreshold ||
+      premiumChanged ||
+      nofapChanged ||
+      wakeUpChanged ||
+      languageChanged ||
+      !isScheduled;
 
-    // Compute logging streak (consecutive days ending yesterday or today)
+    if (!shouldReschedule) return;
+
     let streakDays = 0;
     const today = new Date();
     const checkDate = new Date(today);
@@ -146,7 +180,6 @@ export function useSmartReminders() {
         streakDays++;
         checkDate.setDate(checkDate.getDate() - 1);
       } else if (i === 0) {
-        // Today not logged yet, check from yesterday
         checkDate.setDate(checkDate.getDate() - 1);
         continue;
       } else {
@@ -154,7 +187,13 @@ export function useSmartReminders() {
       }
     }
 
-    const reminders = generateSmartReminders(allLogs, streakDays, isPremium);
+    const reminders = generateSmartReminders({
+      logs: allLogs,
+      streakDays,
+      nofapStreakDays,
+      wakeUpHour,
+      isPremium,
+    });
 
     (async () => {
       try {
@@ -166,7 +205,7 @@ export function useSmartReminders() {
         console.warn('[SmartReminders] Failed to schedule:', e);
       }
     })();
-  }, [logs, isPremium, smartRemindersEnabled, isScheduled]);
+  }, [logs, isPremium, smartRemindersEnabled, isScheduled, hormonalProfile, nofapStreakDays, languageTick]);
 
   return { isScheduled };
 }
