@@ -1,10 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import { getCurrentPhase } from '@/lib/hormoneEngine';
-import type { PersonalNotificationData } from '@/lib/personalNotificationData';
 import type { ReminderTemplate } from '@/lib/smartReminders';
 import i18n from '@/i18n';
+
+type NotifType = 'daily-reminder' | 'smart-reminder' | 'milestone';
 
 export function initNotificationHandler(): void {
   try {
@@ -51,12 +51,25 @@ export async function registerForPushNotifications(): Promise<string | null> {
   return token.data;
 }
 
+async function cancelByType(type: NotifType): Promise<void> {
+  try {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    for (const notif of scheduled) {
+      const data = notif.content.data as { type?: string } | undefined;
+      if (data?.type === type) {
+        await Notifications.cancelScheduledNotificationAsync(notif.identifier);
+      }
+    }
+  } catch (e) {
+    console.warn('[Notifications] Failed to cancel by type:', e);
+  }
+}
+
 export async function scheduleDailyReminder(
   hour: number,
   minute: number
 ): Promise<string> {
-  // Cancel existing daily reminders first
-  await cancelAllScheduled();
+  await cancelByType('daily-reminder');
 
   const content = getContextualNotificationContent(hour);
 
@@ -65,6 +78,7 @@ export async function scheduleDailyReminder(
       title: content.title,
       body: content.body,
       sound: 'default',
+      data: { type: 'daily-reminder' as NotifType },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -87,11 +101,8 @@ export async function scheduleMilestoneNotification(
   const startDate = new Date(streakStartDate + 'T00:00:00');
   const milestoneDate = new Date(startDate);
   milestoneDate.setDate(milestoneDate.getDate() + milestoneDays);
-
-  // Set notification for 9 AM on milestone day
   milestoneDate.setHours(9, 0, 0, 0);
 
-  // Don't schedule if the date has already passed
   if (milestoneDate.getTime() <= Date.now()) {
     return null;
   }
@@ -111,6 +122,7 @@ export async function scheduleMilestoneNotification(
       title: `Milestone Reached: ${label}!`,
       body: `Congratulations! You've maintained your streak for ${milestoneDays} days. Keep going!`,
       sound: 'default',
+      data: { type: 'milestone' as NotifType, milestoneDays },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -148,91 +160,10 @@ export function getContextualNotificationContent(hour: number): {
   }
 }
 
-export function getPhaseAwareNotificationContent(
-  hour: number,
-  personalData?: PersonalNotificationData,
-): { title: string; body: string } {
-  const { phase } = getCurrentPhase(hour);
-
-  switch (phase) {
-    case 'rise':
-      return {
-        title: 'Rise Phase',
-        body: 'Your testosterone is climbing. Peak energy in about 2 hours.',
-      };
-    case 'peak':
-      return {
-        title: 'Peak Performance',
-        body: 'You\'re in your peak phase. Best time for training or important decisions.',
-      };
-    case 'decline':
-      if (personalData?.lowestEnergyDay) {
-        const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-        if (today === personalData.lowestEnergyDay) {
-          return {
-            title: 'Energy Shift',
-            body: `Your energy tends to be lower on ${today}s. Take it easy and plan lighter tasks.`,
-          };
-        }
-      }
-      return {
-        title: 'Natural Slowdown',
-        body: 'Energy naturally dropping. Good time for creative work or lighter tasks.',
-      };
-    case 'recovery':
-      if (personalData?.avgSleepQuality && personalData.avgSleepQuality < 5) {
-        return {
-          title: 'Sleep Priority',
-          body: 'Your sleep quality has been low recently. Tonight, aim for 7+ hours — your hormones need it.',
-        };
-      }
-      return {
-        title: 'Recovery Time',
-        body: 'Quality sleep tonight = better testosterone tomorrow. Start winding down.',
-      };
-  }
-}
-
-export async function schedulePhaseNotifications(
-  personalData?: PersonalNotificationData,
-): Promise<string[]> {
-  await cancelAllScheduled();
-
-  const phases = [
-    { hour: 6, minute: 30 },   // Rise
-    { hour: 9, minute: 0 },    // Peak
-    { hour: 14, minute: 0 },   // Decline
-    { hour: 21, minute: 0 },   // Recovery
-  ];
-
-  const ids: string[] = [];
-  for (const p of phases) {
-    const content = getPhaseAwareNotificationContent(p.hour, personalData);
-    try {
-      const id = await Notifications.scheduleNotificationAsync({
-        content: {
-          title: content.title,
-          body: content.body,
-          sound: 'default',
-        },
-        trigger: {
-          type: Notifications.SchedulableTriggerInputTypes.DAILY,
-          hour: p.hour,
-          minute: p.minute,
-        },
-      });
-      ids.push(id);
-    } catch (e) {
-      console.warn('[Notifications] Failed to schedule phase notification:', e);
-    }
-  }
-  return ids;
-}
-
 export async function scheduleSmartReminders(
   reminders: ReminderTemplate[],
 ): Promise<string[]> {
-  await cancelAllScheduled();
+  await cancelByType('smart-reminder');
 
   const ids: string[] = [];
   for (const reminder of reminders) {
@@ -251,6 +182,7 @@ export async function scheduleSmartReminders(
           title,
           body,
           sound: 'default',
+          data: { type: 'smart-reminder' as NotifType, templateKey: reminder.templateKey },
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DAILY,

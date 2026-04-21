@@ -1,4 +1,5 @@
 import type { DailyLogEntry } from '@/types/log';
+import { formatLocalDate } from '@/lib/dateUtils';
 import i18n from '@/i18n';
 
 export interface ReminderTemplate {
@@ -33,11 +34,9 @@ function getYesterdaysLog(logs: DailyLogEntry[]): DailyLogEntry | null {
   const sorted = sortedLogsAsc(logs);
   if (sorted.length === 0) return null;
   const last = sorted[sorted.length - 1];
-  const today = new Date();
-  const yesterday = new Date(today);
+  const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const y = yesterday.toISOString().split('T')[0];
-  if (last.log_date === y) return last;
+  if (last.log_date === formatLocalDate(yesterday)) return last;
   return null;
 }
 
@@ -248,14 +247,20 @@ export function generateSmartReminders(
     });
   }
 
-  if (streakDays === 0 && logs.length > 0) {
-    conditional.push({
-      templateKey: 'streak.broken',
-      params: {},
-      hour: clampHour(wakeUpHour + 1),
-      minute: 0,
-      type: 'streak',
-    });
+  if (streakDays === 0 && logs.length >= 3) {
+    const sorted = sortedLogsAsc(logs);
+    const lastLog = sorted[sorted.length - 1];
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    if (lastLog.log_date === formatLocalDate(twoDaysAgo)) {
+      conditional.push({
+        templateKey: 'streak.broken',
+        params: {},
+        hour: clampHour(wakeUpHour + 1),
+        minute: 0,
+        type: 'streak',
+      });
+    }
   }
 
   reminders.push(...conditional.slice(0, MAX_CONDITIONAL));

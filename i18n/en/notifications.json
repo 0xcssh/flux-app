@@ -2,19 +2,19 @@
   "phase": {
     "rise": {
       "title": "Peak energy in {{hours}}h",
-      "body": "Testosterone climbing. Save hard tasks for your window."
+      "body": "Energy climbing. Save hard tasks for your window."
     },
     "peak": {
       "title": "Focus window open",
       "body": "Best 90 minutes of your day. Hard decisions, deep work, tough calls — now."
     },
     "dip": {
-      "title": "Cortisol dipping",
-      "body": "Irritability likely next 90 min. Avoid tough conversations. Walk, hydrate, breathe."
+      "title": "Afternoon slump",
+      "body": "Energy tends to dip now. Avoid tough conversations. Walk, hydrate, breathe."
     },
     "recovery": {
       "title": "Wind-down window",
-      "body": "Quality sleep tonight = testosterone tomorrow. Screens off by bed."
+      "body": "Quality sleep tonight = better energy tomorrow. Screens off by bed."
     }
   },
   "pattern": {
@@ -23,8 +23,8 @@
       "body": "Your {{dayName}}s average below baseline. Schedule light, no critical meetings before 10am."
     },
     "poor_sleep": {
-      "title": "Focus hit incoming",
-      "body": "You slept {{quality}}/10. Expect ~25% focus drop this afternoon. Delegate complex tasks."
+      "title": "Focus may dip today",
+      "body": "You slept {{quality}}/10. Focus tends to drop after poor sleep. Delegate complex tasks."
     },
     "high_stress_3d": {
       "title": "Stress compounding",
@@ -41,20 +41,20 @@
   },
   "nofap": {
     "day_7_libido": {
-      "title": "Day {{days}} — libido peak",
-      "body": "Dopamine sensitivity climbing. Channel it into training or work, not noise."
+      "title": "Day {{days}} — energy high",
+      "body": "Strong drive today. Channel it into training or work, not noise."
     },
     "day_9_fog": {
-      "title": "Day {{days}} — mental fog phase",
-      "body": "Typical j7-j10: decisions feel harder than they are. Be patient, defer big calls 48h."
+      "title": "Day {{days}} — patience window",
+      "body": "Typical days 7-10: decisions may feel harder. Defer big calls 48h."
     },
     "day_14_focus": {
-      "title": "Day {{days}} — focus peak",
-      "body": "You're in the clearest window of your cycle. Ship the project you've been dodging."
+      "title": "Day {{days}} — focus window",
+      "body": "Clearer headspace today. Ship the project you've been dodging."
     },
     "milestone": {
       "title": "{{days}} days strong",
-      "body": "New streak PR. Check your stats — you'll see the pattern."
+      "body": "New streak record. Check your stats — you'll see the pattern."
     }
   },
   "streak": {

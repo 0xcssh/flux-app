@@ -4,12 +4,10 @@ import {
   scheduleDailyReminder,
   cancelAllScheduled,
   scheduleMilestoneNotification,
-  schedulePhaseNotifications,
   scheduleSmartReminders,
 } from '@/lib/notifications';
 import { MILESTONE_DAYS } from '@/types/nofap';
 import { useLogStore } from '@/store/logStore';
-import { computePersonalNotificationData } from '@/lib/personalNotificationData';
 import { generateSmartReminders } from '@/lib/smartReminders';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -43,7 +41,6 @@ export function useNotifications() {
 
   const rescheduleReminder = useCallback(
     async (hour: number, minute: number) => {
-      await cancelAllScheduled();
       return scheduleReminder(hour, minute);
     },
     [scheduleReminder]
@@ -78,40 +75,6 @@ export function useNotifications() {
   };
 }
 
-export function usePhaseNotifications() {
-  const [isScheduled, setIsScheduled] = useState(false);
-  const logs = useLogStore((s) => s.logs);
-  const prevLogCountRef = useRef(0);
-
-  useEffect(() => {
-    const allLogs = Object.values(logs).sort((a, b) =>
-      a.log_date.localeCompare(b.log_date)
-    );
-    const logCount = allLogs.length;
-    const crossedThreshold =
-      prevLogCountRef.current < 7 && logCount >= 7;
-    const isFirstRun = prevLogCountRef.current === 0;
-    prevLogCountRef.current = logCount;
-
-    if (!isFirstRun && !crossedThreshold && isScheduled) return;
-
-    const personalData = computePersonalNotificationData(allLogs);
-
-    (async () => {
-      try {
-        const token = await registerForPushNotifications();
-        if (!token) return;
-        await schedulePhaseNotifications(personalData);
-        setIsScheduled(true);
-      } catch (e) {
-        console.warn('[PhaseNotifications] Failed to schedule:', e);
-      }
-    })();
-  }, [logs, isScheduled]);
-
-  return { isScheduled };
-}
-
 export function useSmartReminders() {
   const [isScheduled, setIsScheduled] = useState(false);
   const logs = useLogStore((s) => s.logs);
@@ -137,7 +100,7 @@ export function useSmartReminders() {
   }, []);
 
   useEffect(() => {
-    if (!smartRemindersEnabled) return;
+    if (!smartRemindersEnabled || !isPremium) return;
 
     const wakeUpHour = hormonalProfile?.wakeUpHour ?? 7;
 

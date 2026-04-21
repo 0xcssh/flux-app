@@ -15,6 +15,7 @@ import './i18n';
 import { initAnalytics } from './lib/analytics';
 import { initNotificationHandler } from './lib/notifications';
 import { useSettingsStore } from './store/settingsStore';
+import { useSmartReminders } from './hooks/useNotifications';
 import { darkPalette } from './theme/colors';
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
 
@@ -86,6 +87,11 @@ function AuthNavigator() {
       <AuthStack.Screen name="ForgotPassword" component={withSuspense(ForgotPasswordScreen)} />
     </AuthStack.Navigator>
   );
+}
+
+function NotificationsManager() {
+  useSmartReminders();
+  return null;
 }
 
 function MainTabNavigator() {
@@ -172,7 +178,14 @@ export default function App() {
           {!onboardingSeen ? (
             <RootStack.Screen name="Onboarding" component={OnboardingNavigator} />
           ) : (
-            <RootStack.Screen name="MainTabs" component={MainTabNavigator} />
+            <RootStack.Screen name="MainTabs">
+              {() => (
+                <>
+                  <NotificationsManager />
+                  <MainTabNavigator />
+                </>
+              )}
+            </RootStack.Screen>
           )}
           <RootStack.Screen name="Auth" component={AuthNavigator} />
           <RootStack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
