@@ -7,7 +7,7 @@
     "libido": "Libido",
     "sleep_quality": "Qualité du sommeil",
     "stress": "Niveau de stress",
-    "training": "Intensité d'entraînement"
+    "training": "Activité physique"
   },
   "hints": {
     "energy": "1 = Épuisé, 10 = Inarrêtable",
@@ -19,6 +19,10 @@
   },
   "notes_placeholder": "Ajoutez des notes sur votre journée (optionnel)...",
   "nofap_checkbox": "Jour NoFap (pas de PMO)",
+  "checkin_title": "Check-in quotidien",
+  "time_badge": "60 sec",
+  "live_score": "Ton score",
+  "nofap_label": "Abstinence maintenue aujourd'hui",
   "submit": "Enregistrer le journal du jour",
   "success": "Journal enregistré ! Continuez sur votre lancée.",
   "already_logged": "Vous avez déjà enregistré aujourd'hui. Voulez-vous mettre à jour ?",

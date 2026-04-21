@@ -30,5 +30,20 @@
     "vs_cycle_avg": "vs. Moyenne du cycle"
   },
   "premium_required": "Passez à Premium pour voir l'analyse complète de votre cycle et les tendances historiques.",
-  "not_enough_data": "Continuez à enregistrer quotidiennement pour voir vos schémas cycliques. Nous avons besoin d'au moins 14 jours de données."
+  "not_enough_data": "Continuez à enregistrer quotidiennement pour voir vos schémas cycliques. Nous avons besoin d'au moins 14 jours de données.",
+  "day_at_glance": "Ta journée en un coup d'œil",
+  "phase_calendar": "Vue mensuelle",
+  "cycle_calendar": "Calendrier du cycle",
+  "days_logged": "jours enregistrés",
+  "days_logged_month": "{{logged}}/{{total}} jours",
+  "avg_score": "Score moyen",
+  "avg_score_month": "Moy : {{score}}",
+  "best_day_month": "Meilleur : {{day}}",
+  "predicted_best": "Meilleur prévu : {{day}}",
+  "legend_actual": "Réel",
+  "legend_predicted": "Prévu",
+  "rise_time": "4 h-8 h",
+  "peak_time": "8 h-12 h",
+  "decline_time": "12 h-20 h",
+  "recovery_time": "20 h-4 h"
 }

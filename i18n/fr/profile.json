@@ -12,7 +12,8 @@
     "language": "Langue",
     "nofap_module": "Module NoFap",
     "dark_mode": "Mode sombre",
-    "data_export": "Exporter mes données"
+    "data_export": "Exporter mes données",
+    "smart_reminders": "Rappels intelligents"
   },
   "plans": {
     "free": "Gratuit",

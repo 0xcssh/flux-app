@@ -18,6 +18,23 @@
     "nofap_prompt": "Souhaitez-vous activer le module de suivi NoFap ?",
     "nofap_description": "Suivez vos séries de rétention et voyez comment elles sont corrélées avec vos métriques de vitalité."
   },
+  "quiz_age": "Quel âge as-tu ?",
+  "quiz_wake": "À quelle heure te réveilles-tu habituellement ?",
+  "quiz_activity": "Quel est ton niveau d'activité ?",
+  "quiz_sleep": "Comment est ta qualité de sommeil en ce moment ?",
+  "quiz_goal": "Quel est ton objectif principal ?",
+  "quiz_result_title": "Ton profil hormonal",
+  "quiz_peak_window": "Ta fenêtre de pic",
+  "profile_early_riser": "Lève-tôt",
+  "profile_night_owl": "Couche-tard",
+  "profile_balanced": "Équilibré",
+  "profile_early_riser_desc": "Tes hormones atteignent leur pic tôt. Tu es fait pour la productivité matinale et le repos en soirée.",
+  "profile_night_owl_desc": "Ton cycle est décalé. Ton pic de performance arrive en milieu de matinée ou début d'après-midi.",
+  "profile_balanced_desc": "Tu suis le rythme hormonal classique. Les matins sont ta zone de puissance.",
+  "goal_energy": "Plus d'énergie",
+  "goal_performance": "Performance maximale",
+  "goal_mood": "Meilleure humeur",
+  "goal_sleep": "Meilleur sommeil",
   "trial": {
     "title": "Essayez Premium gratuitement pendant 7 jours",
     "features": [

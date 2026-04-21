@@ -24,8 +24,23 @@ import frNofap from './fr/nofap.json';
 import frArticles from './fr/articles.json';
 import frNotifications from './fr/notifications.json';
 
-// Force English for now — French will be re-enabled later
-const deviceLanguage = 'en';
+const SUPPORTED_LANGUAGES = ['en', 'fr'] as const;
+type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+
+function detectDeviceLanguage(): SupportedLanguage {
+  try {
+    const locales = getLocales();
+    const primary = locales[0]?.languageCode;
+    if (primary && (SUPPORTED_LANGUAGES as readonly string[]).includes(primary)) {
+      return primary as SupportedLanguage;
+    }
+  } catch (e) {
+    console.warn('[i18n] Failed to detect device language:', e);
+  }
+  return 'en';
+}
+
+const deviceLanguage = detectDeviceLanguage();
 
 export const defaultNS = 'common';
 export const namespaces = [
