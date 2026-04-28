@@ -91,5 +91,15 @@
   "paywall_then": "Daarna $19,99/maand · Altijd opzegbaar",
   "paywall_restore": "Aankopen herstellen",
   "smart_reminders": "Slimme herinneringen",
-  "smart_reminders_desc": "Contextuele meldingen gebaseerd op jouw patronen"
+  "smart_reminders_desc": "Contextuele meldingen gebaseerd op jouw patronen",
+  "review": {
+    "feedback_title": "Vind je Flux leuk?",
+    "feedback_subtitle": "Jouw feedback vormt de volgende versie.",
+    "choice_positive": "Geweldig",
+    "choice_negative": "Kan beter",
+    "negative_title": "Vertel ons wat we kunnen verbeteren",
+    "negative_subtitle": "Een bericht van 30 seconden helpt ons de volgende features te prioriteren.",
+    "send_feedback": "Feedback sturen",
+    "skip": "Misschien later"
+  }
 }

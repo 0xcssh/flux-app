@@ -91,5 +91,15 @@
   "paywall_then": "Depois US$ 19,99/mês · Cancele quando quiser",
   "paywall_restore": "Restaurar Compras",
   "smart_reminders": "Lembretes Inteligentes",
-  "smart_reminders_desc": "Notificações contextuais baseadas nos seus padrões"
+  "smart_reminders_desc": "Notificações contextuais baseadas nos seus padrões",
+  "review": {
+    "feedback_title": "Curtindo o Flux?",
+    "feedback_subtitle": "Seu feedback molda a próxima versão.",
+    "choice_positive": "Adorando",
+    "choice_negative": "Pode melhorar",
+    "negative_title": "Conta pra gente o que podemos melhorar",
+    "negative_subtitle": "Uma mensagem de 30 segundos ajuda a priorizar as próximas funcionalidades.",
+    "send_feedback": "Enviar feedback",
+    "skip": "Talvez depois"
+  }
 }

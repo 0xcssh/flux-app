@@ -12,6 +12,9 @@ interface SettingsState {
   onboardingSeen: boolean;
   hormonalProfile: HormonalProfile | null;
   smartRemindersEnabled: boolean;
+  lastReviewPromptAt: string | null;
+  reviewPromptCount: number;
+  hasRespondedToReview: boolean;
   _hydrated: boolean;
 }
 
@@ -24,6 +27,8 @@ interface SettingsActions {
   setOnboardingSeen: (seen: boolean) => void;
   setHormonalProfile: (profile: HormonalProfile) => void;
   setSmartRemindersEnabled: (enabled: boolean) => void;
+  recordReviewPromptShown: () => void;
+  setHasRespondedToReview: (responded: boolean) => void;
   _setHydrated: (v: boolean) => void;
 }
 
@@ -38,6 +43,9 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       onboardingSeen: false,
       hormonalProfile: null,
       smartRemindersEnabled: true,
+      lastReviewPromptAt: null,
+      reviewPromptCount: 0,
+      hasRespondedToReview: false,
       _hydrated: false,
 
       setNotificationTime: (time) => set({ notificationTime: time }),
@@ -48,6 +56,12 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
       setOnboardingSeen: (seen) => set({ onboardingSeen: seen }),
       setHormonalProfile: (profile) => set({ hormonalProfile: profile }),
       setSmartRemindersEnabled: (enabled) => set({ smartRemindersEnabled: enabled }),
+      recordReviewPromptShown: () =>
+        set((s) => ({
+          lastReviewPromptAt: new Date().toISOString(),
+          reviewPromptCount: s.reviewPromptCount + 1,
+        })),
+      setHasRespondedToReview: (responded) => set({ hasRespondedToReview: responded }),
       _setHydrated: (v) => set({ _hydrated: v }),
     }),
     {
@@ -62,6 +76,9 @@ export const useSettingsStore = create<SettingsState & SettingsActions>()(
         onboardingSeen: state.onboardingSeen,
         hormonalProfile: state.hormonalProfile,
         smartRemindersEnabled: state.smartRemindersEnabled,
+        lastReviewPromptAt: state.lastReviewPromptAt,
+        reviewPromptCount: state.reviewPromptCount,
+        hasRespondedToReview: state.hasRespondedToReview,
       }),
       onRehydrateStorage: () => (state) => {
         state?._setHydrated(true);

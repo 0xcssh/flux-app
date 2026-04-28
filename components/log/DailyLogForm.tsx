@@ -16,6 +16,8 @@ import NoFapCheckbox from './NoFapCheckbox';
 import LogConfirmation from './LogConfirmation';
 import { useDailyLog } from '@/hooks/useDailyLog';
 import { useNoFapStore } from '@/store/nofapStore';
+import { useReviewPrompt } from '@/hooks/useReviewPrompt';
+import ReviewPromptModal from '@/components/shared/ReviewPromptModal';
 import type { LogFormData } from '@/types/log';
 
 interface DailyLogFormProps {
@@ -87,8 +89,9 @@ export default function DailyLogForm({
   targetDate,
 }: DailyLogFormProps) {
   const { t } = useTranslation('log');
-  const { todayLog, isLogged, submitLog } = useDailyLog(userId, targetDate);
+  const { todayLog, isLogged, submitLog, logs } = useDailyLog(userId, targetDate);
   const recordNoFapDay = useNoFapStore((s) => s.recordDay);
+  const reviewPrompt = useReviewPrompt();
 
   const [formData, setFormData] = useState<LogFormData>({
     energy: todayLog?.energy ?? 5,
@@ -136,10 +139,16 @@ export default function DailyLogForm({
       setLastScore(score);
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       setShowConfirmation(true);
+
+      const totalLogs = Object.keys(logs).length + (isLogged ? 0 : 1);
+      const milestones = [5, 15, 30];
+      if (!targetDate && milestones.includes(totalLogs) && score >= 50) {
+        setTimeout(() => reviewPrompt.trigger(), 2500);
+      }
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData, submitLog, recordNoFapDay, isSubmitting, targetDate]);
+  }, [formData, submitLog, recordNoFapDay, isSubmitting, targetDate, logs, isLogged, reviewPrompt]);
 
   return (
     <View style={styles.wrapper}>
@@ -212,6 +221,8 @@ export default function DailyLogForm({
           onClose={() => setShowConfirmation(false)}
         />
       )}
+
+      <ReviewPromptModal visible={reviewPrompt.visible} onClose={reviewPrompt.close} />
     </View>
   );
 }

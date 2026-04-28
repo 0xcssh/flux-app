@@ -112,4 +112,8 @@ export const AnalyticsEvents = {
 
   PREMIUM_FEATURE_BLOCKED: 'premium_feature_blocked',
   PREMIUM_FEATURE_USED: 'premium_feature_used',
+
+  REVIEW_PROMPT_SHOWN: 'review_prompt_shown',
+  REVIEW_RESPONSE: 'review_response',
+  REVIEW_NATIVE_REQUESTED: 'review_native_requested',
 } as const;

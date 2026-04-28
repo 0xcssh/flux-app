@@ -88,8 +88,18 @@
   "paywall_price_annual_monthly": "$9.99/month",
   "paywall_cta_trial": "Start 7-Day Free Trial",
   "paywall_cta_subscribe": "Subscribe Now",
-  "paywall_then": "Then $19.99/month \u00b7 Cancel anytime",
+  "paywall_then": "Then $19.99/month · Cancel anytime",
   "paywall_restore": "Restore Purchases",
   "smart_reminders": "Smart Reminders",
-  "smart_reminders_desc": "Contextual notifications based on your patterns"
+  "smart_reminders_desc": "Contextual notifications based on your patterns",
+  "review": {
+    "feedback_title": "Enjoying Flux?",
+    "feedback_subtitle": "Your feedback shapes the next version.",
+    "choice_positive": "Loving it",
+    "choice_negative": "Could be better",
+    "negative_title": "Tell us what we can improve",
+    "negative_subtitle": "A 30-second message helps us prioritize the next features.",
+    "send_feedback": "Send Feedback",
+    "skip": "Maybe later"
+  }
 }

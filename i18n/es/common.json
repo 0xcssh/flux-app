@@ -91,5 +91,15 @@
   "paywall_then": "Después 19,99 $/mes · Cancela cuando quieras",
   "paywall_restore": "Restaurar compras",
   "smart_reminders": "Recordatorios inteligentes",
-  "smart_reminders_desc": "Notificaciones contextuales basadas en tus patrones"
+  "smart_reminders_desc": "Notificaciones contextuales basadas en tus patrones",
+  "review": {
+    "feedback_title": "¿Te gusta Flux?",
+    "feedback_subtitle": "Tu opinión moldea la próxima versión.",
+    "choice_positive": "Me encanta",
+    "choice_negative": "Podría mejorar",
+    "negative_title": "Dinos qué podemos mejorar",
+    "negative_subtitle": "Un mensaje de 30 segundos nos ayuda a priorizar las próximas funciones.",
+    "send_feedback": "Enviar comentario",
+    "skip": "Quizás luego"
+  }
 }

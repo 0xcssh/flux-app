@@ -91,5 +91,15 @@
   "paywall_then": "Puis 19,99 $/mois · Annulable à tout moment",
   "paywall_restore": "Restaurer les achats",
   "smart_reminders": "Rappels intelligents",
-  "smart_reminders_desc": "Notifications contextuelles basées sur tes patterns"
+  "smart_reminders_desc": "Notifications contextuelles basées sur tes patterns",
+  "review": {
+    "feedback_title": "Tu aimes Flux ?",
+    "feedback_subtitle": "Ton retour façonne la prochaine version.",
+    "choice_positive": "J'adore",
+    "choice_negative": "Peut mieux faire",
+    "negative_title": "Dis-nous ce qu'on peut améliorer",
+    "negative_subtitle": "Un message de 30 secondes nous aide à prioriser les prochaines features.",
+    "send_feedback": "Envoyer le retour",
+    "skip": "Plus tard"
+  }
 }
