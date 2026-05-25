@@ -1,4 +1,10 @@
 import PostHog from 'posthog-react-native';
+import {
+  initFirebaseAnalytics,
+  logFirebaseEvent,
+  setFirebaseUserId,
+  setFirebaseUserProperties,
+} from './firebaseAnalytics';
 
 const POSTHOG_KEY = process.env.EXPO_PUBLIC_POSTHOG_KEY ?? '';
 const POSTHOG_HOST = process.env.EXPO_PUBLIC_POSTHOG_HOST ?? 'https://app.posthog.com';
@@ -7,6 +13,9 @@ let posthogClient: PostHog | null = null;
 
 export async function initAnalytics(): Promise<void> {
   if (posthogClient) return;
+
+  initFirebaseAnalytics();
+
   if (!POSTHOG_KEY) {
     console.warn('[Analytics] No PostHog key found');
     return;
@@ -28,6 +37,7 @@ export function track(event: string, properties?: Record<string, any>): void {
   } catch (error) {
     console.error('[Analytics] track error:', error);
   }
+  logFirebaseEvent(event, properties);
 }
 
 export function identify(userId: string, traits?: Record<string, any>): void {
@@ -36,6 +46,8 @@ export function identify(userId: string, traits?: Record<string, any>): void {
   } catch (error) {
     console.error('[Analytics] identify error:', error);
   }
+  setFirebaseUserId(userId);
+  if (traits) setFirebaseUserProperties(traits);
 }
 
 export interface UserProperties {
@@ -55,6 +67,12 @@ export function setUserProperties(props: UserProperties): void {
   } catch (error) {
     console.error('[Analytics] setUserProperties error:', error);
   }
+  const firebaseProps: Record<string, string | number | boolean | null> = {};
+  for (const [k, v] of Object.entries(props)) {
+    if (v === undefined) continue;
+    firebaseProps[k] = v as string | number | boolean | null;
+  }
+  setFirebaseUserProperties(firebaseProps);
 }
 
 export function resetAnalytics(): void {
@@ -63,6 +81,7 @@ export function resetAnalytics(): void {
   } catch (error) {
     console.error('[Analytics] reset error:', error);
   }
+  setFirebaseUserId(null);
 }
 
 export const AnalyticsEvents = {
