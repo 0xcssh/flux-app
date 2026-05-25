@@ -15,7 +15,6 @@ module.exports = {
     ios: {
       supportsTablet: false,
       bundleIdentifier: 'com.fluxcycle.app',
-      googleServicesFile: process.env.GOOGLE_SERVICES_INFO_PLIST ?? './GoogleService-Info.plist',
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         NSUserTrackingUsageDescription:
@@ -60,7 +59,6 @@ module.exports = {
             'This allows Flux to deliver more relevant content and measure the effectiveness of the features you use. Your data is never sold.',
         },
       ],
-      '@react-native-firebase/app',
     ],
     extra: {
       eas: {
